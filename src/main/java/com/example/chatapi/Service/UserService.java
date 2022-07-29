@@ -4,5 +4,5 @@ import com.example.chatapi.DTO.UserDTO;
 
 public interface UserService {
 
-    public boolean signUp(UserDTO userDTO);
+    boolean signUp(UserDTO userDTO);
 }
