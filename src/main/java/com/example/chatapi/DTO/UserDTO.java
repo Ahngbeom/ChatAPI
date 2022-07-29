@@ -1,16 +1,17 @@
 package com.example.chatapi.DTO;
 
+import com.example.chatapi.Entity.AuthorityEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 
     private Long id;
@@ -26,5 +27,5 @@ public class UserDTO {
 
     private boolean activate;
 
-    private Set<AuthorityDTO> authorities;
+    private Set<AuthorityEntity> authorities;
 }
