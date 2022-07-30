@@ -1,8 +1,9 @@
 package com.example.chatapi.Service;
 
 import com.example.chatapi.DTO.UserDTO;
+import com.example.chatapi.Entity.UserEntity;
 
 public interface UserService {
 
-    boolean signUp(UserDTO userDTO);
+    UserEntity signUp(UserDTO userDTO);
 }

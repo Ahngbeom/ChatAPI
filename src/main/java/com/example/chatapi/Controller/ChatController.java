@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ChatController {
 
-    @GetMapping("/chat")
+    @GetMapping({"/chat", "/"})
     public String chatGet() {
-        log.info("@ChatController, char GET()");
+        log.info("@ChatController, chat GET()");
         return "chat";
     }
 }

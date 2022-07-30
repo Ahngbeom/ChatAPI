@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean signUp(UserDTO userDTO) {
+    public UserEntity signUp(UserDTO userDTO) throws RuntimeException {
         if (userRepository.findOneWithAuthoritiesByUsername(userDTO.getUsername()).isPresent())
             throw new RuntimeException("Exist User");
         UserEntity userEntity =
@@ -85,6 +85,6 @@ public class UserServiceImpl implements UserService {
                         .activate(true)
                         .build();
 
-        return userRepository.save(userEntity).getClass().equals(UserEntity.class);
+        return userRepository.save(userEntity);
     }
 }
