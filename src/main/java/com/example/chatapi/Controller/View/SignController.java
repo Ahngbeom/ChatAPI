@@ -1,4 +1,4 @@
-package com.example.chatapi.Controller;
+package com.example.chatapi.Controller.View;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

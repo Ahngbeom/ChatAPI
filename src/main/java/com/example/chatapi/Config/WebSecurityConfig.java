@@ -1,44 +1,62 @@
 package com.example.chatapi.Config;
 
+import io.jsonwebtoken.Jwt;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	/*
+	PasswordEncoder는 Spring Security의 Interface 객체이다.
+	따라서 PasswordEncoder의 구현체를 대입해주고, Bean으로 등록해줄 필요가 있다.
+	PasswordEncoder의 구현체로 BCryptPasswordEncoder 객체를 지정한다.
+	BCryptPasswordEncoder 객체는 Hash 함수를 이용하여 패스워드를 암호화하는 구현체이다.
+	PasswordEncoder는 UserServiceImpl 클래스에서 유저를 DB에 등록하기 전, 패스워드를 암호화하는 과정에 사용된다.
+	https://youngjinmo.github.io/2021/05/passwordencoder/
+	 */
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-    }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http
+                // CSRF 비활성화
+				.csrf().disable()
+				// 특정 경로 접근 권한 설정. "/signup", "/sign-up", "/webjars/**" 패턴의 요청 주소는 모두에게 접근 허용
                 .authorizeRequests()
-                .antMatchers("/signup", "/sign-up", "/webjars/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true).deleteCookies("JSESSIONID")
-                .permitAll();
-    }
+				.antMatchers("/signup", "/sign-up", "/webjars/**").permitAll()
+				.anyRequest().authenticated()
+				.and()
+
+                // Login
+				.formLogin()
+				.loginPage("/login").permitAll()
+				.and()
+
+                // Logout
+				.logout()
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/login")
+                // 로그아웃 시 Session 무효화, JSESSIONID 쿠키 삭제
+				.invalidateHttpSession(true).deleteCookies("JSESSIONID")
+				.permitAll();
+
+		return http.build();
+	}
 
 }
