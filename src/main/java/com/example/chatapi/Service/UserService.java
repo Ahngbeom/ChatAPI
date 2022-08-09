@@ -6,4 +6,6 @@ import com.example.chatapi.Entity.UserEntity;
 public interface UserService {
 
     UserEntity signUp(UserDTO userDTO);
+
+    UserDTO getUserInfo(String username);
 }

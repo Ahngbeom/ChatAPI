@@ -16,11 +16,11 @@ public class WebSocketMessageBrokenConfig implements WebSocketMessageBrokerConfi
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // /topic 으로 시작하는 주제를 가 메시지를 핸들러로 라우팅하여 해당 주제에 가입한 모든 클라이언트에게 메시지를 브로드캐스팅한다.
+        // /topic 으로 시작하는 주제를 가진 요청 메시지를 핸들러로 라우팅하여 해당 주제에 가입한 모든 클라이언트에게 메시지를 브로드캐스팅한다.
         registry.enableSimpleBroker("/topic");
 
         // /app 으로 시작하는 URL로 요청되어진 메시지만 메시지 핸들러로 라우팅한다고 정의
-        registry.setApplicationDestinationPrefixes("/app");
+        registry.setApplicationDestinationPrefixes("/send");
     }
 
     /*
@@ -29,7 +29,7 @@ public class WebSocketMessageBrokenConfig implements WebSocketMessageBrokerConfi
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").withSockJS();
+        registry.addEndpoint("/mbti-chat").withSockJS();
     }
 
 

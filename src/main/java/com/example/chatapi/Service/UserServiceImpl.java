@@ -87,4 +87,21 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(userEntity);
     }
+
+    @Override
+    public UserDTO getUserInfo(String username) throws RuntimeException {
+        UserEntity entity = userRepository.findOneWithAuthoritiesByUsername(username).orElseThrow(() -> new RuntimeException("Not Found UserEntity in DataBase"));
+
+        if (entity != null) {
+            return UserDTO.builder()
+                    .id(entity.getId())
+                    .username(entity.getUsername())
+                    .password(entity.getPassword())
+                    .nickname(entity.getNickname())
+                    .activate(entity.isActivate())
+                    .authorities(entity.getAuthorities())
+                    .build();
+        }
+        return null;
+    }
 }
