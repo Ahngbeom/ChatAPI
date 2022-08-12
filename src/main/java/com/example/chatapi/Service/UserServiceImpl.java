@@ -2,6 +2,7 @@ package com.example.chatapi.Service;
 
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Entity.AuthorityEntity;
+import com.example.chatapi.Entity.MBTIInfoEntity;
 import com.example.chatapi.Entity.UserEntity;
 import com.example.chatapi.Repository.AuthorityRepository;
 import com.example.chatapi.Repository.UserRepository;
@@ -103,5 +104,18 @@ public class UserServiceImpl implements UserService {
                     .build();
         }
         return null;
+    }
+
+    @Override
+    public UserEntity addMbti(String username, MBTIInfoEntity mbtiInfoEntity) throws RuntimeException {
+        UserEntity userEntity = userRepository.findOneWithAuthoritiesByUsername(username).orElseThrow(() -> new RuntimeException("Not found UserEntity"));
+        userEntity.setMbtiList(Collections.singleton(mbtiInfoEntity));
+        return userRepository.save(userEntity);
+    }
+
+    @Override
+    public Set<MBTIInfoEntity> getMbtiList(String username) throws RuntimeException {
+        UserEntity userEntity = userRepository.findOneWithAuthoritiesByUsername(username).orElseThrow(() -> new RuntimeException("Not found UserEntity"));
+        return userEntity.getMbtiList();
     }
 }

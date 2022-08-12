@@ -1,0 +1,58 @@
+package com.example.chatapi.Controller;
+
+import com.example.chatapi.DTO.MbtiDTO;
+import com.example.chatapi.Entity.MBTIInfoEntity;
+import com.example.chatapi.Entity.UserEntity;
+import com.example.chatapi.Repository.MbtiRepository;
+import com.example.chatapi.Repository.UserRepository;
+import com.example.chatapi.Service.MbtiService;
+import com.example.chatapi.Service.MbtiServiceImpl;
+import com.example.chatapi.Service.UserService;
+import com.example.chatapi.Service.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import sun.tools.jconsole.JConsole;
+
+import javax.validation.Valid;
+import java.security.Principal;
+import java.util.Collections;
+import java.util.Set;
+
+@Slf4j
+@RestController
+@RequestMapping("/mbti")
+@RequiredArgsConstructor
+public class MbtiRestController {
+
+	private final UserService userService;
+	private final MbtiService mbtiService;
+
+	@PostMapping("/registration")
+	public ResponseEntity<?> mbtiRegister(Principal principal, @Valid @RequestBody MbtiDTO mbtiDTO) {
+		try {
+//			log.info(userService.getUserInfo(principal.getName()).toString());
+//			log.warn(mbtiDTO.getMbti());
+//			log.warn(mbtiDTO.getPersonality());
+//			log.warn(mbtiDTO.getIntroduction());
+
+			MBTIInfoEntity mbtiInfoEntity = mbtiService.register(mbtiDTO);
+
+//			userEntity.getMbtiList().forEach(element -> {
+//				log.info(element.getMbti() + ", " + element.getPersonality() + ", " + element.getIntroduction());
+//			});
+			return ResponseEntity.ok(userService.addMbti(principal.getName(), mbtiInfoEntity));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@GetMapping("/list")
+	public ResponseEntity<Set<MBTIInfoEntity>> getList(Principal principal) {
+		Set<MBTIInfoEntity> list = userService.getMbtiList(principal.getName());
+		list.forEach(mbtiInfoEntity -> log.info(mbtiInfoEntity.getMbti()));
+		return ResponseEntity.ok().body(list);
+	}
+}

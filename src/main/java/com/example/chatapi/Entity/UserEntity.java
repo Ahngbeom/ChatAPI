@@ -39,4 +39,9 @@ public class UserEntity implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<AuthorityEntity> authorities;
 
+    @ManyToMany
+    @JoinTable(name = "user_mbti",
+                joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id"), @JoinColumn(name = "username", referencedColumnName = "username")},
+                inverseJoinColumns = {@JoinColumn(name = "mbti", referencedColumnName = "mbti")})
+    private Set<MBTIInfoEntity> mbtiList;
 }

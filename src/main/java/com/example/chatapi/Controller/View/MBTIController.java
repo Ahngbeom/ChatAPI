@@ -15,4 +15,9 @@ public class MBTIController {
 //		log.info(principal.getName());
 		return "index";
 	}
+
+	@GetMapping("/mbti/register")
+	public String register() {
+		return "mbti/register";
+	}
 }
