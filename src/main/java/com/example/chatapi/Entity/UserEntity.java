@@ -32,7 +32,7 @@ public class UserEntity implements Serializable {
     @Column
     private boolean activate;
 
-    @ManyToMany
+    @ManyToMany // 실무에서 권장하지않는 방법. (@OneToMany로 관계 변경 후, 조인 테이블을 엔티티로 승격시켜 @ManyToOne 관계로 설정)
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id"), @JoinColumn(name = "username", referencedColumnName = "username")},

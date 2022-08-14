@@ -1,8 +1,3 @@
-let stompClient = null;
-
-const chatModalElement = document.getElementById("chatModal");
-const sendMessageBtn = document.getElementById("chat-send-message-btn");
-
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
     $("#disconnect").prop("disabled", !connected);
@@ -12,13 +7,15 @@ function setConnected(connected) {
     } else {
         $("#serverGreetings").hide();
         $("#conversation").hide();
+        chatModal.hide();
     }
     $("#chatting").html("");
 }
 
 function connect() {
-    let socket = new SockJS('/mbti-chat'); // SockJS 통해 서버의 WebSocket 지원 여부, Cookies 필요 여부, CORS를 위한 Origin 정보 등을 응답으로 전달받는다.
+    socket = new SockJS('/mbti-chat'); // SockJS 통해 서버의 WebSocket 지원 여부, Cookies 필요 여부, CORS를 위한 Origin 정보 등을 응답으로 전달받는다.
     stompClient = Stomp.over(socket); // Stomp.over: WebSocket 지정
+
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
@@ -32,8 +29,10 @@ function connect() {
             async: false,
             success: function (data) {
                 console.log(data);
-                stompClient.send("/send/hello", {}, JSON.stringify({'name': data.nickname}));
-                // /topic/greetings URL을 구독하여 새로운 메시지가 발생할 때마다 callback 함수 호출
+                // 클라이언트가 입장했다는 의미로 클라이언트의 닉네임을 서버에게 전송한다.
+                stompClient.send("/send/hello", {}, data.nickname);
+
+                // 서버가 클라이언트의 입장을 환영하는 인사말을 브로드캐스팅하게되고, 클라이언트는 인사말을 수신받을 주소를 구독하여 메시지를 얻어낸다.
                 stompClient.subscribe('/topic/greetings', function (greeting) {
                     showGreeting(JSON.parse(greeting.body).content);
                 });
@@ -58,6 +57,19 @@ function connect() {
 }
 
 function disconnect() {
+    chatModalElement.querySelector(".modal-body").innerHTML = "";
+    $.ajax({
+        type: 'GET',
+        url: '/user-info',
+        contentType: 'application/json; charset=utf-8',
+        async: false,
+        success: function (data) {
+            stompClient.send("/send/bye", {}, data.nickname);
+        },
+        error: function (data) {
+
+        }
+    });
     if (stompClient !== null) {
         stompClient.disconnect();
     }
