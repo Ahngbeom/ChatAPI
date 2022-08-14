@@ -2,22 +2,15 @@ package com.example.chatapi.Controller;
 
 import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.Entity.MBTIInfoEntity;
-import com.example.chatapi.Entity.UserEntity;
-import com.example.chatapi.Repository.MbtiRepository;
-import com.example.chatapi.Repository.UserRepository;
 import com.example.chatapi.Service.MbtiService;
-import com.example.chatapi.Service.MbtiServiceImpl;
 import com.example.chatapi.Service.UserService;
-import com.example.chatapi.Service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sun.tools.jconsole.JConsole;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Collections;
 import java.util.Set;
 
 @Slf4j
@@ -51,6 +44,7 @@ public class MbtiRestController {
 
 	@GetMapping("/list")
 	public ResponseEntity<Set<MBTIInfoEntity>> getList(Principal principal) {
+		log.info(principal.getName());
 		Set<MBTIInfoEntity> list = userService.getMbtiList(principal.getName());
 		list.forEach(mbtiInfoEntity -> log.info(mbtiInfoEntity.getMbti()));
 		return ResponseEntity.ok().body(list);

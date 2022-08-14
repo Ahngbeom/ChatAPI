@@ -24,14 +24,53 @@
     </div>
 
     <div id="mbtiListDiv">
-        <ul>
-        </ul>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">MBTI</th>
+                <th scope="col">Personality</th>
+                <th scope="col">Chatting</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr></tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chatModalLabel">MBTI Chat</h5>
+                <!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+                <button class="btn btn-warning" type="button" id="chat-leave-btn">Leave</button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-lg" id="input-send-message">
+                    <button class="btn btn-primary" type="button" id="chat-send-message-btn">Send</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
 </html>
 
+<script src="/js/global.js"></script>
+<script src="/js/chat.js"></script>
 <script type="application/javascript">
+
+    const mbtiTable = document.querySelector("#mbtiListDiv table");
 
     $.ajax({
         type: 'GET',
@@ -39,6 +78,41 @@
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
             console.log(data);
+            if (data.length === 0) {
+                console.log("MBTI 정보가 없습니다.");
+                mbtiTable.querySelector("tbody").innerHTML = "<h3>MBTI 정보가 없습니다.</h3>" + "<a href='/mbti/register'>MBTI 등록</a>";
+            } else {
+                mbtiInfo2Page(data);
+            }
+        },
+        error: function (data) {
+            console.error(data);
         }
-    })
+    });
+
+    const mbtiInfo2Page = function (mbtiList) {
+        mbtiList.forEach(function (data, index) {
+
+            let row = mbtiTable.querySelector("tbody").insertRow(-1);
+
+            let indexCell = row.insertCell(0);
+            let mbtiCell = row.insertCell(1);
+            let personalityCell = row.insertCell(2);
+            let chattingCell = row.insertCell(3);
+
+            indexCell.innerText = index;
+            mbtiCell.innerText = data.mbti;
+            personalityCell.innerText = data.personality;
+            chattingCell.innerHTML = "<button class='btn btn-primary' onclick='chattingRoomEnter()'>Enter</button>";
+
+        });
+
+        mbtiTable.querySelector("tfoot tr").insertAdjacentHTML('beforeend', "<td colspan='4'><a href='/mbti/register'>Change</a></td>");
+    }
+
+    const chattingRoomEnter = function () {
+        connect();
+        chatModal.show();
+    }
+
 </script>

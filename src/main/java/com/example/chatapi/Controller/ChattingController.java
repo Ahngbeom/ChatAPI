@@ -16,4 +16,11 @@ public class ChattingController {
 		Thread.sleep(1000);
 		return new Message(principal.getName(), message);
 	}
+
+	@MessageMapping("/ENTJ")
+	@SendTo("/topic/ENTJ")
+	public Message entj(Principal principal, String message) throws InterruptedException {
+		Thread.sleep(1000);
+		return new Message(principal.getName(), message);
+	}
 }

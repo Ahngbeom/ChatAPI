@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService {
                     .nickname(entity.getNickname())
                     .activate(entity.isActivate())
                     .authorities(entity.getAuthorities())
+                    .mbtiInfoList(entity.getMbtiList())
                     .build();
         }
         return null;

@@ -16,4 +16,5 @@ public class GreetingController {
         Thread.sleep(1000);
         return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()));
     }
+
 }
