@@ -1,18 +1,11 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymelead/layout">
+      xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="fragments/header :: header" />
 <body>
 <th:block th:replace="fragments/header :: navigator" />
 <div class="container-fluid">
-    <div class="d-flex flex-column">
-        <div class="d-flex flex-column">
-            <h2 class="d-flex justify-content-center">Myers-Briggs Type Indicator</h2>
-            <h1 class="d-flex justify-content-center">M B T I</h1>
-            <hr>
-        </div>
-    </div>
+    <th:block th:replace="fragments/header :: MBTI-header" />
 
     <div id="mbtiListDiv">
         <table class="table table-striped">

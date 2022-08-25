@@ -1,24 +1,74 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3" lang="kr">
-<head>
-    <title>Spring Security Example </title>
-</head>
+<html lang="kr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<th:block th:replace="fragments/header :: header"/>
 <body>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-<form th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
-</form>
-<div>
-    <button type="button" onclick="location.href='/signup'">Sign Up</button>
-</div>
+<th:block th:replace="fragments/header :: alert-icons"/>
+<div class="container-fluid mt-3">
+    <th:block th:replace="fragments/header :: MBTI-header"/>
 
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div>
+            <th:block th:if="${param.error}">
+                <div class="d-flex justify-content-center align-items-center alert alert-danger alert-dismissible fade show">
+                    Invalid username and password.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </th:block>
+            <th:block th:if="${param.logout}">
+                <div class="d-flex justify-content-center align-items-center alert alert-info alert-dismissible fade show">
+                    <!--                    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:">-->
+                    <!--                        <use xlink:href="#check-circle-fill"/>-->
+                    <!--                    </svg>-->
+                    You have been logged out.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </th:block>
+        </div>
+        <div class="d-flex justify-content-center mx-1">
+            <form th:action="@{/login}" method="post" class="form-group flex-column" id="loginForm">
+                <div class="mb-3 row">
+                    <label for="loginFormUsername" class="col-sm-4 col-form-label">User Name</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="loginFormUsername" name="username" value="admin"/>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="loginFormPassword" class="col-sm-4 col-form-label">Password</label>
+                    <div class="col-sm-8">
+                        <input type="password" class="form-control" id="loginFormPassword" name="password"
+                               value="admin"/>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" onclick="location.href='/signup'">Sign Up</button>
+                    <button type="button" class="btn btn-info" onclick="signIn()">Sign In</button>
+                </div>
+            </form>
+        </div>
+        <div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
+<script type="application/javascript">
+    let formData = new FormData($("#loginForm")[0]);
+    const signIn = function () {
+        $.ajax({
+            type: 'POST',
+            url: '/login',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (data) {
+                console.log(data);
+                location.href = "/";
+            },
+            error: function (data) {
+                console.error(data);
+            }
+        });
+    }
+</script>

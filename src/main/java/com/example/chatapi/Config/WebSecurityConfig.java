@@ -1,17 +1,14 @@
 package com.example.chatapi.Config;
 
-import io.jsonwebtoken.Jwt;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import com.example.chatapi.Security.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -30,6 +27,11 @@ public class WebSecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+	public AuthenticationSuccessHandler myAuthenticaionSuccessHandler() {
+		return new LoginSuccessHandler();
+	}
+
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,13 +46,16 @@ public class WebSecurityConfig {
 
                 // Login
 				.formLogin()
-				.loginPage("/login").permitAll()
+				.loginPage("/login")
+//				.loginProcessingUrl("/login")
+				.permitAll()
+				.successHandler(myAuthenticaionSuccessHandler())
 				.and()
 
                 // Logout
 				.logout()
 				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login")
+				.logoutSuccessUrl("/login?logout")
                 // 로그아웃 시 Session 무효화, JSESSIONID 쿠키 삭제
 				.invalidateHttpSession(true).deleteCookies("JSESSIONID")
 				.permitAll();
