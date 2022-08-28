@@ -6,7 +6,9 @@ import com.example.chatapi.Service.MbtiService;
 import com.example.chatapi.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,11 +44,17 @@ public class MbtiRestController {
 		}
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
 	public ResponseEntity<Set<MBTIInfoEntity>> getList(Principal principal) {
-		log.info(principal.getName());
-		Set<MBTIInfoEntity> list = userService.getMbtiList(principal.getName());
-		list.forEach(mbtiInfoEntity -> log.info(mbtiInfoEntity.getMbti()));
-		return ResponseEntity.ok().body(list);
+		try {
+			log.info(principal.getName());
+			Set<MBTIInfoEntity> list = userService.getMbtiList(principal.getName());
+			list.forEach(mbtiInfoEntity -> log.info(mbtiInfoEntity.getMbti()));
+			return ResponseEntity.ok().body(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
 	}
 }

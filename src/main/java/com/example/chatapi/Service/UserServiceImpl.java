@@ -5,6 +5,7 @@ import com.example.chatapi.Entity.AuthorityEntity;
 import com.example.chatapi.Entity.MBTIInfoEntity;
 import com.example.chatapi.Entity.UserEntity;
 import com.example.chatapi.Repository.AuthorityRepository;
+import com.example.chatapi.Repository.MbtiRepository;
 import com.example.chatapi.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -24,6 +23,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
+    private final MbtiRepository mbtiRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -103,6 +103,23 @@ public class UserServiceImpl implements UserService {
                     .authorities(entity.getAuthorities())
                     .mbtiInfoList(entity.getMbtiList())
                     .build();
+        }
+        return null;
+    }
+
+    @Override
+    public List<UserDTO> getUserList() {
+        try {
+            List<UserDTO> userDTOList = new ArrayList<>();
+
+            userRepository.findAll().forEach(userEntity -> {
+                log.warn(userEntity.getUsername());
+                userDTOList.add(userEntity.dtoConverter());
+            });
+
+            return userDTOList;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }

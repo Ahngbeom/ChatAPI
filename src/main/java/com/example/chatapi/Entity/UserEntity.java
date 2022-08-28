@@ -1,5 +1,6 @@
 package com.example.chatapi.Entity;
 
+import com.example.chatapi.DTO.UserDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,4 +45,18 @@ public class UserEntity implements Serializable {
                 joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id"), @JoinColumn(name = "username", referencedColumnName = "username")},
                 inverseJoinColumns = {@JoinColumn(name = "mbti", referencedColumnName = "mbti")})
     private Set<MBTIInfoEntity> mbtiList;
+
+
+
+    public UserDTO dtoConverter() {
+        return UserDTO.builder()
+                .id(this.id)
+                .username(this.username)
+                .password(this.password)
+                .nickname(this.nickname)
+                .activate(this.activate)
+//                .authorities(this.authorities)
+//                .mbtiInfoList(this.mbtiList)
+                .build();
+    }
 }

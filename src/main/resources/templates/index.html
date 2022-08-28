@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="fragments/header :: header" />
-<body>
-<th:block th:replace="fragments/header :: navigator" />
-<div class="container-fluid">
-    <th:block th:replace="fragments/header :: MBTI-header" />
+<th:block th:replace="fragments/header :: header"/>
+<body style="padding-top: 100px;">
 
-    <div id="mbtiListDiv">
+<!--<th:block th:replace="fragments/header :: navbar"/>-->
+<th:block th:replace="fragments/header :: offcanvas"/>
+<div class="container-fluid mt-xl-5" id="mainContainer">
+
+    <th:block th:replace="fragments/header :: MBTI-header"/>
+
+    <div id="mbtiListDiv" class="flex-column">
+
         <table class="table table-striped">
             <thead>
             <tr>

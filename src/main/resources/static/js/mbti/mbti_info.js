@@ -1,22 +1,24 @@
 const mbtiTable = document.querySelector("#mbtiListDiv table");
 
-$.ajax({
-    type: 'GET',
-    url: '/mbti/list',
-    contentType: 'application/json; charset=utf-8',
-    success: function (data) {
-        console.log(data);
-        if (data.length === 0) {
-            console.log("MBTI 정보가 없습니다.");
-            mbtiTable.querySelector("tbody").innerHTML = "<h3>MBTI 정보가 없습니다.</h3>" + "<a href='/mbti/register'>MBTI 등록</a>";
-        } else {
-            mbtiInfo2Page(data);
+if (mbtiTable) {
+    $.ajax({
+        type: 'GET',
+        url: '/mbti/list',
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            // console.log(data);
+            if (data.length === 0) {
+                console.log("MBTI 정보가 없습니다.");
+                mbtiTable.querySelector("tbody").innerHTML = "<h3>MBTI 정보가 없습니다.</h3>" + "<a href='/mbti/register'>MBTI 등록</a>";
+            } else {
+                mbtiInfo2Page(data);
+            }
+        },
+        error: function (data) {
+            console.error(data);
         }
-    },
-    error: function (data) {
-        console.error(data);
-    }
-});
+    });
+}
 
 const mbtiInfo2Page = function (mbtiList) {
     mbtiList.forEach(function (data, index) {
