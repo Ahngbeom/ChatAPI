@@ -24,12 +24,13 @@ class UserRepositoryTest {
 
     @Test
     void findOneWithAuthoritiesByUsername() {
-        UserEntity entity = userRepository.findOneWithAuthoritiesByUsername("admin").orElseThrow(RuntimeException::new);
+//        UserEntity entity = userRepository.findOneWithAuthoritiesByUsername("admin").orElseThrow(RuntimeException::new);
+        UserEntity entity = userRepository.findByUsername("admin").orElseThrow(RuntimeException::new);
         log.info(entity.toString());
     }
 
-    @Test
-    void findAllWithAuthoritiesAndMBTIList() {
-        userRepository.findAllWithAuthoritiesAndMBTIList();
-    }
+//    @Test
+//    void findAllWithAuthoritiesAndMBTIList() {
+//        userRepository.findAllWithAuthoritiesAndMBTIList();
+//    }
 }

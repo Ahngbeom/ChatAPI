@@ -12,12 +12,12 @@ public class SignController {
     public String login(String logout, String error) {
 //        log.info(logout);
 //        log.info(error);
-        return "login";
+        return "user/login";
     }
 
     @GetMapping("/signup")
     public String signup() {
-        return "signup";
+        return "user/signup";
     }
 
 }

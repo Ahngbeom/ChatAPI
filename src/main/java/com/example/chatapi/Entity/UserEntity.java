@@ -33,20 +33,26 @@ public class UserEntity implements Serializable {
     @Column
     private boolean activate;
 
-    @ManyToMany // 실무에서 권장하지않는 방법. (@OneToMany로 관계 변경 후, 조인 테이블을 엔티티로 승격시켜 @ManyToOne 관계로 설정)
-    @JoinTable(
-            name = "user_authority",
-            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id"), @JoinColumn(name = "username", referencedColumnName = "username")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
-    private Set<AuthorityEntity> authorities;
+//    @ManyToMany // 실무에서 권장하지않는 방법. (@OneToMany로 관계 변경 후, 조인 테이블을 엔티티로 승격시켜 @ManyToOne 관계로 설정)
+//    @JoinTable(
+//            name = "user_authority",
+//            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id"), @JoinColumn(name = "username", referencedColumnName = "username")},
+//            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+//    private Set<AuthorityEntity> authorities;
 
-    @ManyToMany
-    @JoinTable(name = "user_mbti",
-                joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id"), @JoinColumn(name = "username", referencedColumnName = "username")},
-                inverseJoinColumns = {@JoinColumn(name = "mbti", referencedColumnName = "mbti")})
-    private Set<MBTIInfoEntity> mbtiList;
+    @OneToMany(mappedBy = "user")
+//    @JoinColumn(name = "user_authority")
+    private Set<UserAuthorityJoinEntity> authorities;
 
+//    @ManyToMany
+//    @JoinTable(name = "user_mbti",
+//                joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id"), @JoinColumn(name = "username", referencedColumnName = "username")},
+//                inverseJoinColumns = {@JoinColumn(name = "mbti", referencedColumnName = "mbti")})
+//    private Set<MBTIInfoEntity> mbtiList;
 
+    @OneToMany(mappedBy = "user")
+//    @JoinColumn(name = "user_mbti")
+    private Set<UserMbtiJoinEntity> mbtiList;
 
     public UserDTO dtoConverter() {
         return UserDTO.builder()

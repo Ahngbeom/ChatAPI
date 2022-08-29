@@ -2,6 +2,7 @@ package com.example.chatapi.Controller;
 
 import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.Entity.MBTIInfoEntity;
+import com.example.chatapi.Entity.UserMbtiJoinEntity;
 import com.example.chatapi.Service.MbtiService;
 import com.example.chatapi.Service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -46,11 +47,11 @@ public class MbtiRestController {
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
-	public ResponseEntity<Set<MBTIInfoEntity>> getList(Principal principal) {
+	public ResponseEntity<Set<UserMbtiJoinEntity>> getList(Principal principal) {
 		try {
 			log.info(principal.getName());
-			Set<MBTIInfoEntity> list = userService.getMbtiList(principal.getName());
-			list.forEach(mbtiInfoEntity -> log.info(mbtiInfoEntity.getMbti()));
+			Set<UserMbtiJoinEntity> list = userService.getMbtiList(principal.getName());
+			list.forEach(mbtiInfoEntity -> log.info(mbtiInfoEntity.getMbti().getMbti()));
 			return ResponseEntity.ok().body(list);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -2,10 +2,8 @@ package com.example.chatapi.Entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "MBTI_INFO")
@@ -25,5 +23,9 @@ public class MBTIInfoEntity {
 
 	@Column(name = "introduction", length = 1000)
 	private String introduction;
+
+	@OneToMany(mappedBy = "mbti")
+//	@JoinColumn(name = "USER_ID")
+	private Set<UserMbtiJoinEntity> userMbti;
 
 }
