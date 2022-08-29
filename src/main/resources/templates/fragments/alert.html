@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="alert">
+    <div id="alert-area">
+        <th:block th:if="${param.error}">
+            <div class="d-flex justify-content-center align-items-center alert alert-danger alert-dismissible fade show">
+                Invalid username and password.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </th:block>
+        <th:block th:if="${param.logout}">
+            <div class="d-flex justify-content-center align-items-center alert alert-info alert-dismissible fade show">
+                You have been logged out.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </th:block>
+    </div>
+</th:block>
+</html>
+

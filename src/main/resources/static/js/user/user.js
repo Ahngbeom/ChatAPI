@@ -8,7 +8,7 @@ const loggedInUsername = document.querySelectorAll("#loggedInUsername");
         async: false,
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             // let logoutBtn = document.createElement("button");
             // logoutBtn.type = 'button';
             // logoutBtn.innerHTML = "Logout";
