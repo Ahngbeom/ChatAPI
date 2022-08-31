@@ -24,19 +24,20 @@ const alertArea = document.querySelector("#alert-area");
 const loadingSpinnerToBtn = '<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>&nbsp;';
 
 /** Popover */
-const setPopoverToSignUpForm = function (targetElement, message) {
+const setPopoverToSignUpForm = function (triggerType, targetElement, message) {
     const popover = new bootstrap.Popover(targetElement, {
         container: 'body',
         placement: 'top',
         content: message,
-        trigger: 'hover focus'
+        trigger: triggerType
     });
-    targetElement.addEventListener('focusout', function (e) {
+    targetElement.addEventListener('focusout', function () {
         popover.hide();
     });
-    targetElement.addEventListener('input', function (e) {
+    targetElement.addEventListener('input', function () {
         popover.hide();
     });
+    // targetElement.popover = popover;
     return popover;
 }
 

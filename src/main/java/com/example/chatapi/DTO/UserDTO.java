@@ -1,7 +1,5 @@
 package com.example.chatapi.DTO;
 
-import com.example.chatapi.Entity.AuthorityEntity;
-import com.example.chatapi.Entity.MBTIInfoEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -10,7 +8,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "authorities")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,7 +27,7 @@ public class UserDTO {
 
     private boolean activate;
 
-    private Set<AuthorityEntity> authorities;
+    private Set<AuthorityDTO> authorities;
 
-    private Set<MBTIInfoEntity> mbtiInfoList;
+    private Set<MbtiDTO> mbtiInfoList;
 }

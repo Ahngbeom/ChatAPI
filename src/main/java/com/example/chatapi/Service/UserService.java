@@ -10,7 +10,7 @@ import java.util.Set;
 
 public interface UserService {
 
-    UserEntity signUp(UserDTO userDTO);
+    boolean signUp(UserDTO userDTO);
 
     UserDTO getUserInfo(String username);
 

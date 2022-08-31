@@ -1,21 +1,19 @@
 package com.example.chatapi.Service;
 
+import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
-import com.example.chatapi.Entity.AuthorityEntity;
-import com.example.chatapi.Entity.MBTIInfoEntity;
-import com.example.chatapi.Entity.UserEntity;
-import com.example.chatapi.Entity.UserMbtiJoinEntity;
+import com.example.chatapi.Entity.*;
 import com.example.chatapi.Repository.AuthorityRepository;
 import com.example.chatapi.Repository.MbtiRepository;
+import com.example.chatapi.Repository.UserAuthorityRepository;
 import com.example.chatapi.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 @Service
@@ -24,6 +22,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
+    private final UserAuthorityRepository userAuthorityRepository;
+
     private final MbtiRepository mbtiRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -75,21 +75,44 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public UserEntity signUp(UserDTO userDTO) throws RuntimeException {
+    public boolean signUp(UserDTO userDTO) throws RuntimeException {
+        try {
+            AtomicBoolean result = new AtomicBoolean(true);
+
 //        if (userRepository.findOneWithAuthoritiesByUsername(userDTO.getUsername()).isPresent())
 //            throw new RuntimeException("Exist User");
-        if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
-            throw new RuntimeException("Exist Username");
-        UserEntity userEntity =
-                UserEntity.builder()
-                        .username(userDTO.getUsername())
-                        .password(passwordEncoder.encode(userDTO.getPassword()))
-                        .nickname(userDTO.getNickname())
-//                        .authorities(Collections.singleton(AuthorityEntity.builder().authorityName("ROLE_USER").build()))
-                        .activate(true)
-                        .build();
+            if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
+                throw new RuntimeException("Exist Username");
 
-        return userRepository.save(userEntity);
+            Set<AuthorityEntity> authorityEntityHashSet = new HashSet<>();
+
+            userDTO.getAuthorities().forEach(authorityDTO -> {
+                AuthorityEntity authority = AuthorityEntity.builder()
+                        .authorityName(authorityDTO.getAuthorityName())
+                        .build();
+                authorityEntityHashSet.add(authority);
+                result.set(result.get() & authorityRepository.save(authority).getClass().equals(AuthorityEntity.class));
+            });
+
+            UserEntity userEntity =
+                    UserEntity.builder()
+                            .username(userDTO.getUsername())
+                            .password(passwordEncoder.encode(userDTO.getPassword()))
+                            .nickname(userDTO.getNickname())
+                            .activate(true)
+                            .build();
+            result.set(result.get() | userRepository.save(userEntity).getClass().equals(UserEntity.class));
+
+            authorityEntityHashSet.forEach(authorityEntity -> result.set(result.get() | userAuthorityRepository.save(UserAuthorityJoinEntity.builder()
+                    .user(userEntity)
+                    .authority(authorityEntity)
+                    .build()).getClass().equals(UserAuthorityJoinEntity.class)));
+
+            return result.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -97,18 +120,21 @@ public class UserServiceImpl implements UserService {
 //        UserEntity entity = userRepository.findOneWithAuthoritiesByUsername(username).orElseThrow(() -> new RuntimeException("Not Found UserEntity in DataBase"));
         UserEntity entity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Not Found UserEntity in DataBase"));
 
-        if (entity != null) {
-            return UserDTO.builder()
-                    .id(entity.getId())
-                    .username(entity.getUsername())
-                    .password(entity.getPassword())
-                    .nickname(entity.getNickname())
-                    .activate(entity.isActivate())
-//                    .authorities(entity.getAuthorities())
+        List<UserAuthorityJoinEntity> userAuthorityEntity = userAuthorityRepository.findAllByUser_Id(entity.getId());
+//        userAuthorityEntity = userAuthorityRepository.findAll();
+        Set<AuthorityDTO> authorityDTOHashSet = new HashSet<>();
+        userAuthorityEntity.forEach(userAuthorityJoinEntity -> authorityDTOHashSet.add(AuthorityDTO.builder()
+                .authorityName(userAuthorityJoinEntity.getAuthority().getAuthorityName()).build()));
+
+        return UserDTO.builder()
+                .id(entity.getId())
+                .username(entity.getUsername())
+                .password(entity.getPassword())
+                .nickname(entity.getNickname())
+                .activate(entity.isActivate())
+                .authorities(authorityDTOHashSet)
 //                    .mbtiInfoList(entity.getMbtiList())
-                    .build();
-        }
-        return null;
+                .build();
     }
 
     @Override

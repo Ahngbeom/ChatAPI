@@ -2,9 +2,9 @@ const signUpInputGuides = {
     username: "ID는 영문 소문자 및 숫자 및 특수기호 '_'를 포함할 수 있으며, 5자 이상이어야 합니다.",
     // password: "PW는 최소 1개 이상의 대문자와 숫자 및 특수기호가 포함되어야하며, 8자 이상이어야 합니다."
     password: "PW는 4자 이상이어야 합니다.", // 개발 편의성을 위해 비밀번호 정책 완화
-    nickname: "한글의 자음 모음은 포함할 수 없습니다.",
-    authorities: "최소 1개 이상의 권한을 선택할 수 있습니다."
-}
+    nickname: "Nickname은 한글의 자음 및 모음을 포함할 수 없으며 2자 이상이어야합니다.",
+    authorities: "최소 1개 이상의 권한을 선택해야합니다."
+};
 
 const signUpForm = document.querySelector("#signUpForm");
 const signUpFormUsername = signUpForm.querySelector("input[name='username']");
@@ -20,14 +20,11 @@ let signUpJson = {
     username: null,
     password: null,
     nickname: null,
-    authorities: {
-        ROLE_ADMIN: false,
-        ROLE_MANAGER: false,
-        ROLE_USER: false
-    }
+    authorities: new Set()
 }
 
 /** Username */
+setPopoverToSignUpForm('hover focus', signUpFormUsername, signUpInputGuides.username);
 const signUpUsernameValidation = function () {
     $.ajax({
         type: 'GET',
@@ -36,7 +33,7 @@ const signUpUsernameValidation = function () {
         beforeSend: function (xhr) {
             if (signUpFormUsername.value === null || signUpFormUsername.value.length < 5
                 || koreanReg.test(signUpFormUsername.value) || alphabetUpperReg.test(signUpFormUsername.value)) {
-                setPopoverToSignUpForm(signUpFormUsername, signUpInputGuides.username).show();
+                setPopoverToSignUpForm('hover focus', signUpFormUsername, signUpInputGuides.username).show();
                 signUpFormUsername.classList.add('is-invalid');
                 signUpFormUsername.classList.remove('is-valid');
                 xhr.abort();
@@ -61,7 +58,7 @@ const signUpUsernameValidation = function () {
     });
 }
 signUpFormUsername.addEventListener('focus', function (e) {
-    setPopoverToSignUpForm(e.target, signUpInputGuides.username);
+    setPopoverToSignUpForm('hover focus', e.target, signUpInputGuides.username);
 });
 signUpFormUsername.addEventListener('input', function (e) {
     signUpFormUsernameValidateBtn.removeAttribute("disabled");
@@ -73,7 +70,7 @@ signUpFormUsername.addEventListener('input', function (e) {
 });
 
 /** Password */
-setPopoverToSignUpForm(signUpFormPassword, signUpInputGuides.password);
+setPopoverToSignUpForm('hover focus', signUpFormPassword, signUpInputGuides.password);
 signUpFormPassword.addEventListener('input', function (e) {
     const password = e.target.value;
     if (password.length < 4) {
@@ -81,17 +78,17 @@ signUpFormPassword.addEventListener('input', function (e) {
     } else {
         signUpFormPassword.classList.replace('is-invalid', 'is-valid');
         signUpFormReconfirmPassword.removeAttribute('disabled');
-        setPopoverToSignUpForm(signUpFormReconfirmPassword, "비밀번호를 다시 입력해주세요.");
+        setPopoverToSignUpForm('hover focus', signUpFormReconfirmPassword, "비밀번호를 다시 입력해주세요.");
         signUpFormReconfirmPassword.addEventListener('input', function (e) {
             if (password === e.target.value) {
-                setPopoverToSignUpForm(signUpFormReconfirmPassword, null);
+                setPopoverToSignUpForm('hover focus', signUpFormReconfirmPassword, null);
                 if (signUpFormReconfirmPassword.classList.contains('is-invalid'))
                     signUpFormReconfirmPassword.classList.replace('is-invalid', 'is-valid');
                 else
                     signUpFormReconfirmPassword.classList.add('is-valid');
                 signUpJson.password = password;
             } else {
-                setPopoverToSignUpForm(signUpFormReconfirmPassword, "비밀번호가 일치하지않습니다.");
+                setPopoverToSignUpForm('hover focus', signUpFormReconfirmPassword, "비밀번호가 일치하지않습니다.");
                 if (signUpFormReconfirmPassword.classList.contains('is-valid'))
                     signUpFormReconfirmPassword.classList.replace('is-valid', 'is-invalid');
                 else
@@ -108,8 +105,8 @@ const signUpNicknameValidation = function () {
         url: '/nickname-validation',
         data: {nickname: signUpFormNickname.value},
         beforeSend: function (xhr) {
-            if (signUpFormNickname.value === null || koreanConsonantsAndVowels.test(signUpFormNickname.value)) {
-                setPopoverToSignUpForm(signUpFormNickname, signUpInputGuides.nickname).show();
+            if (signUpFormNickname.value.length < 2 || koreanConsonantsAndVowels.test(signUpFormNickname.value)) {
+                setPopoverToSignUpForm('hover focus', signUpFormNickname, signUpInputGuides.nickname).show();
                 signUpFormNickname.classList.add('is-invalid');
                 signUpFormNickname.classList.remove('is-valid');
                 xhr.abort();
@@ -120,7 +117,6 @@ const signUpNicknameValidation = function () {
             }
         },
         success: function (data) {
-            console.log(data);
             if (data) {
                 setTimeout(function () {
                     signUpFormNickname.removeAttribute('disabled');
@@ -144,55 +140,103 @@ signUpFormNickname.addEventListener('input', function (e) {
 });
 
 /** Authority */
-setPopoverToSignUpForm(signUpFormAuthorities, signUpInputGuides.authorities);
-
+setPopoverToSignUpForm('hover focus', signUpFormAuthorities, signUpInputGuides.authorities);
 signUpFormAuthorityInputList.forEach(auth => {
     auth.addEventListener('change', function (e) {
         signUpFormAuthorities.classList.replace('border-danger', 'border-1');
-        if (e.target.value === 'ROLE_ADMIN')
-            signUpJson.authorities.ROLE_ADMIN = e.target.checked;
-        else if (e.target.value === 'ROLE_MANAGER')
-            signUpJson.authorities.ROLE_MANAGER = e.target.checked;
-        else if (e.target.value === 'ROLE_USER')
-            signUpJson.authorities.ROLE_USER = e.target.checked;
+        if (e.target.checked)
+            signUpJson.authorities.add(e.target.value);
         else
-            alert("ERROR");
+            signUpJson.authorities.delete(e.target.value);
     });
 });
 
+/** Sign Up */
 const signUp = function () {
-
-    if (signUpJson.username == null)
+    if (signUpJson.username == null && signUpFormUsername.value.length === 0) {
         signUpFormUsername.classList.add('is-invalid');
-    if (signUpJson.password == null)
+        setPopoverToSignUpForm('hover focus', signUpFormUsername, signUpInputGuides.username).show();
+    } else if (!signUpFormUsernameValidateBtn.classList.contains('btn-success'))
+        setPopoverToSignUpForm('hover focus', signUpFormUsernameValidateBtn, "ID 유효성 검사를 수행하세요.").show();
+    else if (signUpFormPassword.value.length < 4) {
         signUpFormPassword.classList.add('is-invalid');
-    if (signUpJson.nickname == null)
+        setPopoverToSignUpForm('hover focus', signUpFormPassword, signUpInputGuides.password).show();
+    } else if (signUpJson.password == null) {
+        signUpFormReconfirmPassword.classList.add('is-invalid');
+        if (signUpFormReconfirmPassword.value.length === 0)
+            setPopoverToSignUpForm('hover focus', signUpFormReconfirmPassword, "비밀번호를 다시 입력해주세요.").show();
+        else
+            setPopoverToSignUpForm('hover focus', signUpFormReconfirmPassword, "비밀번호가 일치하지않습니다.").show();
+    } else if (signUpJson.nickname == null && signUpFormNickname.value.length === 0) {
         signUpFormNickname.classList.add('is-invalid');
-    if (signUpJson.authorities.ROLE_ADMIN === false && signUpJson.authorities.ROLE_MANAGER === false && signUpJson.authorities.ROLE_USER === false) {
+        setPopoverToSignUpForm('hover focus', signUpFormNickname, signUpInputGuides.nickname).show();
+    } else if (!signUpFormNicknameValidateBtn.classList.contains('btn-success'))
+        setPopoverToSignUpForm('hover focus', signUpFormNicknameValidateBtn, "Nickname 유효성 검사를 수행하세요.").show();
+    else if (signUpJson.authorities.size === 0) {
         signUpFormAuthorities.classList.replace('border-1', 'border-danger');
-    }
-    console.log(signUpJson);
+        setPopoverToSignUpForm('hover focus', signUpFormAuthorities, signUpInputGuides.authorities).show();
+    } else {
 
-    // $.ajax({
-    //     type: 'POST',
-    //     url: '/signup',
-    //     dataType: 'JSON',
-    //     contentType: 'application/json; charset=utf-8',
-    //     data: JSON.stringify({
-    //         username: signUpForm.querySelector("input[name='username']").value,
-    //         password: signUpForm.querySelector("input[name='password']").value,
-    //         nickname: signUpForm.querySelector("input[name='nickname']").value,
-    //     }),
-    //     success: function (data, status, xhr) {
-    //         console.log(data);
-    //         console.log(status);
-    //         console.log(xhr);
-    //         window.location.href = '/login';
-    //     },
-    //     error: function (data, status, xhr) {
-    //         console.error(data);
-    //         console.error(status);
-    //         console.error(xhr);
-    //     }
-    // });
+        // userAuthorityFormatConverter();
+
+        signUpJson.authorities = [...signUpJson.authorities];
+        console.log(signUpJson);
+        console.log(JSON.stringify(signUpJson));
+
+        $.ajax({
+            type: 'POST',
+            url: '/signup',
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(signUpJson),
+            success: function (data, status, xhr) {
+                console.log(data);
+                console.log(status);
+                console.log(xhr);
+                // window.location.href = '/login';
+            },
+            error: function (data, status, xhr) {
+                console.error(data);
+                console.error(status);
+                console.error(xhr);
+            }
+        });
+    }
 };
+
+const userAuthorityFormatConverter = function () {
+    if (signUpJson.authorities.has('ROLE_ADMIN')) {
+        signUpJson.authorities.delete('ROLE_ADMIN');
+        signUpJson.authorities.add({authorityName: 'ROLE_ADMIN'});
+    }
+    if (signUpJson.authorities.has('ROLE_MANAGER')) {
+        signUpJson.authorities.delete('ROLE_MANAGER');
+        signUpJson.authorities.add({authorityName: 'ROLE_MANAGER'});
+    }
+    if (signUpJson.authorities.has('ROLE_USER')) {
+        signUpJson.authorities.delete('ROLE_USER');
+        signUpJson.authorities.add({authorityName: 'ROLE_USER'});
+    }
+    signUpJson.authorities = [...signUpJson.authorities];
+};
+
+(function autoInputToSignUpForm() {
+    signUpFormUsername.value = "admin";
+    signUpUsernameValidation();
+    signUpJson.username = signUpFormUsername.value;
+
+    signUpFormPassword.value = "1234";
+    signUpFormReconfirmPassword.value = signUpFormPassword.value;
+    signUpJson.password = signUpFormPassword.value;
+
+    signUpFormNickname.value = "ADMIN";
+    signUpNicknameValidation();
+    signUpJson.nickname = signUpFormNickname.value;
+
+    signUpFormAuthorities.querySelector("#checkboxRoleAdmin").checked = true;
+    signUpFormAuthorities.querySelector("#checkboxRoleManager").checked = true;
+    // signUpJson.authorities.add("ROLE_ADMIN");
+    // signUpJson.authorities.add("ROLE_MANAGER");
+    // signUpJson.authorities.delete("ROLE_MANAGER");
+    // signUpJson.authorities = ["ROLE_ADMIN", "ROLE_MANAGER"];
+}());

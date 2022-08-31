@@ -23,12 +23,14 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserDTO userDTO) {
-		UserEntity userEntity;
+		UserEntity userEntity = null;
 		try {
+			log.info(userDTO.toString());
 			log.info("Sign up: " + userDTO.getUsername());
-			userEntity = userService.signUp(userDTO);
-			return ResponseEntity.ok().body(userEntity);
+//			userEntity = userService.signUp(userDTO);
+			return ResponseEntity.ok().body(userDTO);
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
 		}
 	}
