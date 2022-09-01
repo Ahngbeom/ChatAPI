@@ -21,7 +21,7 @@ if (document.querySelector("#chatModal")) {
 const alertArea = document.querySelector("#alert-area");
 
 /** Loading Spinner */
-const loadingSpinnerToBtn = '<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>&nbsp;';
+const loadingSpinnerToBtn = '<span class=\"spinner-border spinner-border-sm mr-3\" role=\"status\" aria-hidden=\"true\"></span>';
 
 /** Popover */
 const setPopoverToSignUpForm = function (triggerType, targetElement, message) {
@@ -40,6 +40,7 @@ const setPopoverToSignUpForm = function (triggerType, targetElement, message) {
     // targetElement.popover = popover;
     return popover;
 }
+
 
 // $.ajaxSetup({
 //     beforeSend: function (xhr, settings) {

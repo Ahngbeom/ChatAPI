@@ -5,25 +5,10 @@
 <th:block th:replace="fragments/header :: alert-icons"/>
 <div class="container-fluid mt-3">
     <th:block th:replace="fragments/header :: MBTI-header"/>
+    <th:block th:replace="fragments/modal :: modal('signUpModal')"/>
 
     <div class="d-flex flex-column justify-content-center align-items-center">
-        <div>
-            <th:block th:if="${param.error}">
-                <div class="d-flex justify-content-center align-items-center alert alert-danger alert-dismissible fade show">
-                    Invalid username and password.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </th:block>
-            <th:block th:if="${param.logout}">
-                <div class="d-flex justify-content-center align-items-center alert alert-info alert-dismissible fade show">
-                    <!--                    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:">-->
-                    <!--                        <use xlink:href="#check-circle-fill"/>-->
-                    <!--                    </svg>-->
-                    You have been logged out.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </th:block>
-        </div>
+        <th:block th:replace="/fragments/alert :: alert"></th:block>
         <div class="d-flex justify-content-center mx-1">
             <form th:action="@{/login}" method="post" class="form-group flex-column" id="loginForm">
                 <div class="mb-3 row">
@@ -40,7 +25,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" onclick="location.href='/signup'">Sign Up</button>
+                    <button type="button" class="btn btn-secondary" id="floatingSignUpBtn">Sign Up</button>
                     <button type="button" class="btn btn-info" onclick="signIn()">Sign In</button>
                 </div>
             </form>
@@ -51,5 +36,6 @@
 </div>
 </body>
 <th:block th:replace="fragments/footer :: footer"/>
+<script type="module" src="/js/signup/signup.js"></script>
 </html>
 

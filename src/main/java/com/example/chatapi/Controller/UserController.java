@@ -8,10 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -62,16 +65,25 @@ public class UserController {
 	}
 
 	@GetMapping("/username-validation")
-	public Boolean usernameValidation(@RequestParam String username) {
+	public ResponseEntity<?> usernameValidation(@RequestParam String username) throws RuntimeException {
+		List<String> forbiddenWords = new ArrayList<>(Arrays.asList("administrator", "admin", "manager", "user"));
 		try {
+			forbiddenWords.forEach(word -> {
+				if (username.toLowerCase().contains(word))
+					throw new RuntimeException("Username contains forbidden words - \"" + word + "\"");
+			});
 			userService.getUserInfo(username);
-		} catch (Exception e) {
+		} catch (UsernameNotFoundException e) {
 //			e.printStackTrace();
 			log.info("Username \"" + username + "\" is " + e.getMessage() + " (" + e.getClass() + ")");
-			return true;
+			return ResponseEntity.ok(true);
+		} catch (RuntimeException forbidden) {
+//			forbidden.printStackTrace();
+			log.error(forbidden.getMessage());
+			return ResponseEntity.ok(forbidden.getMessage());
 		}
-		log.info("Username \"" + username + "\" already exists");
-		return false;
+		log.error("Username \"" + username + "\" already exists");
+		return ResponseEntity.ok("Username \"" + username + "\" already exists");
 	}
 
 	@GetMapping("/nickname-validation")

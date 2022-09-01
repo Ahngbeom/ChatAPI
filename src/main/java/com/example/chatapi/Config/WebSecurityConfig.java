@@ -28,7 +28,7 @@ public class WebSecurityConfig {
 	}
 
 	@Bean
-	public AuthenticationSuccessHandler myAuthenticaionSuccessHandler() {
+	public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
 		return new LoginSuccessHandler();
 	}
 
@@ -50,7 +50,7 @@ public class WebSecurityConfig {
 				.loginPage("/login")
 //				.loginProcessingUrl("/login")
 				.permitAll()
-				.successHandler(myAuthenticaionSuccessHandler())
+				.successHandler(myAuthenticationSuccessHandler())
 				.and()
 
                 // Logout

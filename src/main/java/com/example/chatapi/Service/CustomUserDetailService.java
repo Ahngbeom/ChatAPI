@@ -1,6 +1,7 @@
 package com.example.chatapi.Service;
 
 import com.example.chatapi.Entity.UserEntity;
+import com.example.chatapi.Repository.UserAuthorityRepository;
 import com.example.chatapi.Repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,10 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return userRepository.findOneWithAuthoritiesByUsername(username).map(user -> createUser(username, user))
-//                .orElseThrow(() -> new UsernameNotFoundException(username + " -> Not Founded in Database"));
-
-        return userRepository.findByUsername(username).map(user -> createUser(username, user))
+        return userRepository.findByUsername(username).map(user -> {
+                    log.info(user.toString());
+                    return createUser(username, user);
+                })
                 .orElseThrow(() -> new UsernameNotFoundException(username + " -> Not Founded in Database"));
     }
 

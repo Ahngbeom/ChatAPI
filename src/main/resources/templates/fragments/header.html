@@ -20,6 +20,10 @@
         <!--            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>-->
         <script src="/webjars/sockjs-client/dist/sockjs.min.js"></script>
         <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
+        <script src="/js/global.js"></script>
+        <script src="/js/utility/alert.js"></script>
+        <script src="/js/utility/toast.js"></script>
+        <script src="/js/utility/table.js"></script>
     </head>
 </th:block>
 
@@ -50,6 +54,7 @@
         <h2 class="d-flex justify-content-center">Myers-Briggs Type Indicator</h2>
         <hr>
     </div>
+    <th th:replace="/fragments/alert :: toast('pageToast')"></th>
 </th:block>
 
 <th:block th:fragment="loginUser">

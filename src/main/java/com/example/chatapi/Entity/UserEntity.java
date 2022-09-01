@@ -11,6 +11,7 @@ import java.util.Set;
 @Table(name = "USER")
 @Getter
 @Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,7 +28,7 @@ public class UserEntity implements Serializable {
     @Column(length = 100)
     private String password;
 
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     private String nickname;
 
     @Column
@@ -40,7 +41,8 @@ public class UserEntity implements Serializable {
 //            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
 //    private Set<AuthorityEntity> authorities;
 
-    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_authority")
     private Set<UserAuthorityJoinEntity> authorities;
 
@@ -50,7 +52,8 @@ public class UserEntity implements Serializable {
 //                inverseJoinColumns = {@JoinColumn(name = "mbti", referencedColumnName = "mbti")})
 //    private Set<MBTIInfoEntity> mbtiList;
 
-    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_mbti")
     private Set<UserMbtiJoinEntity> mbtiList;
 
