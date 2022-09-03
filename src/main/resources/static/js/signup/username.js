@@ -1,13 +1,7 @@
-import {signUpInputGuides, signUpJson} from "./signup.js";
-
-// const signUpFormUsername = signUpForm.querySelector("input[name='username']");
-// const signUpFormUsernameValidateBtn = signUpForm.querySelector("#signUpFormUsernameValidateBtn");
+import {signUpInputGuides, signUpJson, signUpFormUsername, signUpFormUsernameValidateBtn} from "./signup.js";
 
 /** Username */
-export function setMovementForUsername(signUpForm) {
-    const signUpFormUsername = signUpForm.querySelector("input[name='username']");
-    const signUpFormUsernameValidateBtn = signUpForm.querySelector("#signUpFormUsernameValidateBtn");
-
+export function setMovementForUsername() {
     setPopoverToSignUpForm('hover focus', signUpFormUsername, signUpInputGuides.username);
 
     signUpFormUsernameValidateBtn.addEventListener('click', function () {
@@ -25,11 +19,10 @@ export function setMovementForUsername(signUpForm) {
                 } else {
                     signUpFormUsername.setAttribute('disabled', 'true');
                     signUpFormUsernameValidateBtn.setAttribute('disabled', 'true');
-                    $("#signUpFormUsernameValidateBtn").prepend(loadingSpinnerToBtn);
+                    signUpFormUsernameValidateBtn.innerHTML = loadingSpinnerToBtn;
                 }
             },
             success: function (data) {
-                console.log(data);
                 if (data === true) {
                     setTimeout(function () {
                         signUpFormUsername.removeAttribute('disabled');
@@ -44,7 +37,12 @@ export function setMovementForUsername(signUpForm) {
                     signUpFormUsername.classList.add('is-invalid');
                     signUpFormUsernameValidateBtn.querySelector("span").remove();
                     signUpFormUsernameValidateBtn.removeAttribute('disabled');
-                    createToast($("#modalToast"), "danger", "Alert", data);
+                    createToast({
+                        target: $("#modalToast"),
+                        type: "danger",
+                        header: "Alert",
+                        body: data
+                    });
                 }
             }
         });

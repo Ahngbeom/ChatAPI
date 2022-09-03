@@ -28,10 +28,10 @@ public class UserController {
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserDTO userDTO) {
 		UserEntity userEntity = null;
 		try {
-			log.info(userDTO.toString());
-			log.info("Sign up: " + userDTO.getUsername());
-//			userEntity = userService.signUp(userDTO);
-			return ResponseEntity.ok().body(userDTO);
+			log.info("=== User information to be registered to register as a member ===");
+			log.info("User: " + userDTO.toString());
+			log.info("User's Authority: " + userDTO.getAuthorities());
+			return ResponseEntity.ok().body(userService.signUp(userDTO));
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());

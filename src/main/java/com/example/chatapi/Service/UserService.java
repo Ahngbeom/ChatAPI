@@ -1,5 +1,6 @@
 package com.example.chatapi.Service;
 
+import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Entity.MBTIInfoEntity;
 import com.example.chatapi.Entity.UserEntity;
@@ -16,6 +17,8 @@ public interface UserService {
     UserDTO getUserInfo(String username) throws UsernameNotFoundException;
 
     List<UserDTO> getUserList() throws Exception;
+
+    List<AuthorityDTO> getUserAuthorities(Long userNo);
 
     UserEntity addMbti(String username, MBTIInfoEntity mbtiInfoEntity) throws RuntimeException;
 

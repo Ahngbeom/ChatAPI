@@ -1,3 +1,5 @@
+/***** Variables and functions to declare before HTML content is loaded *****/
+
 /** Regular Expression */
 const koreanReg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 const koreanConsonantsAndVowels = /[ㄱ-ㅎ|ㅏ-ㅣ]/;
@@ -7,9 +9,6 @@ const alphabetUpperReg = /[A-Z]/;
 /** Chat */
 let socket = null;
 let stompClient = null;
-
-const mainContainer = document.getElementById("mainContainer");
-const navContainer = document.getElementById("navContainer");
 
 if (document.querySelector("#chatModal")) {
     const chatModal = new bootstrap.Modal("#chatModal");

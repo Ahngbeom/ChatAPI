@@ -82,51 +82,46 @@ public class UserServiceImpl implements UserService {
 //
 //            log.info("SUCCESS SAVE ON USERS TABLE");
         } catch (RuntimeException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             log.error(e.getMessage());
         }
     }
 
     @Override
     public boolean signUp(UserDTO userDTO) throws RuntimeException {
-        try {
-            AtomicBoolean result = new AtomicBoolean(true);
+        AtomicBoolean result = new AtomicBoolean(true);
 
-            if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
-                throw new RuntimeException("Exist Username");
+        if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
+            throw new RuntimeException("Exist Username");
 
-            // Storing requested User's Authorities in HashSet and authority table
-            Set<AuthorityEntity> authorityEntityHashSet = new HashSet<>();
-            userDTO.getAuthorities().forEach(authorityDTO -> {
-                AuthorityEntity authority = AuthorityEntity.builder()
-                        .authorityName(authorityDTO.getAuthorityName())
+        // Storing requested User's Authorities in HashSet and authority table
+        Set<AuthorityEntity> authorityEntityHashSet = new HashSet<>();
+        userDTO.getAuthorities().forEach(authorityDTO -> {
+            AuthorityEntity authority = AuthorityEntity.builder()
+                    .authorityName(authorityDTO.getAuthorityName())
+                    .build();
+            authorityEntityHashSet.add(authority);
+            result.set(result.get() & authorityRepository.save(authority).getClass().equals(AuthorityEntity.class));
+        });
+
+        // Storing requested User's Information in user table
+        UserEntity userEntity =
+                UserEntity.builder()
+                        .username(userDTO.getUsername())
+                        .password(passwordEncoder.encode(userDTO.getPassword()))
+                        .nickname(userDTO.getNickname())
+                        .activate(true)
                         .build();
-                authorityEntityHashSet.add(authority);
-                result.set(result.get() & authorityRepository.save(authority).getClass().equals(AuthorityEntity.class));
-            });
+        result.set(result.get() | userRepository.save(userEntity).getClass().equals(UserEntity.class));
 
-            // Storing requested User's Information in user table
-            UserEntity userEntity =
-                    UserEntity.builder()
-                            .username(userDTO.getUsername())
-                            .password(passwordEncoder.encode(userDTO.getPassword()))
-                            .nickname(userDTO.getNickname())
-                            .activate(true)
-                            .build();
-            result.set(result.get() | userRepository.save(userEntity).getClass().equals(UserEntity.class));
+        // Storing UserEntity and AuthorityEntity object variables in user_authority table
+        authorityEntityHashSet.forEach(authorityEntity -> result.set(result.get() | userAuthorityRepository.save(UserAuthorityJoinEntity.builder()
+                .user(userEntity)
+                .authority(authorityEntity)
+                .build()).getClass().equals(UserAuthorityJoinEntity.class)));
 
-            // Storing UserEntity and AuthorityEntity object variables in user_authority table
-            authorityEntityHashSet.forEach(authorityEntity -> result.set(result.get() | userAuthorityRepository.save(UserAuthorityJoinEntity.builder()
-                    .user(userEntity)
-                    .authority(authorityEntity)
-                    .build()).getClass().equals(UserAuthorityJoinEntity.class)));
-
-            // Returns whether the result of the above three processes
-            return result.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        // Returns whether the result of the above three processes
+        return result.get();
     }
 
     @Override
@@ -140,6 +135,7 @@ public class UserServiceImpl implements UserService {
         userAuthorityEntity.forEach(userAuthorityJoinEntity -> authorityDTOHashSet.add(AuthorityDTO.builder()
                 .authorityName(userAuthorityJoinEntity.getAuthority().getAuthorityName()).build()));
 
+//        log.info(authorityDTOHashSet.toString());
         return UserDTO.builder()
                 .id(entity.getId())
                 .username(entity.getUsername())
@@ -156,9 +152,21 @@ public class UserServiceImpl implements UserService {
         try {
             List<UserDTO> userDTOList = new ArrayList<>();
 
-            userRepository.findAll().forEach(userEntity -> {
-                log.warn(userEntity.getUsername());
-                userDTOList.add(userEntity.dtoConverter());
+            userRepository.findAll().forEach(entity -> {
+                log.info(entity.toString());
+                userDTOList.add(UserDTO.convertToUserDTO(entity));
+
+
+//                UserDTO user = UserDTO.convertToUserDTO(entity.getUser());
+//                userAuthorityRepository.findAllByUser_Id(entity.getUser().getId()).forEach(userAuthEntity -> {
+//                    log.info(userAuthEntity.getUser().toString());
+//                    log.info(userAuthEntity.getAuthority().toString());
+//                    assert user != null;
+//                    user.getAuthorities().add(AuthorityDTO.convertToAuthorityDTO(userAuthEntity.getAuthority()));
+//                });
+//                assert user != null;
+//                log.warn(user.toString());
+//                userDTOList.add(user);
             });
 
             return userDTOList;
@@ -166,6 +174,15 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<AuthorityDTO> getUserAuthorities(Long userNo) {
+        List<AuthorityDTO> authorities = new ArrayList<>();
+        userAuthorityRepository.findAllByUser_Id(userNo).forEach(entity -> {
+            authorities.add(AuthorityDTO.convertToAuthorityDTO(entity.getAuthority()));
+        });
+        return authorities;
     }
 
     @Override
@@ -187,4 +204,6 @@ public class UserServiceImpl implements UserService {
     public Boolean nicknameValidation(String nickname) {
         return !userRepository.findByNickname(nickname).isPresent();
     }
+
+
 }

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{fragments/my}">
+
+<th:block layout:fragment="content">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">MBTI</th>
+            <th scope="col">Personality</th>
+            <th scope="col">Chatting</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+        <tr></tr>
+        </tfoot>
+    </table>
+</th:block>
+
+<!--<th:block th:replace="/fragments/header :: header"/>-->
+<!--<body style="padding-top: 100px;">-->
+
+<!--&lt;!&ndash;<th:block th:replace="fragments/header :: navbar"/>&ndash;&gt;-->
+<!--<th:block th:replace="/fragments/header :: offcanvas"/>-->
+<!--<div class="container-fluid mt-xl-5" id="mainContainer">-->
+
+<!--    <th:block th:replace="/fragments/header :: MBTI-header"/>-->
+
+<!--    <th:block layout:fragment="content">-->
+<!--        <div id="mbtiListDiv" class="flex-column">-->
+<!--            <table class="table table-striped">-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th scope="col">#</th>-->
+<!--                    <th scope="col">MBTI</th>-->
+<!--                    <th scope="col">Personality</th>-->
+<!--                    <th scope="col">Chatting</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                </tbody>-->
+<!--                <tfoot>-->
+<!--                <tr></tr>-->
+<!--                </tfoot>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </th:block>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Modal &ndash;&gt;-->
+<!--<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-dialog-scrollable">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="chatModalLabel">MBTI Chat</h5>-->
+<!--                &lt;!&ndash;                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>&ndash;&gt;-->
+<!--                <button class="btn btn-warning" type="button" id="chat-leave-btn" onclick="disconnect()">Leave</button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <div class="input-group input-group-lg">-->
+<!--                    <input type="text" class="form-control" aria-label="Sizing example input"-->
+<!--                           aria-describedby="inputGroup-sizing-lg" id="input-send-message">-->
+<!--                    <button class="btn btn-primary" type="button" id="chat-send-message-btn">Send</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--<th:block th:replace="fragments/footer :: footer"/>-->
+<!--<script src="/js/user/user.js"></script>-->
+</html>

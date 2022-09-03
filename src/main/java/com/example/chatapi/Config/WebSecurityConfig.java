@@ -40,7 +40,7 @@ public class WebSecurityConfig {
 				.csrf().disable()
 				// 특정 경로 접근 권한 설정. "/signup", "/sign-up", "/webjars/**" 패턴의 요청 주소는 모두에게 접근 허용
                 .authorizeRequests()
-				.antMatchers("/webjars/**", "/js/**").permitAll()
+				.antMatchers("/webjars/**", "/js/**", "/template/**", "/test/**").permitAll()
 				.antMatchers("/signup", "/sign-up", "/username-validation", "/nickname-validation").permitAll()
 				.anyRequest().authenticated()
 				.and()

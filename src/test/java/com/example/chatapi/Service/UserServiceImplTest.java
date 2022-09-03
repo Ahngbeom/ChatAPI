@@ -81,6 +81,17 @@ class UserServiceImplTest {
 
     @Test
     void getUserList() {
+        userService.getUserList().forEach(userDTO -> {
+            log.info(userDTO.toString());
+            getUserAuthorities(userDTO.getId());
+        });
+    }
+
+    @Test
+    void getUserAuthorities(Long userNo) {
+        userService.getUserAuthorities(userNo).forEach(auth -> {
+            log.info(auth.getAuthorityName());
+        });
     }
 
     @Test

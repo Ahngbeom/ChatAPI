@@ -9,6 +9,7 @@ import java.util.Set;
 @Table(name = "AUTHORITY")
 @Getter
 @Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +19,7 @@ public class AuthorityEntity {
     @Column(name = "authority_name", length = 50)
     private String authorityName;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "authority")
     private Set<UserAuthorityJoinEntity> authorities;
 }

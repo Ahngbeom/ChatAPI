@@ -24,26 +24,31 @@ const toastElement = "<div class=\"toast mb-3\" role=\"alert\" aria-live=\"asser
     "            </div>\n" +
     "        </div>";
 
-const createToast = function (toastContainerTarget, type, header, body) {
+// const createToast = function (toastContainerTarget, type, header, body) {
+const createToast = function (data) {
+    const sameToast = document.querySelector(".toast[data-message='" + data.body + "']");
+    if (sameToast)
+        sameToast.remove();
     const toastElement = document.createElement("div");
-    toastElement.classList.add("toast", "mb-3", "text-bg-" + type, "border-0");
+    toastElement.classList.add("toast", "my-1", "text-bg-" + data.type, "border-0");
     toastElement.setAttribute("role", "alert");
     toastElement.setAttribute("aria-live", "assertive");
     toastElement.setAttribute("aria-atomic", "true");
+    toastElement.dataset.message = data.body;
 
     const toastHeader = document.createElement("div");
     toastHeader.classList.add("toast-header", "border-0");
-    toastHeader.innerHTML += "<strong class='me-auto text-dark'>" + header + "</strong>";
+    toastHeader.innerHTML += "<strong class='me-auto text-dark'>" + data.header + "</strong>";
     toastHeader.innerHTML += "<small class='text-muted'>" + new Date().toLocaleString() + "</small>";
     toastHeader.innerHTML += "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button>";
     toastElement.appendChild(toastHeader);
 
     const toastBody = document.createElement("div");
     toastBody.classList.add("toast-body", "text-bg-light");
-    toastBody.append(body);
+    toastBody.append(data.body);
     toastElement.appendChild(toastBody);
 
-    toastContainerTarget.append(toastElement);
+    data.target.prepend(toastElement);
 
     toastDetector();
 }

@@ -5,12 +5,22 @@
     <div id="alert-area">
         <th:block th:if="${param.error}">
             <script th:inline="javascript">
-                createToast($("#pageToast"), "danger", "Alert", "Invalid username and password.");
+                createToast({
+                    target: $("#pageToast"),
+                    type: "danger",
+                    header: "Alert",
+                    body: "Invalid username and password."
+                });
             </script>
         </th:block>
         <th:block th:if="${param.logout}">
             <script th:inline="javascript">
-                createToast($("#pageToast"), "info", "Alert", "You have successfully logged out.");
+                createToast({
+                    target: $("#pageToast"),
+                    type: "info",
+                    header: "Alert",
+                    body: "You have successfully logged out."
+                });
             </script>
         </th:block>
     </div>

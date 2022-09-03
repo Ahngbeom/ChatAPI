@@ -14,10 +14,18 @@ public class MBTIController {
 	public String home(Principal principal) {
 //		log.info(principal.getName());
 		return "index";
+//		return "fragments/index";
+//		return "fragments/default_layout";
 	}
 
 	@GetMapping("/mbti/register")
 	public String register() {
 		return "mbti/register";
 	}
+
+	@GetMapping("/test")
+	public String test() {
+		return "test";
+	}
+
 }

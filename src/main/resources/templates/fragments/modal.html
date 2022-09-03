@@ -23,6 +23,86 @@
         </div>
     </div>
 </th:block>
-<
+
+<th:block th:fragment="signUpModal">
+    <!-- Vertically centered scrollable modal -->
+    <div class="modal fade" id="signUpModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="signUpModalLabel" aria-hidden="true">
+        <th:block th:replace="/fragments/alert :: toast('modalToast')"></th:block>
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signUpModalLabel">Sign Up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex justify-content-center w-100 mx-1">
+                            <form action="/signup" method="post" class="form-group flex-column w-100" id="signUpForm">
+                                <div class="input-group mb-3 row">
+                                    <label for="signUpFormUsername"
+                                           class="input-group-text col-sm-3 col-form-label">ID</label>
+                                    <input type="text" class="form-control" id="signUpFormUsername" name="username"/>
+                                    <button class="btn btn-secondary col-sm-2 justify-content-between" type="button"
+                                            id="signUpFormUsernameValidateBtn">
+                                        <span>Validate</span>
+                                    </button>
+                                </div>
+                                <div class="input-group mb-3 row">
+                                    <label for="signUpFormPassword" class="input-group-text col-sm-3 col-form-label">Password</label>
+                                    <input type="password" class="form-control" id="signUpFormPassword"
+                                           name="password"/>
+                                </div>
+                                <div class="input-group mb-3 row">
+                                    <label for="signUpFormReConfirmPassword"
+                                           class="input-group-text col-sm-3 col-form-label">Reconfirm Password</label>
+                                    <input type="password" class="form-control" id="signUpFormReConfirmPassword"
+                                           disabled/>
+                                </div>
+                                <div class="input-group mb-3 row">
+                                    <label for="singUpFormNickname" class="input-group-text col-sm-3 col-form-label">Nickname</label>
+                                    <input type="text" class="form-control" id="singUpFormNickname" name="nickname"/>
+                                    <button class="btn btn-secondary col-sm-2" type="button"
+                                            id="signUpFormNicknameValidateBtn"><span>Validate</span>
+                                    </button>
+                                </div>
+                                <div class="input-group row mb-3">
+                                    <span class="input-group-text col-sm-3">Authority</span>
+                                    <div class="form-control col-sm-8 p-2 d-flex justify-content-around"
+                                         id="signUpFormAuthorities">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="authorities"
+                                                   id="checkboxRoleAdmin"
+                                                   value="ROLE_ADMIN">
+                                            <label class="form-check-label" for="checkboxRoleAdmin">ADMIN</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="authorities"
+                                                   id="checkboxRoleManager"
+                                                   value="ROLE_MANAGER">
+                                            <label class="form-check-label" for="checkboxRoleManager">MANAGER</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="authorities"
+                                                   id="checkboxRoleUser"
+                                                   value="ROLE_USER">
+                                            <label class="form-check-label" for="checkboxRoleUser">USER</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="reset" class="btn btn-warning mx-3">Reset</button>
+                    <button type="button" class="btn btn-info mx-3" id="signUpSubmitBtn">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
 </html>
 
+</span>

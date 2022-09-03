@@ -1,9 +1,7 @@
 const createTableElement = function (data) {
-    data.forEach(user => {
-        console.log(user);
-    });
+
     const table = document.createElement('table');
-    table.setAttribute('class', 'table table-success table-striped');
+    table.setAttribute('class', 'table table-success table-striped text-center table-responsive');
     const thead = table.createTHead();
     const thead_row = thead.insertRow(0);
     thead_row.insertCell(0).innerHTML = "#";
@@ -13,12 +11,15 @@ const createTableElement = function (data) {
     thead_row.insertCell(4).innerHTML = "MBTI-List";
 
     const tbody = table.createTBody();
-    const tbody_row = tbody.insertRow(0);
-    tbody_row.insertCell(0).innerHTML = "?";
-    tbody_row.insertCell(1).innerHTML = "?";
-    tbody_row.insertCell(2).innerHTML = "?";
-    tbody_row.insertCell(3).innerHTML = "?";
-    tbody_row.insertCell(4).innerHTML = "?";
+    data.forEach((user, index) => {
+        const tbody_row = tbody.insertRow(index);
+        tbody_row.insertCell(0).innerHTML = user.id;
+        tbody_row.insertCell(1).innerHTML = user.username;
+        tbody_row.insertCell(2).innerHTML = user.nickname;
+        tbody_row.insertCell(3).innerHTML = "<button class='btn btn-light getUserAuthoritiesBtn' data-userno='" + user.id + "'>Import</button>";
+        tbody_row.insertCell(4).innerHTML = "<button class='btn btn-light getUserMBTIListBtn' data-userno='" + user.id + "'>Import</button>";
+        console.log(user, index);
+    });
 
     return table;
 }

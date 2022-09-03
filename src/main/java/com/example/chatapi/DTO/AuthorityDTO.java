@@ -1,5 +1,6 @@
 package com.example.chatapi.DTO;
 
+import com.example.chatapi.Entity.AuthorityEntity;
 import lombok.*;
 
 
@@ -13,4 +14,7 @@ public class AuthorityDTO {
 
     private String authorityName;
 
+    public static AuthorityDTO convertToAuthorityDTO(AuthorityEntity entity) {
+        return AuthorityDTO.builder().authorityName(entity.getAuthorityName()).build();
+    }
 }

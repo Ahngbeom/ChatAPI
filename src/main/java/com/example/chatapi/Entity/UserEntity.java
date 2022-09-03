@@ -57,15 +57,4 @@ public class UserEntity implements Serializable {
 //    @JoinColumn(name = "user_mbti")
     private Set<UserMbtiJoinEntity> mbtiList;
 
-    public UserDTO dtoConverter() {
-        return UserDTO.builder()
-                .id(this.id)
-                .username(this.username)
-                .password(this.password)
-                .nickname(this.nickname)
-                .activate(this.activate)
-//                .authorities(this.authorities)
-//                .mbtiInfoList(this.mbtiList)
-                .build();
-    }
 }
