@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="fragments/header :: header" />
-<body>
-<th:block th:replace="fragments/header :: loginUser" />
-<div class="container-fluid">
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--layout:decorator="~{layouts/default_layout}"-->
+
+<th:block th:replace="/fragments/header :: header"/>
+<body style="padding-top: 100px;">
+
+<!--<th:block th:replace="fragments/header :: navbar"/>-->
+<th:block th:replace="/fragments/header :: offcanvas"/>
+<div class="container-fluid mt-xl-5" id="mainContainer">
+
+    <th:block th:replace="/fragments/header :: MBTI-header"/>
+
     <div class="d-flex flex-column">
-        <div class="d-flex flex-column">
-            <h2 class="d-flex justify-content-center">Myers-Briggs Type Indicator</h2>
-            <h1 class="d-flex justify-content-center">M B T I</h1>
-            <hr>
-        </div>
         <div class="d-flex flex-column border border-1 border-secondary m-2">
             <h3 class="d-flex justify-content-center">당신은 외향적입니까? 내향적입니까?</h3>
             <div class="d-flex justify-content-center">
@@ -110,15 +113,10 @@
             </div>
         </div>
     </div>
-
 </div>
 
-
 </body>
-</html>
-
-<script type="text/javascript" src="/webjars/js-cookie/3.0.1/dist/js.cookie.js"></script>
+<th:block th:replace="fragments/footer :: footer"/>
+<!--<script type="module" src="/js/user/user.js"></script>-->
 <script src="/js/mbti/mbti_registration.js"></script>
-<script type="application/javascript">
-
-</script>
+</html>

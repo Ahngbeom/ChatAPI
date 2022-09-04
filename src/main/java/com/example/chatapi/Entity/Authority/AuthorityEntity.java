@@ -1,4 +1,4 @@
-package com.example.chatapi.Entity;
+package com.example.chatapi.Entity.Authority;
 
 import lombok.*;
 

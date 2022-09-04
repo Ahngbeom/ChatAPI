@@ -1,6 +1,6 @@
 package com.example.chatapi.Repository;
 
-import com.example.chatapi.Entity.UserAuthorityJoinEntity;
+import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

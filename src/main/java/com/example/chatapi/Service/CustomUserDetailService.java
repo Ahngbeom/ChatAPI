@@ -1,7 +1,6 @@
 package com.example.chatapi.Service;
 
-import com.example.chatapi.Entity.UserEntity;
-import com.example.chatapi.Repository.UserAuthorityRepository;
+import com.example.chatapi.Entity.User.UserEntity;
 import com.example.chatapi.Repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

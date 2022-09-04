@@ -1,17 +1,18 @@
-package com.example.chatapi.Entity;
+package com.example.chatapi.Entity.Authority;
 
+import com.example.chatapi.Entity.User.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "USER_MBTI")
+@Table(name = "USER_AUTHORITY")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserMbtiJoinEntity {
+public class UserAuthorityJoinEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class UserMbtiJoinEntity {
     private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "mbti")
-    private MBTIInfoEntity mbti;
+    @JoinColumn(name = "authority_name")
+    private AuthorityEntity authority;
 
 }

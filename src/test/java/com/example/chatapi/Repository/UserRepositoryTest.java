@@ -1,6 +1,6 @@
 package com.example.chatapi.Repository;
 
-import com.example.chatapi.Entity.UserEntity;
+import com.example.chatapi.Entity.User.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

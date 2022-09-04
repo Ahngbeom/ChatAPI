@@ -1,6 +1,6 @@
 package com.example.chatapi.DTO;
 
-import com.example.chatapi.Entity.AuthorityEntity;
+import com.example.chatapi.Entity.Authority.AuthorityEntity;
 import lombok.*;
 
 

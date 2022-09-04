@@ -1,11 +1,14 @@
 package com.example.chatapi.DTO;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.example.chatapi.Entity.MBTI.MBTIInfoEntity;
+import lombok.*;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
+@ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MbtiDTO {
 
 	private String mbti;
@@ -14,15 +17,14 @@ public class MbtiDTO {
 
 	private String introduction;
 
-	public void setMbti(String mbti) {
-		this.mbti = mbti;
+	private int numberOfTimes; // Number of times this MBTI Result
+
+	public static MbtiDTO convertToMbtiDTO(MBTIInfoEntity entity) {
+		return MbtiDTO.builder()
+				.mbti(entity.getMbti())
+				.personality(entity.getPersonality())
+				.introduction(entity.getIntroduction())
+				.build();
 	}
 
-	public void setPersonality(String personality) {
-		this.personality = personality;
-	}
-
-	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
-	}
 }

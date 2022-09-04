@@ -1,5 +1,18 @@
 /***** Variables and functions to declare before HTML content is loaded *****/
 
+// $.ajaxSetup({
+//     beforeSend: function (xhr, settings) {
+//         if (settings.type === 'GET' || settings.type === 'POST' || settings.type === 'PUT'
+//             || settings.type === 'DELETE') {
+//             if ((/^http:.*/.test(settings.url) || /^https:.*/
+//                 .test(settings.url))) {
+//                 alert("Fatal Error");
+//                 // xhr.setRequestHeader("X-XSRF-TOKEN", Cookies.get('XSRF-TOKEN'));
+//             }
+//         }
+//     }
+// });
+
 /** Regular Expression */
 const koreanReg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 const koreanConsonantsAndVowels = /[ㄱ-ㅎ|ㅏ-ㅣ]/;
@@ -41,16 +54,5 @@ const setPopoverToSignUpForm = function (triggerType, targetElement, message) {
 }
 
 
-// $.ajaxSetup({
-//     beforeSend: function (xhr, settings) {
-//         if (settings.type === 'GET' || settings.type === 'POST' || settings.type === 'PUT'
-//             || settings.type === 'DELETE') {
-//             if (!(/^http:.*/.test(settings.url) || /^https:.*/
-//                 .test(settings.url))) {
-//                 xhr.setRequestHeader("X-XSRF-TOKEN", Cookies.get('XSRF-TOKEN'));
-//             }
-//         }
-//     }
-// });
 
 

@@ -1,13 +1,15 @@
 package com.example.chatapi.Controller;
 
+import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
-import com.example.chatapi.Entity.UserEntity;
+import com.example.chatapi.Entity.User.UserEntity;
 import com.example.chatapi.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +60,21 @@ public class UserController {
 //				log.info(user.getUsername());
 //			}
 			return ResponseEntity.ok(userDTOList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/user-authorities")
+	public ResponseEntity<List<AuthorityDTO>> userAuthorities(@AuthenticationPrincipal Principal principal, @RequestParam Long userNo) {
+		try {
+			List<AuthorityDTO> userAuthorities = userService.getUserAuthorities(userNo);
+			userAuthorities.forEach(authorityDTO -> {
+				log.info(authorityDTO.getAuthorityName());
+			});
+			return ResponseEntity.ok(userAuthorities);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

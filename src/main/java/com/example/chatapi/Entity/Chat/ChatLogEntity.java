@@ -1,5 +1,6 @@
-package com.example.chatapi.Entity;
+package com.example.chatapi.Entity.Chat;
 
+import com.example.chatapi.Entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

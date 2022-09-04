@@ -2,7 +2,9 @@ package com.example.chatapi.Service;
 
 import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
-import com.example.chatapi.Entity.*;
+import com.example.chatapi.Entity.Authority.AuthorityEntity;
+import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
+import com.example.chatapi.Entity.User.UserEntity;
 import com.example.chatapi.Repository.AuthorityRepository;
 import com.example.chatapi.Repository.MbtiRepository;
 import com.example.chatapi.Repository.UserAuthorityRepository;
@@ -186,24 +188,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity addMbti(String username, MBTIInfoEntity mbtiInfoEntity) throws RuntimeException {
-//        UserEntity userEntity = userRepository.findOneWithAuthoritiesByUsername(username).orElseThrow(() -> new RuntimeException("Not found UserEntity"));
-        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Not found UserEntity"));
-//        userEntity.setMbtiList(Collections.singleton(mbtiInfoEntity));
-        return userRepository.save(userEntity);
-    }
-
-    @Override
-    public Set<UserMbtiJoinEntity> getMbtiList(String username) throws RuntimeException {
-//        UserEntity userEntity = userRepository.findOneWithAuthoritiesByUsername(username).orElseThrow(() -> new RuntimeException("Not found UserEntity"));
-        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Not found UserEntity"));
-        return userEntity.getMbtiList();
-    }
-
-    @Override
     public Boolean nicknameValidation(String nickname) {
         return !userRepository.findByNickname(nickname).isPresent();
     }
-
 
 }

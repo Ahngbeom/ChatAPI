@@ -1,14 +1,10 @@
 package com.example.chatapi.DTO;
 
-import com.example.chatapi.Entity.AuthorityEntity;
-import com.example.chatapi.Entity.MBTIInfoEntity;
-import com.example.chatapi.Entity.UserAuthorityJoinEntity;
-import com.example.chatapi.Entity.UserEntity;
+import com.example.chatapi.Entity.User.UserEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import java.util.Collections;
 import java.util.Set;
 
 @Getter
@@ -55,4 +51,5 @@ public class UserDTO {
         }
         return null;
     }
+
 }
