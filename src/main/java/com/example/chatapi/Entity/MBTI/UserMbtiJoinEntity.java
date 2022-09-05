@@ -2,8 +2,11 @@ package com.example.chatapi.Entity.MBTI;
 
 import com.example.chatapi.Entity.User.UserEntity;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "USER_MBTI")
@@ -23,7 +26,18 @@ public class UserMbtiJoinEntity {
     private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "mbti")
+    @JoinColumn(name = "code")
     private MBTIInfoEntity mbti;
 
+    @Column(name = "number_of_times")
+    private int numberOfTimes;
+
+    @Column(name = "reg_date")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar regDate;
+
+    public void increaseNumberOfTimes() {
+        this.numberOfTimes += 1;
+    }
 }

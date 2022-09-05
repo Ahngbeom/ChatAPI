@@ -17,14 +17,17 @@ import java.util.Set;
 public class MBTIInfoEntity {
 
 	@Id
-	@Column(name = "mbti", length = 20)
-	private String mbti;
+	@Column(name = "code", length = 20)
+	private String code;
 
 	@Column(name = "personality", length = 50)
 	private String personality;
 
 	@Column(name = "introduction", length = 1000)
 	private String introduction;
+
+	@Column(name = "imgSrc")
+	private String imgSrc;
 
 //	@Column(name = "number_of_times")
 //	@GeneratedValue(strategy = )
@@ -37,9 +40,10 @@ public class MBTIInfoEntity {
 
 	public static MBTIInfoEntity convertToMbtiEntity(MbtiDTO dto) {
 		return MBTIInfoEntity.builder()
-				.mbti(dto.getMbti())
+				.code(dto.getCode())
 				.personality(dto.getPersonality())
 				.introduction(dto.getIntroduction())
+				.imgSrc(dto.getImgSrc())
 //				.numberOfTimes(dto.getNumberOfTimes())
 				.build();
 	}

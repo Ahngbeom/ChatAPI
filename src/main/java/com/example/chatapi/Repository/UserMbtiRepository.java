@@ -7,6 +7,14 @@ import java.util.List;
 
 public interface UserMbtiRepository extends JpaRepository<UserMbtiJoinEntity, Long> {
 
-    List<UserMbtiJoinEntity> findDistinctByUser_Id(Long userId);
+//    @Query("select distinct UserMbtiJoinEntity.mbti, UserMbtiJoinEntity.user from UserMbtiJoinEntity left outer join UserEntity on UserEntity.id = UserMbtiJoinEntity.user.id where UserMbtiJoinEntity.user.id = ?1")
+    List<UserMbtiJoinEntity> findAllByUser_id(Long userId);
+
+    UserMbtiJoinEntity findByMbti_CodeAndUser_id(String code, Long userId);
+
+    boolean existsByUser_id(Long userId);
+    boolean existsByMbti_Code(String code);
+    boolean existsByMbti_CodeAndUser_id(String code, Long userId);
+//    boolean existsByCodeAndUser_id(String code, Long userId);
 
 }

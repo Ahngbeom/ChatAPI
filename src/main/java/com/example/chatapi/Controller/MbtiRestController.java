@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,7 +50,7 @@ public class MbtiRestController {
 				userNo = userService.getUserInfo(principal.getName()).getId();
 			}
 			List<MbtiDTO> list = mbtiService.getUserMbtiList(userNo);
-			list.forEach(mbtiDTO -> log.info(mbtiDTO.getMbti()));
+			list.forEach(mbtiDTO -> log.info(mbtiDTO.getCode()));
 			return ResponseEntity.ok().body(list);
 		} catch (Exception e) {
 			e.printStackTrace();

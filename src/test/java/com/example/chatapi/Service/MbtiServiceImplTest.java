@@ -31,7 +31,7 @@ class MbtiServiceImplTest {
     @Test
     void mbtiRegister() {
         MbtiDTO mbti = MbtiDTO.builder()
-                .mbti("ISFJ")
+                .code("ISFJ")
                 .personality("용감한 수호자")
                 .introduction("용감한 수호자...")
                 .build();
@@ -43,7 +43,7 @@ class MbtiServiceImplTest {
     void userAddedMBTI() {
         UserDTO user = userService.getUserInfo("admin");
         MbtiDTO mbti = MbtiDTO.builder()
-                .mbti("ISFJ")
+                .code("ISFJ")
                 .personality("용감한 수호자")
                 .introduction("용감한 수호자...")
                 .build();

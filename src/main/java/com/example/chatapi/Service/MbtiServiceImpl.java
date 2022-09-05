@@ -23,12 +23,8 @@ public class MbtiServiceImpl implements MbtiService {
 
     @Override
     public MBTIInfoEntity register(MbtiDTO mbtiDTO) {
-        MBTIInfoEntity entity = MBTIInfoEntity.builder()
-                .mbti(mbtiDTO.getMbti())
-                .personality(mbtiDTO.getPersonality())
-                .introduction(mbtiDTO.getIntroduction())
-                .build();
-        return mbtiRepository.save(entity);
+        MBTIInfoEntity entity = MBTIInfoEntity.convertToMbtiEntity(mbtiDTO);
+        return mbtiRepository.existsById(entity.getCode()) ? entity : mbtiRepository.save(entity);
     }
 
     @Override
@@ -44,11 +40,19 @@ public class MbtiServiceImpl implements MbtiService {
 
         MBTIInfoEntity mbtiInfoEntity = this.register(mbtiDTO);
 
-        return userMbtiRepository.save(UserMbtiJoinEntity.builder()
-                .id(userDTO.getId())
-                .user(UserEntity.convertToUserEntity(userDTO))
-                .mbti(mbtiInfoEntity)
-                .build()).getClass().equals(UserMbtiJoinEntity.class);
+        if (userMbtiRepository.existsByMbti_CodeAndUser_id(mbtiInfoEntity.getCode(), userDTO.getId())) {
+            UserMbtiJoinEntity userMbtiJoinEntity = userMbtiRepository.findByMbti_CodeAndUser_id(mbtiInfoEntity.getCode(), userDTO.getId());
+            userMbtiJoinEntity.increaseNumberOfTimes();
+            return userMbtiRepository.save(userMbtiJoinEntity).getClass().equals(UserMbtiJoinEntity.class);
+        } else {
+            return userMbtiRepository.save(UserMbtiJoinEntity.builder()
+                    .id(userDTO.getId())
+                    .user(UserEntity.convertToUserEntity(userDTO))
+                    .mbti(mbtiInfoEntity)
+                    .numberOfTimes(1)
+                    .build()).getClass().equals(UserMbtiJoinEntity.class);
+        }
+
 
     }
 
@@ -64,8 +68,11 @@ public class MbtiServiceImpl implements MbtiService {
     public List<MbtiDTO> getUserMbtiList(Long userNo) throws RuntimeException {
 //        UserEntity userEntity = userRepository.findOneWithAuthoritiesByUsername(username).orElseThrow(() -> new RuntimeException("Not found UserEntity"));
         List<MbtiDTO> mbtiList = new ArrayList<>();
-        userMbtiRepository.findDistinctByUser_Id(userNo).forEach(userMbtiJoinEntity -> {
-            mbtiList.add(MbtiDTO.convertToMbtiDTO(userMbtiJoinEntity.getMbti()));
+        userMbtiRepository.findAllByUser_id(userNo).forEach(userMbtiJoinEntity -> {
+//            MbtiDTO mbtiDTO = MbtiDTO.convertMbtiEntityToMbtiDTO(userMbtiJoinEntity.getMbti());
+//            mbtiDTO.setNumberOfTimes(userMbtiJoinEntity.getNumberOfTimes());
+            MbtiDTO mbtiDTO = MbtiDTO.convertUserMbtiEntityToMbtiDTO(userMbtiJoinEntity);
+            mbtiList.add(mbtiDTO);
         });
         return mbtiList;
     }

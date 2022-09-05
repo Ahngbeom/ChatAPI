@@ -1,5 +1,5 @@
-const staticBackdropModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {});
-const staticBackdropModalElem = document.querySelector("#staticBackdrop");
+const mbtiRegisterModal = new bootstrap.Modal(document.getElementById('mbtiRegisterModal'), {});
+const mbtiRegisterModalElem = document.querySelector("#mbtiRegisterModal");
 
 let mbtiRadioJson = {
     'focused': null,
@@ -13,7 +13,6 @@ function mbtiResultConverter(jsonData) {
     $.each(jsonData, function (key, value) {
         switch (key) {
             case "focused":
-                console.log(value);
                 if (value === "Extraversion")
                     result += "E";
                 else
@@ -81,7 +80,7 @@ const getMBTIInformation = function () {
 
     if (isComplete) {
         const mbtiResult = mbtiResultConverter(mbtiRadioJson);
-        console.log(mbtiResult);
+        // console.log(mbtiResult);
         $.ajax({
             type: 'GET',
             url: "https://www.16personalities.com/" + mbtiResult + "-personality",
@@ -91,26 +90,11 @@ const getMBTIInformation = function () {
                 let mbtiArticleExtractByOfficialSite = $($.parseHTML(data)).find("article")[0];
 
                 mbtiJson = {
-                    "mbti": mbtiHeaderExtractByOfficialSite.querySelector("div[class='code']").innerHTML,
-                    "personality": mbtiHeaderExtractByOfficialSite.querySelector("span").innerHTML,
-                    "introduction": mbtiArticleExtractByOfficialSite.querySelectorAll("div[class='definition'] p").item(1).innerText
-                };
-
-                staticBackdropModalElem.querySelector(".modal-header #staticBackdropLabel").innerHTML = mbtiJson.mbti;
-                staticBackdropModalElem.querySelector(".modal-header #staticBackdropLabel").innerHTML += "<span class='d-block'>" + mbtiJson.personality + "</span>";
-                staticBackdropModalElem.querySelector(".modal-body").innerHTML = "";
-                staticBackdropModalElem.querySelector(".modal-body").append(mbtiHeaderExtractByOfficialSite.querySelector("img"));
-                staticBackdropModalElem.querySelector(".modal-body").append(document.createElement("div"));
-                staticBackdropModalElem.querySelector(".modal-body div").innerHTML = mbtiJson.introduction;
-                staticBackdropModalElem.querySelector(".modal-body").append(document.createElement("a"));
-                staticBackdropModalElem.querySelector(".modal-body a").setAttribute("href", "https://www.16personalities.com/" + mbtiResult + "-personality");
-                staticBackdropModalElem.querySelector(".modal-body a").setAttribute("target", "_blank");
-                staticBackdropModalElem.querySelector(".modal-body a").innerHTML = "View details on the official site";
-
-                mbtiJson = {
-                    "mbti": mbtiHeaderExtractByOfficialSite.querySelector("div[class='code']").innerHTML,
-                    "personality": mbtiHeaderExtractByOfficialSite.querySelector("span").innerHTML,
-                    "introduction": mbtiArticleExtractByOfficialSite.querySelectorAll("div[class='definition'] p").item(1).innerText
+                    shortMbti: mbtiResult,
+                    code: mbtiHeaderExtractByOfficialSite.querySelector("div[class='code']").innerHTML,
+                    personality: mbtiHeaderExtractByOfficialSite.querySelector("span").innerHTML,
+                    introduction: mbtiArticleExtractByOfficialSite.querySelectorAll("div[class='definition'] p").item(1).innerText,
+                    imgSrc: mbtiHeaderExtractByOfficialSite.querySelector("img").src
                 };
             },
             error: function (data) {
@@ -121,16 +105,32 @@ const getMBTIInformation = function () {
     return mbtiJson;
 }
 
-const MBTISubmit = function () {
+const insertMBTIDataToModal = function (target, mbtiData) {
+    renewalModal({
+        target: target,
+        title: "MBTI Register"
+    });
+    target.querySelector(".modal-body").innerHTML = "<h1>" + mbtiData.code + "</h1>";
+    target.querySelector(".modal-body").innerHTML += "<h3 class='d-block'>" + mbtiData.personality + "</h3>";
+    target.querySelector(".modal-body").insertAdjacentHTML("beforeend", "<img src='" + mbtiData.imgSrc + "'/>");
+    target.querySelector(".modal-body").append(document.createElement("div"));
+    target.querySelector(".modal-body div").innerHTML = mbtiData.introduction;
+    target.querySelector(".modal-body").append(document.createElement("a"));
+    target.querySelector(".modal-body a").setAttribute("href", "https://www.16personalities.com/" + mbtiData.shortMbti + "-personality");
+    target.querySelector(".modal-body a").setAttribute("target", "_blank");
+    target.querySelector(".modal-body a").innerHTML = "View details on the official site";
+}
 
+const MBTISubmit = function () {
+    const mbtiSubmitBtn = document.querySelector("#mbtiRegisterModal #modalInteractionBtn");
     const mbtiJson = getMBTIInformation();
 
-    const mbtiSubmitBtn = document.querySelector("#staticBackdropSubmit");
+    insertMBTIDataToModal(mbtiRegisterModalElem, mbtiJson);
 
     if (mbtiJson !== null) {
         console.log(mbtiJson);
 
-        staticBackdropModal.show();
+        mbtiRegisterModal.show();
 
         // $.each($($.parseHTML(data)).filter(".type-info"), function (i, el) {
         //     console.log(el);
@@ -141,6 +141,7 @@ const MBTISubmit = function () {
         // });
     }
 
+    mbtiSubmitBtn.innerHTML = "Submit";
     mbtiSubmitBtn.addEventListener('click', function () {
         console.log(JSON.stringify(mbtiJson));
         $.ajax({
@@ -152,8 +153,9 @@ const MBTISubmit = function () {
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 console.log(data);
-                staticBackdropModalElem.querySelector(".modal-header").innerHTML = "Alert";
-                staticBackdropModalElem.querySelector(".modal-body").innerHTML = "Registration was successful.";
+                mbtiRegisterModalElem.querySelector(".modal-header").innerHTML = "Alert";
+                mbtiRegisterModalElem.querySelector(".modal-body").innerHTML = "Registration was successful.";
+                mbtiSubmitBtn.innerHTML = "Return to MBTI List";
                 mbtiSubmitBtn.addEventListener('click', function () {
                     location.href = "/mbti";
                 }, {once: true});
@@ -162,7 +164,7 @@ const MBTISubmit = function () {
                 console.log(data);
             }
         });
-    });
+    }, {once: true});
 
 
 }
