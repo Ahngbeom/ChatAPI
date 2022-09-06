@@ -17,7 +17,7 @@ export const setMovementForNickname = function () {
                     signUpFormNickname.setAttribute('disabled', 'true');
                     signUpFormNicknameValidateBtn.setAttribute('disabled', 'true');
                     // $("#signUpFormNicknameValidateBtn").prepend(loadingSpinnerToBtn);
-                    signUpFormNicknameValidateBtn.innerHTML = loadingSpinnerToBtn;
+                    signUpFormNicknameValidateBtn.innerHTML = loadingSmallSpinnerSpan;
                 }
             },
             success: function (data) {

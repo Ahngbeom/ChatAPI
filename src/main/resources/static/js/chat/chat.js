@@ -1,3 +1,8 @@
+function chattingRoomEnter() {
+    connect();
+    chatModal.show();
+}
+
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
     $("#disconnect").prop("disabled", !connected);

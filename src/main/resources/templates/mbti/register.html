@@ -18,13 +18,13 @@
             <h3 class="d-flex justify-content-center">당신은 외향적입니까? 내향적입니까?</h3>
             <div class="d-flex justify-content-center">
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="focused" id="focusedExtraversion">
+                    <input class="form-check-input" type="radio" name="focused" id="focusedExtraversion" value="Extraversion">
                     <label class="form-check-label" for="focusedExtraversion">
                         외향적(Extraversion)
                     </label>
                 </div>
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="focused" id="focusedIntroversion">
+                    <input class="form-check-input" type="radio" name="focused" id="focusedIntroversion" value="Introversion">
                     <label class="form-check-label" for="focusedIntroversion">
                         내향적(Introversion)
                     </label>
@@ -36,13 +36,13 @@
             <h3 class="d-flex justify-content-center">당신의 인식 방식은 어떠합니까?</h3>
             <div class="d-flex justify-content-center">
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="recognition" id="recognitionSensing">
+                    <input class="form-check-input" type="radio" name="recognition" id="recognitionSensing" value="Sensing">
                     <label class="form-check-label" for="recognitionSensing">
                         감각적(Sensing)
                     </label>
                 </div>
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="recognition" id="recognitionIntuition">
+                    <input class="form-check-input" type="radio" name="recognition" id="recognitionIntuition" value="Intuition">
                     <label class="form-check-label" for="recognitionIntuition">
                         직관적(Intuition)
                     </label>
@@ -54,13 +54,13 @@
             <h3 class="d-flex justify-content-center">당신의 판단 방식은 어떠합니까?</h3>
             <div class="d-flex justify-content-center">
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="decision" id="decisionThinking">
+                    <input class="form-check-input" type="radio" name="decision" id="decisionThinking" value="Thinking">
                     <label class="form-check-label" for="decisionThinking">
                         사고(Thinking)
                     </label>
                 </div>
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="decision" id="decisionFeeling">
+                    <input class="form-check-input" type="radio" name="decision" id="decisionFeeling" value="Feeling">
                     <label class="form-check-label" for="decisionFeeling">
                         감정(Feeling)
                     </label>
@@ -72,13 +72,13 @@
             <h3 class="d-flex justify-content-center">당신의 대처 방식은 어떠합니까?</h3>
             <div class="d-flex justify-content-center">
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="coping" id="copingJudging">
+                    <input class="form-check-input" type="radio" name="coping" id="copingJudging" value="Judging">
                     <label class="form-check-label" for="copingJudging">
                         판단(Judging)
                     </label>
                 </div>
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="coping" id="copingPerceiving">
+                    <input class="form-check-input" type="radio" name="coping" id="copingPerceiving" value="Perceiving">
                     <label class="form-check-label" for="copingPerceiving">
                         인식(Perceiving)
                     </label>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="d-flex justify-content-center">
-            <button class="btn btn-secondary" onclick="MBTISubmit()">등록</button>
+            <button class="btn btn-secondary" id="checkMBTIResultBtn">결과 확인</button>
         </div>
 
         <div id="result">
@@ -96,28 +96,9 @@
     </div>
 
     <th:block th:replace="fragments/modal :: modal('mbtiRegisterModal')"/>
-<!--    &lt;!&ndash; Modal &ndash;&gt;-->
-<!--    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"-->
-<!--         aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
-<!--        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>-->
-<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-<!--                    <button type="button" class="btn btn-primary" id="staticBackdropSubmit">Submit</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 </div>
 
 </body>
 <th:block th:replace="fragments/footer :: footer"/>
-<!--<script type="module" src="/js/user/user.js"></script>-->
-<script src="/js/mbti/mbti_registration.js"></script>
+<script type="module" src="/js/mbti/registration.js"></script>
 </html>

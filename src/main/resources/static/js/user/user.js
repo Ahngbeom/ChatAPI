@@ -1,5 +1,5 @@
 import {ajaxGetUserAuthorities} from "./authority.js"
-import {ajaxGetUserMbtiList} from "/js/mbti/mbti_info.js"
+import {ajaxGetUserMbtiList} from "/js/mbti/getInfo.js"
 
 const loggedInUsername = document.querySelectorAll("#loggedInUsername");
 

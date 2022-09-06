@@ -4,6 +4,7 @@ import com.example.chatapi.Entity.MBTI.MBTIInfoEntity;
 import com.example.chatapi.Entity.MBTI.UserMbtiJoinEntity;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 @Getter
@@ -24,7 +25,8 @@ public class MbtiDTO {
 
 	private int numberOfTimes; // Number of times this MBTI Result
 
-	private Calendar regDate;
+//	private Calendar regDate;
+	private LocalDateTime regDate;
 
 	public static MbtiDTO convertMbtiEntityToMbtiDTO(MBTIInfoEntity entity) {
 		return MbtiDTO.builder()

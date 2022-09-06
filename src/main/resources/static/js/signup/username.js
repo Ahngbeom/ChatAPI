@@ -19,7 +19,7 @@ export function setMovementForUsername() {
                 } else {
                     signUpFormUsername.setAttribute('disabled', 'true');
                     signUpFormUsernameValidateBtn.setAttribute('disabled', 'true');
-                    signUpFormUsernameValidateBtn.innerHTML = loadingSpinnerToBtn;
+                    signUpFormUsernameValidateBtn.innerHTML = loadingSmallSpinnerSpan;
                 }
             },
             success: function (data) {

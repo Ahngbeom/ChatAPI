@@ -34,8 +34,9 @@ public class UserMbtiJoinEntity {
 
     @Column(name = "reg_date")
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar regDate;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Calendar regDate;
+    private LocalDateTime regDate;
 
     public void increaseNumberOfTimes() {
         this.numberOfTimes += 1;
