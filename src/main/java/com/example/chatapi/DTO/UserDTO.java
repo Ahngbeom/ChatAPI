@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -28,6 +29,9 @@ public class UserDTO {
     private String nickname;
 
     private boolean activate;
+
+    private LocalDateTime regDate;
+    private LocalDateTime updateDate;
 
     @ToString.Exclude
     private Set<AuthorityDTO> authorities;

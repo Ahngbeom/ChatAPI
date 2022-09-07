@@ -35,14 +35,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @PostConstruct
     public void setAdmin() throws RuntimeException {
-        /*
-            Spring Bean LifeCycle CallBack - @PostConstruct
+        /* Spring Bean LifeCycle CallBack - @PostConstruct
             빈 생명주기 콜백: 스프링 빈이 생성된 후 의존관계 주입이 완료되거나 죽기 직전에 스프링 빈 안에 존재하는 메소드를 호출해주는 기능
-            초기화 콜백 함수 setAdmin 함수를 추가하여 H2 데이터베이스에 Admin 계정을 등록한다.
-         */
+            초기화 콜백 함수 setAdmin 함수를 추가하여 H2 데이터베이스에 Admin 계정을 등록한다. */
         try {
             if (userRepository.findByUsername("admin").isPresent())
-                throw new RuntimeException("EXIST ADMIN ACCOUNT");
+                throw new RuntimeException("setAdmin(): EXIST [manager] ACCOUNT");
 
             UserDTO adminDTO = UserDTO.builder()
                     .username("admin")
@@ -53,36 +51,31 @@ public class UserServiceImpl implements UserService {
                     .build();
             log.info(String.valueOf(signUp(adminDTO)));
 
-//            AuthorityEntity authority = AuthorityEntity.builder()
-//                    .authorityName("ROLE_ADMIN")
-//                    .build();
-//            if (authorityRepository.save(authority).getClass() != AuthorityEntity.class)
-//                throw new RuntimeException("ERROR SAVED ADMIN AUTHORITY ON AUTHORITY TABLE");
+        } catch (RuntimeException e) {
+//            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+    }
 
-//            authority = AuthorityEntity.builder()
-//                    .authorityName("ROLE_USER")
-//                    .build();
-//            if (authorityRepository.save(authority).getClass() != AuthorityEntity.class)
-//                throw new RuntimeException("ERROR SAVED USER AUTHORITY SAVE ON AUTHORITY TABLE");
+    @Transactional
+    @PostConstruct
+    public void setManger() throws RuntimeException {
+        /* Spring Bean LifeCycle CallBack - @PostConstruct
+            빈 생명주기 콜백: 스프링 빈이 생성된 후 의존관계 주입이 완료되거나 죽기 직전에 스프링 빈 안에 존재하는 메소드를 호출해주는 기능
+            초기화 콜백 함수 setAdmin 함수를 추가하여 H2 데이터베이스에 Admin 계정을 등록한다. */
+        try {
+            if (userRepository.findByUsername("manager").isPresent())
+                throw new RuntimeException("setManger(): EXIST [manager] ACCOUNT");
 
-//            log.info("SUCCESS SAVE ON AUTHORITY TABLE");
+            UserDTO adminDTO = UserDTO.builder()
+                    .username("manager")
+                    .password("1234")
+                    .nickname("MANAGER")
+                    .authorities(Collections.singleton(AuthorityDTO.builder().authorityName("ROLE_MANAGER").build()))
+                    .mbtiInfoList(null)
+                    .build();
+            log.info(String.valueOf(signUp(adminDTO)));
 
-//            Set<AuthorityEntity> adminAuthorities = new HashSet<>();
-//            adminAuthorities.add(AuthorityEntity.builder().authorityName("ROLE_ADMIN").build());
-//            adminAuthorities.add(AuthorityEntity.builder().authorityName("ROLE_USER").build());
-//
-//            UserEntity user = UserEntity.builder()
-//                    .username("admin")
-//                    .password(passwordEncoder.encode("admin"))
-//                    .nickname("ADMIN")
-//                    .authorities(adminAuthorities)
-//                    .activate(true)
-//                    .build();
-//
-//            if (userRepository.save(user).getClass() != UserEntity.class)
-//                throw new RuntimeException("ERROR SAVE ON USER TABLE");
-//
-//            log.info("SUCCESS SAVE ON USERS TABLE");
         } catch (RuntimeException e) {
 //            e.printStackTrace();
             log.error(e.getMessage());
@@ -90,6 +83,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean signUp(UserDTO userDTO) throws RuntimeException {
         AtomicBoolean result = new AtomicBoolean(true);
 

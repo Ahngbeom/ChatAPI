@@ -1,64 +1,41 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="kr"
+<html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="fragments/header :: header" />
-<body>
-<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
-    enabled. Please enable
-    Javascript and reload this page!</h2></noscript>
-<div id="main-content" class="container">
-    <div class="row">
-        <div class="col-md-6">
-<!--            <form class="form-inline">-->
-                <div class="form-group">
-                    <label for="connect">WebSocket connection:</label>
-                    <button id="connect" class="btn btn-default" type="button" onclick="connect()">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="button" disabled="disabled" onclick="disconnect()">Disconnect
-                    </button>
-                </div>
-<!--            </form>-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--layout:decorator="~{layouts/default_layout}"-->
+
+<th:block th:replace="/fragments/header :: header"/>
+<body style="padding-top: 100px;">
+
+<!--<th:block th:replace="fragments/header :: navbar"/>-->
+<th:block th:replace="/fragments/header :: offcanvas"/>
+<div class="container-fluid mt-xl-5" id="mainContainer">
+
+    <th:block th:replace="/fragments/header :: MBTI-header"/>
+
+    <div id="mbtiListDiv" class="flex-column">
+        <div class="d-flex justify-content-end" id="btnAreaForMbtiTable">
+            <button class="btn btn-info me-3" onclick="location.href='/mbti/register'">Add</button>
         </div>
-        <div class="col-md-6">
-            <form class="form-control" method="post" action="/logout">
-<!--                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">-->
-                <button class="btn btn-outline-warning" id="logout" type="submit">Logout</button>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-<!--            <form class="form-inline">-->
-                <div class="form-group">
-                    <label for="message"></label><input type="text" id="message" class="form-control" placeholder="">
-                </div>
-                <button id="send" class="btn btn-default" type="button" onclick="sendMessage()">Send</button>
-<!--            </form>-->
-        </div>
-        
-        <div class="col-md-6">
-            <table id="serverGreetings" class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Greetings</th>
-                </tr>
-                </thead>
-                <tbody id="greetings">
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="">
-        <table id="conversation" class="table table-striped">
+
+        <table class="table table-striped table-hover table-responsive">
             <thead>
             <tr>
-                <th>Chatting Room</th>
+                <th class="col-1" colspan="1" scope="col">#</th>
+                <th class="col-6" colspan="1" scope="col">MBTI</th>
+                <th class="col-4" colspan="1" scope="col">Personality</th>
+                <th class="col-1" colspan="1" scope="col">Chatting</th>
             </tr>
             </thead>
-            <tbody id="chatting">
+            <tbody class="">
             </tbody>
         </table>
     </div>
 </div>
+
+<th:block th:replace="fragments/modal :: modal('viewUserInfoModal')"></th:block>
+<th:block th:replace="fragments/chat :: chat-modal"></th:block>
 </body>
+<th:block th:replace="fragments/footer :: footer"/>
+<script type="module" src="/js/user/user.js"></script>
 </html>
-<th:block th:replace="fragments/footer :: footer" />
