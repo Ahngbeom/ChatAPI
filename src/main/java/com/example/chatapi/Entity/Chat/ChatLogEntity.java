@@ -20,14 +20,15 @@ public class ChatLogEntity extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "room_name", length = 4)
-	private String roomName;
-
 	@Column(name = "from_username", length = 50)
-	private String fromUsername;
+	private String fromUsername; // is UserEntity's Nickname
 
-	@Column(name = "message")
+	@Column(name = "message", length = 1000)
 	private String message;
+
+	@ManyToOne
+	@JoinColumn(name = "chat_room_id")
+	private ChatRoomEntity chatRoomId;
 
 	public void setFromUsername(String from) {
 		this.fromUsername = from;
@@ -35,5 +36,9 @@ public class ChatLogEntity extends BaseTimeEntity {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public void setChatRoomId(ChatRoomEntity chatRoomId) {
+		this.chatRoomId = chatRoomId;
 	}
 }

@@ -11,7 +11,7 @@
 <th:block th:replace="/fragments/header :: offcanvas"/>
 <div class="container-fluid mt-xl-5" id="mainContainer">
 
-    <th:block th:replace="/fragments/banner :: MBTI-banner"/>
+    <th:block th:replace="/fragments/header :: MBTI-header"/>
 
     <div id="mbtiListDiv" class="flex-column">
         <div class="d-flex justify-content-end" id="btnAreaForMbtiTable">
@@ -24,8 +24,7 @@
                 <th class="col-1" colspan="1" scope="col">#</th>
                 <th class="col-6" colspan="1" scope="col">MBTI</th>
                 <th class="col-4" colspan="1" scope="col">Personality</th>
-                <th class="col-1" colspan="1" scope="col"></th>
-<!--                <th class="col-1" colspan="1" scope="col">Chatting</th>-->
+                <th class="col-1" colspan="1" scope="col">Chatting</th>
             </tr>
             </thead>
             <tbody class="">
@@ -34,8 +33,9 @@
     </div>
 </div>
 
-<th:block th:replace="fragments/modal :: modal('viewUserInfoModal')"></th:block>
-<!--<th:block th:replace="fragments/chat :: chat-modal"></th:block>-->
+<!--<th:block th:replace="fragments/modal :: modal('viewUserInfoModal')"></th:block>-->
+<th:block th:replace="fragments/chat :: chat-modal"></th:block>
 </body>
 <th:block th:replace="fragments/footer :: footer"/>
+<script type="module" src="/js/user/user.js"></script>
 </html>

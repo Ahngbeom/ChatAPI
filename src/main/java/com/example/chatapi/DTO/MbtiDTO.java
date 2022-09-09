@@ -25,8 +25,8 @@ public class MbtiDTO {
 
 	private int numberOfTimes; // Number of times this MBTI Result
 
-//	private Calendar regDate;
 	private LocalDateTime regDate;
+	private LocalDateTime recentRegDate;
 
 	public static MbtiDTO convertMbtiEntityToMbtiDTO(MBTIInfoEntity entity) {
 		return MbtiDTO.builder()
@@ -44,6 +44,7 @@ public class MbtiDTO {
 				.imgSrc(entity.getMbti().getImgSrc())
 				.numberOfTimes(entity.getNumberOfTimes())
 				.regDate(entity.getRegDate())
+				.recentRegDate(entity.getRecentRegDate())
 				.build();
 	}
 

@@ -58,10 +58,11 @@ public class MbtiServiceImpl implements MbtiService {
 
     @Override
     public List<MbtiDTO> getAllMbtiList() throws RuntimeException {
-//        mbtiRepository.findAll().forEach(mbtiInfoEntity -> {
-//            mbtiInfoEntity
-//        });
-        return null;
+        List<MbtiDTO> mbtiDTOList = new ArrayList<>();
+        mbtiRepository.findAll().forEach(mbtiInfoEntity -> {
+            mbtiDTOList.add(MbtiDTO.convertMbtiEntityToMbtiDTO(mbtiInfoEntity));
+        });
+        return mbtiDTOList;
     }
 
     @Override

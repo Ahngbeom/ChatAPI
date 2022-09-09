@@ -8,15 +8,7 @@ const alphabetUpperReg = /[A-Z]/;
 const bootstrapBtnTypeReg = /btn-primary|btn-secondary|btn-success|btn-danger|btn-warning|btn-info|btn-light|btn-dark|btn-link/g;
 const bootstrapOutlineBtnTypeReg = /btn-outline-primary|btn-outline-secondary|btn-outline-success|btn-outline-danger|btn-outline-warning|btn-outline-info|btn-outline-light|btn-outline-dark/g;
 
-/** Chat **/
-let socket = null;
-let stompClient = null;
 
-if (document.querySelector("#chatModal")) {
-    const chatModal = new bootstrap.Modal("#chatModal");
-    const chatModalElement = document.getElementById("chatModal");
-    const sendMessageBtn = document.getElementById("chat-send-message-btn");
-}
 
 /** Page */
 const alertArea = document.querySelector("#alert-area");

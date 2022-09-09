@@ -4,7 +4,7 @@
 <body>
 <th:block th:replace="fragments/header :: alert-icons"/>
 <div class="container-fluid mt-3">
-    <th:block th:replace="fragments/header :: MBTI-header"/>
+    <th:block th:replace="fragments/banner :: MBTI-banner"/>
 <!--    <th:block th:replace="fragments/modal :: modal('signUpModal')"/>-->
     <th:block th:replace="fragments/modal :: signUpModal"/>
 
@@ -34,7 +34,7 @@
     </div>
 </div>
 </body>
-<th:block th:replace="fragments/footer :: footer"/>
+<script src="/js/user/login.js"></script>
 <script type="module" src="/js/signup/signup.js"></script>
 </html>
 

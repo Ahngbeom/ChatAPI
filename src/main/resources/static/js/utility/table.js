@@ -1,4 +1,4 @@
-const createTableElement = function (data) {
+const createUsersTableElement = function (data) {
 
     const table = document.createElement('table');
     table.setAttribute('class', 'table table-success table-striped text-center table-responsive');

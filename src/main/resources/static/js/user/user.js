@@ -1,5 +1,5 @@
 import {ajaxGetUserAuthorities} from "./authority.js"
-import {ajaxGetUserMbtiList} from "/js/mbti/getInfo.js"
+import {ajaxAdminGetUserMbtiList} from "/js/mbti/getInfo.js"
 
 const loggedInUsername = document.querySelectorAll("#loggedInUsername");
 
@@ -13,7 +13,7 @@ const getUserList = function () {
         success: function (data) {
             mainContainer.innerHTML = "<h1>User Table</h1>";
             // mainContainer.innerHTML += "<th:block th:replace=\"/fragments/table :: table-primary-fragment\"/>";
-            mainContainer.append(createTableElement(data));
+            mainContainer.append(createUsersTableElement(data));
             enableUserInfoInteractionBtn();
         },
         error: function (data) {
@@ -32,7 +32,7 @@ const enableUserInfoInteractionBtn = function () {
     });
     getUserMBTIListBtn.forEach(btn => {
         btn.addEventListener('click', function (e) {
-            ajaxGetUserMbtiList(e.currentTarget.dataset.userno);
+            ajaxAdminGetUserMbtiList(e.currentTarget.dataset.userno);
         });
     });
 }
@@ -51,17 +51,20 @@ $.ajax({
             elem.innerHTML = "<h4 class='m-3'>Logged in: " + data.username + "</h4>";
             elem.innerHTML += "<div class='m-3'><button type='button' class='btn btn-warning' onclick=\"location.href='/logout'\">Logout</button></div>";
         });
-        if (data.username) {
-            document.body.style.paddingTop = "150px";
-            let adminNavbar =
-                "  <div class=\"container-fluid text-bg-secondary opacity-75\">\n" +
-                "    <button class=\"btn btn-link link-light\" id='getUserListBtn'>User List</button>\n" +
-                "    <a class=\"link-light\" href=\"#\">Chat Room List</a>\n" +
-                "    <a class=\"link-light\" href=\"#\">Statistics</a>\n" +
-                "  </div>\n";
-            navContainer.insertAdjacentHTML("afterend", adminNavbar);
-            document.querySelector("#getUserListBtn").addEventListener('click', getUserList);
-        }
+        data.authorities.every(function (auth) {
+            if (auth.authorityName.match(/^ROLE_ADMIN/)) {
+                document.body.style.paddingTop = "150px";
+                let adminNavbar =
+                    "  <div class=\"container-fluid text-bg-secondary opacity-75\">\n" +
+                    "    <button class=\"btn btn-link link-light\" id='getUserListBtn'>User List</button>\n" +
+                    "    <a class=\"link-light\" href=\"chat-list\">Chat Room List</a>\n" +
+                    "    <a class=\"link-light\" href=\"#\">Statistics</a>\n" +
+                    "  </div>\n";
+                navContainer.insertAdjacentHTML("afterend", adminNavbar);
+                document.querySelector("#getUserListBtn").addEventListener('click', getUserList);
+                return false;
+            }
+        });
     },
     error: function (data) {
         console.log(data);

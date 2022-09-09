@@ -11,6 +11,12 @@ public class ChatController {
     @GetMapping({"/chat"})
     public String chatGet() {
 //        log.info("@ChatController, chat GET()");
-        return "chat";
+        return "chat/chat";
+    }
+
+    @GetMapping({"/chat-list"})
+    public String chatListGet() {
+//        log.info("@ChatController, chat GET()");
+        return "chat/chat-list";
     }
 }

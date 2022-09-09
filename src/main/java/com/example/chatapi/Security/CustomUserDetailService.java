@@ -1,4 +1,4 @@
-package com.example.chatapi.Service;
+package com.example.chatapi.Security;
 
 import com.example.chatapi.Entity.User.UserEntity;
 import com.example.chatapi.Repository.UserRepository;

@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/mbti")
 @RequiredArgsConstructor
-public class MbtiRestController {
+public class MbtiController {
 
 	private final UserService userService;
 	private final MbtiService mbtiService;

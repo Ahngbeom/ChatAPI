@@ -1,4 +1,4 @@
-package com.example.chatapi.Controller;
+package com.example.chatapi.Controller.Chat;
 
 import com.example.chatapi.STOMP.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -23,4 +23,6 @@ public class ChattingController {
 		Thread.sleep(1000);
 		return new Message(principal.getName(), message);
 	}
+
+
 }

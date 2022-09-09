@@ -3,6 +3,7 @@ package com.example.chatapi.Entity.MBTI;
 import com.example.chatapi.Entity.User.UserEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,9 +35,11 @@ public class UserMbtiJoinEntity {
 
     @Column(name = "reg_date")
     @CreationTimestamp
-//    @Temporal(TemporalType.TIMESTAMP)
-//    private Calendar regDate;
     private LocalDateTime regDate;
+
+    @Column(name = "recent_reg_date")
+    @UpdateTimestamp
+    private LocalDateTime recentRegDate;
 
     public void increaseNumberOfTimes() {
         this.numberOfTimes += 1;

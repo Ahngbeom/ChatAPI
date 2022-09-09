@@ -1,6 +1,8 @@
 package com.example.chatapi.Entity.MBTI;
 
 import com.example.chatapi.DTO.MbtiDTO;
+import com.example.chatapi.Entity.Chat.ChatMBTIJoinEntity;
+import com.example.chatapi.Entity.Chat.ChatRoomEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,17 +28,22 @@ public class MBTIInfoEntity {
 	@Column(name = "introduction", length = 1000)
 	private String introduction;
 
-	@Column(name = "imgSrc")
+	@Column(name = "img_src")
 	private String imgSrc;
-
-//	@Column(name = "number_of_times")
-//	@GeneratedValue(strategy = )
-//	private int numberOfTimes; // Number of times this MBTI Result
 
 	@ToString.Exclude
 	@OneToMany(mappedBy = "mbti")
 //	@JoinColumn(name = "USER_ID")
 	private Set<UserMbtiJoinEntity> userMbti;
+
+//	@ToString.Exclude
+//	@OneToMany
+//	@JoinColumn(name = "room_name")
+//	private Set<ChatRoomEntity> ChatRooms;
+
+	@ToString.Exclude
+	@OneToMany(mappedBy = "mbtiInfoEntities")
+	private Set<ChatMBTIJoinEntity> ChatMBTI;
 
 	public static MBTIInfoEntity convertToMbtiEntity(MbtiDTO dto) {
 		return MBTIInfoEntity.builder()
