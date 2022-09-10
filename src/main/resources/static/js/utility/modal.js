@@ -13,6 +13,7 @@ const disposeModalTarget = function (target) {
     modal.dispose();
 }
 
+// data: target, title, body, interactionBtnText, interactionBtnType
 const renewalModal = function (data) {
     data.target.querySelector(".modal-title").innerHTML = data.title;
     data.target.querySelector(".modal-body").innerHTML = data.body;

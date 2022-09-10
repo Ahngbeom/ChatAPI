@@ -43,10 +43,6 @@ $.ajax({
     async: false,
     contentType: 'application/json; charset=utf-8',
     success: function (data) {
-        // console.log(data);
-        // let logoutBtn = document.createElement("button");
-        // logoutBtn.type = 'button';
-        // logoutBtn.innerHTML = "Logout";
         loggedInUsername.forEach(elem => {
             elem.innerHTML = "<h4 class='m-3'>Logged in: " + data.username + "</h4>";
             elem.innerHTML += "<div class='m-3'><button type='button' class='btn btn-warning' onclick=\"location.href='/logout'\">Logout</button></div>";

@@ -15,6 +15,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +39,7 @@ public class ChatServiceImpl implements ChatService {
             chatRoomDTOList.add(
                     ChatRoomDTO.builder()
                             .roomName(entity.getRoomName())
-                            .createDate(entity.getCreateDate())
+                            .createDate(entity.getCreateDate().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)))
                             .build()
             );
         });
@@ -58,8 +63,8 @@ public class ChatServiceImpl implements ChatService {
                 chatRoomDTO.getPermitMBTICode().forEach(mbtiDTO -> {
                     chatMBTIRepository.save(
                             ChatMBTIJoinEntity.builder()
-                                    .chatRooms(chatRoomEntity)
-                                    .mbtiInfoEntities(MBTIInfoEntity.convertToMbtiEntity(mbtiDTO))
+                                    .chatRoomName(chatRoomEntity)
+                                    .mbtiCode(MBTIInfoEntity.convertToMbtiEntity(mbtiDTO))
                                     .build()
                     );
                 });

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ChatMBTIRepository extends JpaRepository<ChatMBTIJoinEntity, Long> {
 
-    boolean existsByChatRooms_RoomName(String roomName);
+    boolean existsByChatRoomName(String roomName);
 
-    List<ChatMBTIJoinEntity> findAllByChatRooms_RoomName(String roomName);
+    List<ChatMBTIJoinEntity> findAllByChatRoomName(String roomName);
 
-    List<ChatMBTIJoinEntity> findAllByMbtiInfoEntities_Code(String mbtiCode);
+    List<ChatMBTIJoinEntity> findAllByMbtiCode(String mbtiCode);
 }

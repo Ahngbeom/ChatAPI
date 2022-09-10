@@ -4,7 +4,6 @@ import com.example.chatapi.Entity.MBTI.MBTIInfoEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "CHAT_MBTI")
@@ -21,10 +20,10 @@ public class ChatMBTIJoinEntity {
 
     @ManyToOne
     @JoinColumn(name = "chat_room_name")
-    private ChatRoomEntity chatRooms;
+    private ChatRoomEntity chatRoomName;
 
     @ManyToOne
     @JoinColumn(name = "mbti_code")
-    private MBTIInfoEntity mbtiInfoEntities;
+    private MBTIInfoEntity mbtiCode;
 
 }

@@ -1,4 +1,4 @@
-/** Chat **/
+/** Connection Chatting room **/
 
 const chatModal = new bootstrap.Modal("#chatModal");
 const chatModalElement = document.getElementById("chatModal");

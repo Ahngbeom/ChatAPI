@@ -8,7 +8,7 @@
         <h2 class="d-flex justify-content-center">Myers-Briggs Type Indicator</h2>
         <hr>
     </div>
-    <th th:replace="/fragments/alert :: toast('pageToast')"></th>
+    <th th:replace="/fragments/toast :: toast('pageToast')"></th>
 </th:block>
 
 <th:block th:fragment="banner(position, title, subtitle)">
@@ -31,7 +31,7 @@
         </th:block>
         <hr>
     </div>
-    <th th:replace="/fragments/alert :: toast('pageToast')"></th>
+    <th th:replace="/fragments/toast :: toast('pageToast')"></th>
 </th:block>
 
 </html>

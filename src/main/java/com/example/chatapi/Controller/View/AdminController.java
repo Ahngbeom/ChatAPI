@@ -10,6 +10,6 @@ public class AdminController {
 
 //    @GetMapping("/user-list")
 //    public String userList() {
-//        return "user/userList";
+//        return "pages/user/userList";
 //    }
 }

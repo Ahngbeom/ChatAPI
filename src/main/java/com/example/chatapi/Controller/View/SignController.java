@@ -17,12 +17,12 @@ public class SignController {
 //        log.info(error);
         if (principal != null)
             return "redirect:/mbti";
-        return "user/login";
+        return "pages/user/login";
     }
 
     @GetMapping("/signup")
     public String signup() {
-        return "user/signup";
+        return "pages/user/signup";
     }
 
 }

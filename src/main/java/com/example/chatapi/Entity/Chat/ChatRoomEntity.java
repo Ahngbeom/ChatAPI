@@ -1,5 +1,6 @@
 package com.example.chatapi.Entity.Chat;
 
+import com.example.chatapi.Entity.User.UserEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -18,19 +19,25 @@ import java.util.Set;
 public class ChatRoomEntity {
 
 	@Id
-	@Column(name = "room_name", unique = true, length = 100)
+	@Column(name = "room_name", length = 50)
 	private String roomName;
+
+	@ManyToOne
+	private UserEntity founder;
+
+	@Column(name = "description", length = 200)
+	private String description;
 
 	@Column(name = "create_date")
 	@CreationTimestamp
 	private LocalDateTime createDate;
 
 //	@ToString.Exclude
-//	@OneToMany(mappedBy = "chatRooms", fetch = FetchType.LAZY)
+//	@OneToMany(mappedBy = "chatRooms")
 //	private Set<MBTIInfoEntity> permitMBTICode;
 
 	@ToString.Exclude
-	@OneToMany(mappedBy = "chatRooms", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "chatRoomName", fetch = FetchType.LAZY)
 	private Set<ChatMBTIJoinEntity> permitMBTICodes;
 //
 //	@ToString.Exclude

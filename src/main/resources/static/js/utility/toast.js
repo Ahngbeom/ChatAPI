@@ -1,9 +1,6 @@
 // BootStrap Toast
 const toastDetector = function () {
     const toastList = document.querySelectorAll(".toast");
-    if (toastList.length > 0) {
-
-    }
     toastList.forEach(toast => {
         const btToast = new bootstrap.Toast(toast, {autohide: false});
         btToast.show();
@@ -24,7 +21,7 @@ const toastElement = "<div class=\"toast mb-3\" role=\"alert\" aria-live=\"asser
     "            </div>\n" +
     "        </div>";
 
-// const createToast = function (toastContainerTarget, type, header, body) {
+// data: target, type, header, body
 const createToast = function (data) {
     const sameToast = document.querySelector(".toast[data-message='" + data.body + "']");
     if (sameToast)
