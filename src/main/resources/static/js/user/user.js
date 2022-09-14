@@ -1,9 +1,8 @@
-import {ajaxGetUserAuthorities} from "./authority.js"
-import {ajaxAdminGetUserMbtiList} from "/js/mbti/getInfo.js"
+import {ajaxGetUserAuthorities} from "./authority.js";
+import {ajaxAdminGetUserMbtiList} from "/js/mbti/getInfo.js";
 
-const loggedInUsername = document.querySelectorAll("#loggedInUsername");
-
-const getUserList = function () {
+export const getUserList = function () {
+    let result = null;
     $.ajax({
         type: 'GET',
         url: '/user-list',
@@ -11,18 +10,22 @@ const getUserList = function () {
         contentType: 'application/json; charset=utf-8',
         dataType: 'JSON',
         success: function (data) {
-            mainContainer.innerHTML = "<h1>User Table</h1>";
-            // mainContainer.innerHTML += "<th:block th:replace=\"/fragments/table :: table-primary-fragment\"/>";
-            mainContainer.append(createUsersTableElement(data));
-            enableUserInfoInteractionBtn();
+            // mainContainer.innerHTML = "<h1>User Table</h1>";
+            // // mainContainer.innerHTML += "<th:block th:replace=\"/fragments/table :: table-primary-fragment\"/>";
+            // mainContainer.append(createUsersTableElement(data));
+            // enableUserInfoInteractionBtn();
+
+            // mbtiTable.classList.add("table-success");
+            result = data;
         },
         error: function (data) {
             console.log(data);
         }
     });
+    return result;
 };
 
-const enableUserInfoInteractionBtn = function () {
+export const enableUserInfoInteractionBtn = function () {
     const getUserAuthoritiesBtn = document.querySelectorAll(".getUserAuthoritiesBtn");
     const getUserMBTIListBtn = document.querySelectorAll(".getUserMBTIListBtn");
     getUserAuthoritiesBtn.forEach(btn => {
@@ -37,35 +40,32 @@ const enableUserInfoInteractionBtn = function () {
     });
 }
 
-$.ajax({
-    type: 'GET',
-    url: '/user-info',
-    async: false,
-    contentType: 'application/json; charset=utf-8',
-    success: function (data) {
-        loggedInUsername.forEach(elem => {
-            elem.innerHTML = "<h4 class='m-3'>Logged in: " + data.username + "</h4>";
-            elem.innerHTML += "<div class='m-3'><button type='button' class='btn btn-warning' onclick=\"location.href='/logout'\">Logout</button></div>";
-        });
-        data.authorities.every(function (auth) {
-            if (auth.authorityName.match(/^ROLE_ADMIN/)) {
-                document.body.style.paddingTop = "150px";
-                let adminNavbar =
-                    "  <div class=\"container-fluid text-bg-secondary opacity-75\">\n" +
-                    "    <button class=\"btn btn-link link-light\" id='getUserListBtn'>User List</button>\n" +
-                    "    <a class=\"link-light\" href=\"chat-list\">Chat Room List</a>\n" +
-                    "    <a class=\"link-light\" href=\"#\">Statistics</a>\n" +
-                    "  </div>\n";
-                navContainer.insertAdjacentHTML("afterend", adminNavbar);
-                document.querySelector("#getUserListBtn").addEventListener('click', getUserList);
-                return false;
-            }
-        });
-    },
-    error: function (data) {
-        console.log(data);
-    }
-});
+export const createUsersTableElement = function (data) {
+
+    const table = document.createElement('table');
+    table.setAttribute('class', 'table table-success table-striped text-center table-responsive');
+    const thead = table.createTHead();
+    const thead_row = thead.insertRow(0);
+    thead_row.insertCell(0).innerHTML = "#";
+    thead_row.insertCell(1).innerHTML = "Username";
+    thead_row.insertCell(2).innerHTML = "Nickname";
+    thead_row.insertCell(3).innerHTML = "Authority";
+    thead_row.insertCell(4).innerHTML = "MBTI-List";
+
+    const tbody = table.createTBody();
+    data.forEach((user, index) => {
+        const tbody_row = tbody.insertRow(index);
+        tbody_row.insertCell(0).innerHTML = user.id;
+        tbody_row.insertCell(1).innerHTML = user.username;
+        tbody_row.insertCell(2).innerHTML = user.nickname;
+        tbody_row.insertCell(3).innerHTML = "<button class='btn btn-light getUserAuthoritiesBtn' data-userno='" + user.id + "'>조회</button>";
+        tbody_row.insertCell(4).innerHTML = "<button class='btn btn-light getUserMBTIListBtn' data-userno='" + user.id + "'>조회</button>";
+        // console.log(user, index);
+    });
+
+    return table;
+}
+
 
 
 

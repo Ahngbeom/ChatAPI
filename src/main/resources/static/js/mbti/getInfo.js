@@ -1,7 +1,3 @@
-import {mbtiTable, ajaxGetUserMBTIListNoParam} from "./table.js"
-
-if (mbtiTable)
-    ajaxGetUserMBTIListNoParam();
 
 export const ajaxAdminGetUserMbtiList = function (userNo) {
     $.ajax({

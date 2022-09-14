@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
-<!--layout:decorator="~{layouts/default_layout}"-->
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
 
-<th:block th:replace="/fragments/header :: header"/>
-<body style="padding-top: 100px;">
-
-<!--<th:block th:replace="fragments/header :: navbar"/>-->
-<th:block th:replace="/fragments/header :: offcanvas"/>
-<div class="container-fluid mt-xl-5" id="mainContainer">
-
-    <th:block th:replace="/fragments/banner :: MBTI-banner"/>
-
-    <div id="mbtiListDiv" class="flex-column">
-        <div class="d-flex justify-content-end" id="btnAreaForMbtiTable">
-            <button class="btn btn-info me-3" onclick="location.href='/mbti/register'">Add</button>
-        </div>
-
-        <table class="table table-striped table-hover table-responsive">
-            <thead>
-            <tr>
-                <th class="col-1" colspan="1" scope="col">#</th>
-                <th class="col-6" colspan="1" scope="col">MBTI</th>
-                <th class="col-4" colspan="1" scope="col">Personality</th>
-                <th class="col-1" colspan="1" scope="col"></th>
-<!--                <th class="col-1" colspan="1" scope="col">Chatting</th>-->
-            </tr>
-            </thead>
-            <tbody class="">
-            </tbody>
-        </table>
+<th:div layout:fragment="banner" class="container-fluid p-0" th:id="bannerContainer">
+    <th th:replace="/fragments/toast :: toast('pageToast')"></th>
+    <div class="d-flex d-block flex-column">
+        <h1 class="d-flex justify-content-center">M B T I</h1>
+        <h4 class="d-flex justify-content-center">Myers-Briggs Type Indicator</h4>
     </div>
-</div>
+    <div class="navbar navbar-expand-lg navbar-dark sticky-top p-0 justify-content-around" style="top: 120px;">
+        <ul class="nav nav-pills nav-fill nav-justified">
+            <li class="nav-item" th:each="mbti, index : ${mbtiInfoList}">
+                <a class="nav-link text-bg-secondary" aria-current="page" th:href="${'#card-mbti-' + mbti.code}" target="_top"
+                   th:text="${mbti.code}"></a>
+            </li>
+        </ul>
+    </div>
+</th:div>
 
-<th:block th:replace="fragments/modal :: modal('viewUserInfoModal')"></th:block>
-<!--<th:block th:replace="fragments/chat :: chat-modal"></th:block>-->
+<th:block layout:fragment="content">
+    <div class="container-fluid" id="contentContainer">
+        <div class="card col-12 d-block my-2" th:each="mbti,index : ${mbtiInfoList}" th:id="${'card-mbti-' + mbti.code}"
+             style="scroll-margin-top: 200px;" data-bs-toggle="collapse" th:href="${'#collapse' + index.index}" role="button"
+             aria-expanded="false" th:aria-controls="${'collapse' + index.index}">
+            <img th:src="${mbti.imgSrc}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h1 class="" th:text="${mbti.code}"></h1>
+                <h3 class="" th:text="${mbti.personality}"></h3>
+            </div>
+            <div class="card-footer collapse" th:id="${'collapse' + index.index}">
+                <p class="card-text" th:text="${mbti.introduction}"></p>
+                <a th:href="${'https://www.16personalities.com/' + mbti.code + '-personality'}" target="_blank">Go to
+                    the official site for more details</a>
+            </div>
+        </div>
+    </div>
+</th:block>
+
 </body>
-<th:block th:replace="fragments/footer :: footer"/>
 </html>

@@ -38,8 +38,9 @@ public class MbtiServiceImpl implements MbtiService {
 
 //        userEntity.setMbtiList(Collections.singleton(mbtiInfoEntity));
 
-        MBTIInfoEntity mbtiInfoEntity = this.register(mbtiDTO);
+        MBTIInfoEntity mbtiInfoEntity = mbtiRepository.findById(mbtiDTO.getCode()).orElse(null);
 
+        assert mbtiInfoEntity != null;
         if (userMbtiRepository.existsByMbti_CodeAndUser_id(mbtiInfoEntity.getCode(), userDTO.getId())) {
             UserMbtiJoinEntity userMbtiJoinEntity = userMbtiRepository.findByMbti_CodeAndUser_id(mbtiInfoEntity.getCode(), userDTO.getId());
             userMbtiJoinEntity.increaseNumberOfTimes();
@@ -52,8 +53,6 @@ public class MbtiServiceImpl implements MbtiService {
                     .numberOfTimes(1)
                     .build()).getClass().equals(UserMbtiJoinEntity.class);
         }
-
-
     }
 
     @Override

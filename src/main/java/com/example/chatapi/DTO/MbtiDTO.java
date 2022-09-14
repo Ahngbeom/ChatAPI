@@ -33,6 +33,7 @@ public class MbtiDTO {
 				.code(entity.getCode())
 				.personality(entity.getPersonality())
 				.introduction(entity.getIntroduction())
+				.imgSrc(entity.getImgSrc())
 				.build();
 	}
 

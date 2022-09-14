@@ -28,10 +28,6 @@ public class ChatRoomEntity {
 	@Column(name = "description", length = 200)
 	private String description;
 
-	@Column(name = "create_date")
-	@CreationTimestamp
-	private LocalDateTime createDate;
-
 //	@ToString.Exclude
 //	@OneToMany(mappedBy = "chatRooms")
 //	private Set<MBTIInfoEntity> permitMBTICode;
@@ -39,6 +35,10 @@ public class ChatRoomEntity {
 	@ToString.Exclude
 	@OneToMany(mappedBy = "chatRoomName", fetch = FetchType.LAZY)
 	private Set<ChatMBTIJoinEntity> permitMBTICodes;
+
+	@Column(name = "create_date")
+	@CreationTimestamp
+	private LocalDateTime createDate;
 //
 //	@ToString.Exclude
 //	@OneToMany(mappedBy = "chatRoomId", fetch = FetchType.LAZY)

@@ -77,7 +77,7 @@ const getMBTIInformation = function (mbtiRadioJson) {
 
             mbtiJson = {
                 shortMbti: mbtiResult,
-                code: mbtiHeaderExtractByOfficialSite.querySelector("div[class='code']").innerHTML,
+                code: mbtiHeaderExtractByOfficialSite.querySelector("div[class='code']").innerHTML.slice(0, 4),
                 personality: mbtiHeaderExtractByOfficialSite.querySelector("span").innerHTML,
                 introduction: mbtiArticleExtractByOfficialSite.querySelectorAll("div[class='definition'] p").item(1).innerText,
                 imgSrc: mbtiHeaderExtractByOfficialSite.querySelector("img").src
@@ -120,6 +120,9 @@ checkMBTIResultBtn.addEventListener('click', function () {
                 mbtiSubmitBtn.innerHTML = "Return to MBTI List";
                 mbtiSubmitBtn.addEventListener('click', function () {
                     location.href = "/mbti";
+                }, {once: true});
+                mbtiRegisterModalElem.querySelector("button[data-bs-dismiss='modal']").addEventListener('click', function () {
+                    location.reload();
                 }, {once: true});
             },
             error: function (data) {

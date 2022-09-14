@@ -17,7 +17,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/mbti")
+@RequestMapping("/api/mbti")
 @RequiredArgsConstructor
 public class MbtiController {
 

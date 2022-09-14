@@ -55,11 +55,20 @@ class ChatServiceImplTest {
         try {
             ChatRoomDTO newRoom = ChatRoomDTO.builder()
                     .roomName("TEST ROOM")
-                    .permitMBTICode(mbtiService.getAllMbtiList())
+                    .description("THIS ROOM IS FOR TESTING")
+                    .permitMBTICode(MbtiDTO.builder().code("....").build())
                     .build();
             log.info(String.valueOf(chatService.createChatRoom("admin", newRoom)));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    void regularExpression() {
+        mbtiRepository.findAll().forEach(mbtiInfoEntity -> {
+            log.info(mbtiInfoEntity.getCode());
+            log.info(String.valueOf(mbtiInfoEntity.getCode().matches("....")));
+        });
     }
 }

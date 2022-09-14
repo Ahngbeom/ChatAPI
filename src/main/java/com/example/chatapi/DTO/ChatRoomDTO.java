@@ -24,10 +24,8 @@ public class ChatRoomDTO {
 
     private String createDate;
 
-    private UserEntity founder;
-
-    @ToString.Exclude
-    private List<MbtiDTO> permitMBTICode;
+//    @ToString.Exclude
+    private MbtiDTO permitMBTICode;
 
     @ToString.Exclude
     private List<ChatLogDTO> log;
@@ -48,11 +46,12 @@ public class ChatRoomDTO {
         this.createDate = createDate;
     }
 
-    public void setFounder(UserEntity founder) {
-        this.founder = founder;
-    }
 
-    public void setPermitMBTICode(List<MbtiDTO> permitMBTICode) {
+//    public void setPermitMBTICode(List<MbtiDTO> permitMBTICode) {
+//        this.permitMBTICode = permitMBTICode;
+//    }
+
+    public void setPermitMBTICode(MbtiDTO permitMBTICode) {
         this.permitMBTICode = permitMBTICode;
     }
 

@@ -17,10 +17,10 @@ spring:
   #      ddl-auto: create-drop
 
   thymeleaf:
-#    prefix: classpath:/templates/
-#    suffix: .html
+    prefix: classpath:/templates/
+    suffix: .html
     cache: false
-#    check-template-location: true
+    check-template-location: true
 
   output:
     ansi:

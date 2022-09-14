@@ -4,15 +4,22 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <th:block th:replace="/fragments/header :: header"/>
 
-<body style="padding-top: 100px;">
+<body style="padding-top: 120px;">
 <th:block th:replace="/fragments/header :: offcanvas"/>
-<div class="container-fluid mt-xl-5" id="mainContainer">
+<div class="container-fluid p-0" id="mainContainer">
 
-    <th:block th:replace="/fragments/header :: MBTI-header"/>
-    <th:block layout:fragment="content"></th:block>
+    <th:block layout:fragment="banner">
+        <th:block th:replace="/fragments/banner :: MBTI-banner"/>
+    </th:block>
+
+    <th:block layout:fragment="content">
+    </th:block>
 
 </div>
 </body>
-<th:block th:replace="/fragments/footer :: footer"/>
-<script src="/js/user/user.js"></script>
+<th:block layout:fragment="defaultScript">
+    <th:block th:replace="/fragments/footer :: footer"/>
+</th:block>
+<th:block layout:fragment="additionalScript">
+</th:block>
 </html>

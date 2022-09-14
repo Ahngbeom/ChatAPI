@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <th:block th:fragment="header">
     <head>
         <meta charset="UTF-8">
@@ -23,7 +24,6 @@
         <script src="/js/beforeunload_global.js"></script>
         <script src="/js/utility/alert.js"></script>
         <script src="/js/utility/toast.js"></script>
-        <script src="/js/utility/table.js"></script>
         <script src="/js/utility/modal.js"></script>
     </head>
 </th:block>
@@ -51,6 +51,10 @@
 
 <th:block th:fragment="loginUser">
     <div id="loggedInUsername" class="d-flex flex-row">
+        <h3 class='m-3' sec:authentication="principal.username"></h3>
+        <div class='m-3'>
+            <button type='button' class='btn btn-warning' onclick="location.href='/logout'">Logout</button>
+        </div>
     </div>
 </th:block>
 
@@ -114,8 +118,8 @@
 </th:block>
 
 <th:block th:fragment="offcanvas">
-    <nav class="navbar bg-light fixed-top">
-        <div class="container-fluid" id="navContainer">
+    <nav sec:authorize="isAuthenticated()" class="navbar bg-light fixed-top pb-0" style="height: 120px;">
+        <div class="container-fluid" id="navTopContainer">
             <a class="navbar-brand" href="/mbti">MBTI Chat</a>
             <th:block th:replace="fragments/header :: loginUser"/>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
@@ -146,24 +150,32 @@
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="/#">Chatting Room List</a>
                         </li>
-<!--                        <li class="nav-item dropdown">-->
-<!--                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"-->
-<!--                               aria-expanded="false">-->
-<!--                                Dropdown-->
-<!--                            </a>-->
-<!--                            <ul class="dropdown-menu">-->
-<!--                                <li><a class="dropdown-item" href="#">Action</a></li>-->
-<!--                                <li><a class="dropdown-item" href="#">Another action</a></li>-->
-<!--                                <li>-->
-<!--                                    <hr class="dropdown-divider">-->
-<!--                                </li>-->
-<!--                                <li><a class="dropdown-item" href="#">Something else here</a></li>-->
-<!--                            </ul>-->
-<!--                        </li>-->
                     </ul>
-
                 </div>
             </div>
+        </div>
+        <div class="container-fluid p-0" id="navBottomContainer">
+            <ul class="nav nav-tabs w-100">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/" id="NavTab-Home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" aria-current="page" id="NavTab-MyMBTIList">My MBTI List</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" aria-current="page" id="NavTab-Test">Test 2</button>
+
+                </li>
+                <li class="nav-item">
+                    <button sec:authorize="hasRole('ADMIN')" class="nav-link" id="NavTab-UserList">User List</button>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/chat-list" id="NavTab-ChatRoomList">Chat Room List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="NavTab-Statistics">Statistics</a>
+                </li>
+            </ul>
         </div>
     </nav>
 </th:block>

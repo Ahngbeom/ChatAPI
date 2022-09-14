@@ -1,27 +1,30 @@
-export const mbtiTable = document.querySelector("#mbtiListDiv table");
+// export let mbtiTable = document.querySelector("#mbtiListDiv table");
 
-export const ajaxGetUserMBTIListNoParam = function () {
+export function ajaxGetMyMBTIList() {
+    let result = null;
     $.ajax({
         type: 'GET',
-        url: '/mbti/list',
+        url: '/api/mbti/list',
+        async: false,
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
-            console.log(data);
-            if (data.length === 0) {
-                console.log("MBTI 정보가 없습니다.");
-                mbtiTable.querySelector("tbody").innerHTML = "<tr><td colspan='12'><div class='d-flex flex-column align-items-center'></div></td></tr>"
-                mbtiTable.querySelector("tbody tr td div").innerHTML = "<h3>MBTI 정보가 없습니다.</h3>" + "<a href='/mbti/register'>MBTI 등록</a>";
-            } else {
-                mbtiInfoToTable(data);
-            }
+            // if (data.length === 0) {
+            //     console.log("MBTI 정보가 없습니다.");
+            //     mbtiTable.querySelector("tbody").innerHTML = "<tr><td colspan='12'><div class='d-flex flex-column align-items-center'></div></td></tr>"
+            //     mbtiTable.querySelector("tbody tr td div").innerHTML = "<h3>MBTI 정보가 없습니다.</h3>" + "<a href='/mbti/register'>MBTI 등록</a>";
+            // } else {
+            //     mbtiInfoToTable(data);
+            // }
+            result = data;
         },
         error: function (data) {
             console.error(data);
         }
     });
+    return result;
 }
 
-const mbtiInfoToTable = function (mbtiList) {
+export const mbtiInfoToTable = function (mbtiList) {
     mbtiList.forEach(function (data, index) {
 
         let row = mbtiTable.querySelector("tbody").insertRow(-1);

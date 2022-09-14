@@ -1,40 +1,59 @@
 <!DOCTYPE html>
-<html lang="kr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="kr" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
 <th:block th:replace="fragments/header :: header"/>
 <body>
 <th:block th:replace="fragments/header :: alert-icons"/>
 <div class="container-fluid mt-3">
-    <th:block th:replace="fragments/banner :: MBTI-banner"/>
-<!--    <th:block th:replace="fragments/modal :: modal('signUpModal')"/>-->
-    <th:block th:replace="fragments/modal :: signUpModal"/>
 
-    <div class="d-flex flex-column justify-content-center align-items-center">
-        <th:block th:replace="/fragments/alert :: alert"></th:block>
-        <div class="d-flex justify-content-center mx-1">
-            <form th:action="@{/login}" method="post" class="form-group flex-column" id="loginForm">
-                <div class="mb-3 row">
-                    <label for="loginFormUsername" class="col-sm-4 col-form-label">User Name</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="loginFormUsername" name="username" value="admin"/>
+    <!--    <th:block th:replace="fragments/modal :: modal('signUpModal')"/>-->
+
+    <div layout:fragment="banner">
+        <div class="d-flex d-block flex-column">
+            <h1 class="d-flex justify-content-center">Login</h1>
+            <hr>
+        </div>
+    </div>
+
+    <div layout:fragment="content">
+        <th:block th:replace="fragments/modal :: signUpModal"/>
+
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <th:block th:replace="/fragments/alert :: alert"></th:block>
+            <div class="d-flex justify-content-center mx-1">
+                <form th:action="@{/login}" method="post" class="form-group flex-column" id="loginForm">
+                    <div class="mb-3 row">
+                        <label for="loginFormUsername" class="col-sm-4 col-form-label">User Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="loginFormUsername" name="username"
+                                   value="admin"/>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="loginFormPassword" class="col-sm-4 col-form-label">Password</label>
-                    <div class="col-sm-8">
-                        <input type="password" class="form-control" id="loginFormPassword" name="password"
-                               value="admin"/>
+                    <div class="mb-3 row">
+                        <label for="loginFormPassword" class="col-sm-4 col-form-label">Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="loginFormPassword" name="password"
+                                   value="admin"/>
+                        </div>
                     </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" id="floatingSignUpBtn" value="">Sign Up</button>
-                    <button type="button" class="btn btn-info" onclick="signIn()">Sign In</button>
-                </div>
-            </form>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" id="floatingSignUpBtn" value="">Sign Up</button>
+                        <button type="button" class="btn btn-info" onclick="signIn()">Sign In</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 </body>
-<script src="/js/user/login.js"></script>
-<script type="module" src="/js/signup/signup.js"></script>
+<th:block layout:fragment="defaultScript">
+    <!-- Not necessary -->
+</th:block>
+<th:block layout:fragment="additionalScript">
+    <script src="/js/user/login.js"></script>
+    <script type="module" src="/js/signup/signup.js"></script>
+</th:block>
 </html>
 

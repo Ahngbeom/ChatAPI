@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -40,11 +41,15 @@ public class UserController {
 		}
 	}
 
-	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/user-info")
-	public ResponseEntity<UserDTO> userInfo(Principal principal) {
+	public ResponseEntity<?> userInfo(Principal principal) {
 		try {
+			if (principal == null)
+				throw new AuthenticationException("Not Logged In");
 			return ResponseEntity.ok(userService.getUserInfo(principal.getName()));
+		} catch (AuthenticationException authenticationException) {
+			log.error(authenticationException.getMessage());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authenticationException.getMessage());
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);

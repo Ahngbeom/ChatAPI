@@ -2,15 +2,14 @@ package com.example.chatapi.Controller.Chat;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
 import com.example.chatapi.Service.ChatService;
+import com.example.chatapi.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -19,6 +18,7 @@ import java.util.List;
 @RequestMapping("/chat")
 public class ChatAPIController {
 
+    private final UserService userService;
     private final ChatService chatService;
 
     @PreAuthorize("isAuthenticated()")
@@ -28,9 +28,10 @@ public class ChatAPIController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/create")
-    public ResponseEntity<Boolean> createChatRoom(@RequestBody ChatRoomDTO chatRoom) {
+    @PostMapping("/create")
+    public ResponseEntity<Boolean> createChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoom) {
         log.warn(chatRoom.toString());
+        chatService.createChatRoom(principal.getName(), chatRoom);
         return ResponseEntity.ok(true);
     }
 
