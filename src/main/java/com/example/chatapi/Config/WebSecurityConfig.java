@@ -1,5 +1,6 @@
 package com.example.chatapi.Config;
 
+import com.example.chatapi.Security.CustomUserDetailService;
 import com.example.chatapi.Security.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,8 @@ public class WebSecurityConfig {
 	}
 
 
+	private CustomUserDetailService customUserDetailService;
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
@@ -51,6 +54,15 @@ public class WebSecurityConfig {
 //				.loginProcessingUrl("/login")
 				.permitAll()
 				.successHandler(myAuthenticationSuccessHandler())
+				.and()
+
+				// Remember Login Status
+				.rememberMe()
+				.key("MBTI Chatting Application Login Remember Me")
+				.rememberMeParameter("remember-me")
+				.tokenValiditySeconds(86400 * 30) // 1 Month
+				.userDetailsService(customUserDetailService)
+				.authenticationSuccessHandler(myAuthenticationSuccessHandler())
 				.and()
 
                 // Logout

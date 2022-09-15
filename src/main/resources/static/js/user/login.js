@@ -1,4 +1,5 @@
 let formData = new FormData($("#loginForm")[0]);
+
 const signIn = function () {
     $.ajax({
         type: 'POST',
@@ -10,7 +11,7 @@ const signIn = function () {
         data: formData,
         success: function (data) {
             console.log(data);
-            location.href = "/";
+            // location.href = "/";
         },
         error: function (data) {
             console.error(data);

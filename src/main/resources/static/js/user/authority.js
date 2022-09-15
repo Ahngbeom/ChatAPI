@@ -6,7 +6,7 @@ export function ajaxGetUserAuthorities(userNo) {
         dataType: 'JSON',
         data: {userNo: userNo},
         success: function (data) {
-            const modalElem = document.querySelector("#viewUserInfoModal");
+            const modalElem = document.querySelector("#staticBackdropModal");
             renewalModal({
                 target: modalElem,
                 title: "User's Authorities",
@@ -23,7 +23,9 @@ export function ajaxGetUserAuthorities(userNo) {
                     "    <input class=\"form-check-input me-1\" type=\"checkbox\" value=\"ROLE_USER\" id='thirdCheckbox' disabled>\n" +
                     "    <label class=\"form-check-label col-11\" for='thirdCheckbox'>ROLE_USER</label>\n" +
                     "  </li>" +
-                    "</ul>"
+                    "</ul>",
+                interactionBtnText: "권한 변경",
+                interactionBtnType: "warning",
             });
             data.forEach(auth => {
                 document.querySelector(".modal-body .list-group .list-group-item input[value='" + auth.authorityName + "']").checked = true;

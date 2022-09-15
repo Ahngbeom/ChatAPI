@@ -1,5 +1,15 @@
 import {ajaxGetUserAuthorities} from "./authority.js";
 import {ajaxAdminGetUserMbtiList} from "/js/mbti/getInfo.js";
+import {replaceChildNode} from "/js/utility/changeElement.js";
+
+export const userListContentLoad = function () {
+    replaceChildNode(bannerContainer, "<div class=\"d-flex d-block flex-column\">\n" +
+        "        <h1 class=\"d-flex justify-content-center\">User List</h1>\n" +
+        "    </div>");
+    replaceChildNode(contentContainer, createUsersTableElement(getUserList()));
+    // contentContainer.insertAdjacentElement("beforeend", createUsersTableElement(getUserList()));
+    enableUserInfoInteractionBtn();
+};
 
 export const getUserList = function () {
     let result = null;
@@ -10,12 +20,6 @@ export const getUserList = function () {
         contentType: 'application/json; charset=utf-8',
         dataType: 'JSON',
         success: function (data) {
-            // mainContainer.innerHTML = "<h1>User Table</h1>";
-            // // mainContainer.innerHTML += "<th:block th:replace=\"/fragments/table :: table-primary-fragment\"/>";
-            // mainContainer.append(createUsersTableElement(data));
-            // enableUserInfoInteractionBtn();
-
-            // mbtiTable.classList.add("table-success");
             result = data;
         },
         error: function (data) {
@@ -26,14 +30,14 @@ export const getUserList = function () {
 };
 
 export const enableUserInfoInteractionBtn = function () {
-    const getUserAuthoritiesBtn = document.querySelectorAll(".getUserAuthoritiesBtn");
-    const getUserMBTIListBtn = document.querySelectorAll(".getUserMBTIListBtn");
-    getUserAuthoritiesBtn.forEach(btn => {
+    const getUserAuthoritiesBtnList = document.querySelectorAll(".getUserAuthoritiesBtn");
+    const getUserMBTIListBtnList = document.querySelectorAll(".getUserMBTIListBtn");
+    getUserAuthoritiesBtnList.forEach(btn => {
         btn.addEventListener('click', function (e) {
             ajaxGetUserAuthorities(e.currentTarget.dataset.userno);
         });
     });
-    getUserMBTIListBtn.forEach(btn => {
+    getUserMBTIListBtnList.forEach(btn => {
         btn.addEventListener('click', function (e) {
             ajaxAdminGetUserMbtiList(e.currentTarget.dataset.userno);
         });
@@ -41,7 +45,6 @@ export const enableUserInfoInteractionBtn = function () {
 }
 
 export const createUsersTableElement = function (data) {
-
     const table = document.createElement('table');
     table.setAttribute('class', 'table table-success table-striped text-center table-responsive');
     const thead = table.createTHead();

@@ -1,5 +1,41 @@
 // export let mbtiTable = document.querySelector("#mbtiListDiv table");
 
+import {removeChildNode, replaceChildNode} from "/js/utility/changeElement.js";
+
+export function allMBTIListContentLoad() {
+    replaceChildNode(bannerContainer, "<div class=\"d-flex d-block flex-column\">\n" +
+        "        <h1 class=\"d-flex justify-content-center\">My MBTI List</h1>\n" +
+        "    </div>");
+    contentContainer.innerHTML = "<div id=\"mbtiListDiv\" class=\"flex-column\">\n" +
+        "        <div class=\"d-flex justify-content-end\" id=\"btnAreaForMbtiTable\">\n" +
+        "            <button class=\"btn btn-info me-3\" onclick=\"location.href='/mbti/register'\">Add</button>\n" +
+        "        </div>\n" +
+        "        <table class=\"table table-striped table-hover table-responsive\" id='mbtiTable'>\n" +
+        "            <thead>\n" +
+        "            <tr>\n" +
+        "                <th class=\"col-1\" colspan=\"1\" scope=\"col\">#</th>\n" +
+        "                <th class=\"col-6\" colspan=\"1\" scope=\"col\">MBTI</th>\n" +
+        "                <th class=\"col-4\" colspan=\"1\" scope=\"col\">Personality</th>\n" +
+        "                <th class=\"col-1\" colspan=\"1\" scope=\"col\"></th>\n" +
+        "                <!--                <th class=\"col-1\" colspan=\"1\" scope=\"col\">Chatting</th>-->\n" +
+        "            </tr>\n" +
+        "            </thead>\n" +
+        "            <tbody class=\"\">\n" +
+        "            </tbody>\n" +
+        "        </table>\n" +
+        "    </div>";
+
+    let myMBTIList = ajaxGetMyMBTIList();
+
+    if (myMBTIList.length === 0) {
+        console.log("MBTI 정보가 없습니다.");
+        contentContainer.querySelector("table tbody").innerHTML = "<tr><td colspan='12'><div class='d-flex flex-column align-items-center'></div></td></tr>"
+        contentContainer.querySelector("table tbody tr td div").innerHTML = "<h3>MBTI 정보가 없습니다.</h3>" + "<a href='/mbti/register'>MBTI 등록</a>";
+    } else {
+        mbtiInfoToTable(myMBTIList);
+    }
+}
+
 export function ajaxGetMyMBTIList() {
     let result = null;
     $.ajax({

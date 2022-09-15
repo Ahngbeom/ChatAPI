@@ -13,7 +13,15 @@ const disposeModalTarget = function (target) {
     modal.dispose();
 }
 
-// data: target, title, body, interactionBtnText, interactionBtnType
+/**
+ * @param data [target, title, body, interactionBtnText, interactionBtnType]
+ *
+ * - [target] is modal element to be renewal.
+ * - [title] is be inserted into .modal-title.
+ * - [body] is be inserted into .modal-body.
+ * - [interactionBtnText] is the value of the interactive button text inside .modal-footer.
+ * - [interactionBtnType] is the bootstrap color type of the interactive button text inside .modal-footer.
+ */
 const renewalModal = function (data) {
     data.target.querySelector(".modal-title").innerHTML = data.title;
     data.target.querySelector(".modal-body").innerHTML = data.body;

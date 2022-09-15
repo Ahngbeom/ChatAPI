@@ -2,20 +2,26 @@
 
 const chatRoomTable = document.querySelector("#chatRoomListDiv table");
 
-$.ajax({
-    type: 'GET',
-    url: '/chat/list',
-    contentType: 'application/json; charset=utf-8',
-    success: function (data) {
-        console.log(data);
-        createRowsForChatRoomList(chatRoomTable, data);
-    },
-    error: function (data) {
-        console.error(data);
-    }
-});
+export const getChatRoomList = function () {
+    let result = null;
+    $.ajax({
+        type: 'GET',
+        url: '/chat/list',
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            // console.log(data);
+            // createRowsForChatRoomList(chatRoomTable, data);
+            result = data;
+        },
+        error: function (data) {
+            console.error(data);
+        }
+    });
+    return result;
+}
 
-const createRowsForChatRoomList = function (targetTable, jsonList) {
+export const createRowsForChatRoomList = function (targetTable, jsonList) {
     jsonList.forEach(function (data, index) {
 
         let row = targetTable.querySelector("tbody").insertRow(-1);

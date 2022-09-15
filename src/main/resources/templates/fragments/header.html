@@ -157,23 +157,22 @@
         <div class="container-fluid p-0" id="navBottomContainer">
             <ul class="nav nav-tabs w-100">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/" id="NavTab-Home">Home</a>
+                    <a class="nav-link" aria-current="page" href="/" id="NavTab-Home">Home</a>
                 </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" aria-current="page" href="#test" id="NavTab-Test">Test</a>-->
+<!--                </li>-->
                 <li class="nav-item">
                     <button class="nav-link" aria-current="page" id="NavTab-MyMBTIList">My MBTI List</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" aria-current="page" id="NavTab-Test">Test 2</button>
-
                 </li>
                 <li class="nav-item">
                     <button sec:authorize="hasRole('ADMIN')" class="nav-link" id="NavTab-UserList">User List</button>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/chat-list" id="NavTab-ChatRoomList">Chat Room List</a>
+                    <button class="nav-link" id="NavTab-ChatRoomList">Chat Room List</button>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" id="NavTab-Statistics">Statistics</a>
+                    <button class="nav-link" id="NavTab-Statistics">Statistics</button>
                 </li>
             </ul>
         </div>
