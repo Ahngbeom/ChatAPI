@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
-<!--layout:decorator="~{layouts/default_layout}"-->
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
 
-<th:block th:replace="/fragments/header :: header"/>
-<body style="padding-top: 100px;">
+<th:block layout:fragment="banner">
+    <th:div th:insert="fragments/banner :: banner('MBTI Register', null)" class="d-flex flex-column text-center ms-3"></th:div>
+</th:block>
 
-<!--<th:block th:replace="fragments/header :: navbar"/>-->
-<th:block th:replace="/fragments/header :: offcanvas"/>
-<div class="container-fluid mt-xl-5" id="mainContainer">
-
-    <th:block th:replace="/fragments/banner :: banner('center', 'MBTI', 'Register')"/>
-
+<th:block layout:fragment="content">
     <div class="d-flex flex-column">
         <div class="d-flex flex-column border border-1 border-secondary m-2">
             <h3 class="d-flex justify-content-center">당신은 외향적입니까? 내향적입니까?</h3>
             <div class="d-flex justify-content-center">
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="focused" id="focusedExtraversion" value="Extraversion">
+                    <input class="form-check-input" type="radio" name="focused" id="focusedExtraversion"
+                           value="Extraversion">
                     <label class="form-check-label" for="focusedExtraversion">
                         외향적(Extraversion)
                     </label>
                 </div>
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="focused" id="focusedIntroversion" value="Introversion">
+                    <input class="form-check-input" type="radio" name="focused" id="focusedIntroversion"
+                           value="Introversion">
                     <label class="form-check-label" for="focusedIntroversion">
                         내향적(Introversion)
                     </label>
@@ -36,13 +35,15 @@
             <h3 class="d-flex justify-content-center">당신의 인식 방식은 어떠합니까?</h3>
             <div class="d-flex justify-content-center">
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="recognition" id="recognitionSensing" value="Sensing">
+                    <input class="form-check-input" type="radio" name="recognition" id="recognitionSensing"
+                           value="Sensing">
                     <label class="form-check-label" for="recognitionSensing">
                         감각적(Sensing)
                     </label>
                 </div>
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="recognition" id="recognitionIntuition" value="Intuition">
+                    <input class="form-check-input" type="radio" name="recognition" id="recognitionIntuition"
+                           value="Intuition">
                     <label class="form-check-label" for="recognitionIntuition">
                         직관적(Intuition)
                     </label>
@@ -94,11 +95,11 @@
 
         </div>
     </div>
-
     <th:block th:replace="fragments/modal :: modal('mbtiRegisterModal')"/>
-</div>
+</th:block>
 
 </body>
-<th:block th:replace="fragments/footer :: footer"/>
-<script type="module" src="/js/mbti/registration.js"></script>
+<th:block layout:fragment="additionalScript">
+    <script type="module" src="/js/mbti/registration.js"></script>
+</th:block>
 </html>

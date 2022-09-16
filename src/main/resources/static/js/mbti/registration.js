@@ -109,7 +109,7 @@ checkMBTIResultBtn.addEventListener('click', function () {
         $.ajax({
             async: false,
             type: 'POST',
-            url: '/mbti/registration',
+            url: '/api/mbti/registration',
             data: JSON.stringify(mbtiJson),
             dataType: 'JSON',
             contentType: 'application/json; charset=utf-8',
@@ -119,7 +119,7 @@ checkMBTIResultBtn.addEventListener('click', function () {
                 mbtiRegisterModalElem.querySelector(".modal-body").innerHTML = "Registration was successful.";
                 mbtiSubmitBtn.innerHTML = "Return to MBTI List";
                 mbtiSubmitBtn.addEventListener('click', function () {
-                    location.href = "/mbti";
+                    location.href = "/mbti/list";
                 }, {once: true});
                 mbtiRegisterModalElem.querySelector("button[data-bs-dismiss='modal']").addEventListener('click', function () {
                     location.reload();

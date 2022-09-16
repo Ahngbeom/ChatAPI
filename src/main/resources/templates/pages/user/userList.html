@@ -5,7 +5,11 @@
       layout:decorate="~{layouts/default_layout}">
 <body>
 
-<th:block layout:fragment="content">
+<th:div layout:fragment="banner" class="container-fluid p-0" th:id="bannerContainer">
+    <div class="d-flex d-block flex-column">
+        <h1 class="d-flex justify-content-center">M B T I</h1>
+        <h4 class="d-flex justify-content-center">Myers-Briggs Type Indicator</h4>
+    </div>
     <div class="navbar navbar-expand-lg navbar-dark sticky-top p-0 justify-content-around" style="top: 120px;">
         <ul class="nav nav-pills nav-fill nav-justified">
             <li class="nav-item" th:each="mbti, index : ${mbtiInfoList}">
@@ -16,6 +20,10 @@
         </ul>
     </div>
 
+</th:div>
+
+
+<th:block layout:fragment="content">
     <div class="container-fluid" id="contentContainer">
         <div class="card col-12 d-block my-2" th:each="mbti,index : ${mbtiInfoList}"
              th:id="${'card-mbti-' + mbti.code}"

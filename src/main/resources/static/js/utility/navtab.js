@@ -7,7 +7,7 @@ import {
     enableUserInfoInteractionBtn,
     userListContentLoad
 } from "/js/user/user.js";
-import {createRowsForChatRoomList, getChatRoomList} from "/js/chat/getList.js";
+import {createRowsForChatRoomList, getChatRoomList, getChatRoomListContentLoad} from "/js/chat/getList.js";
 import {removeChildNode, replaceChildNode} from "/js/utility/changeElement.js";
 
 export const navTab = document.querySelector("#navBottomContainer .nav-tabs");
@@ -44,7 +44,7 @@ const sessionStoredContentStatDetector = function () {
             userListContentLoad();
             break;
         case "NavTab-ChatRoomList":
-            userListContentLoad();
+            getChatRoomListContentLoad();
             break;
         default:
             break;
@@ -76,25 +76,7 @@ getUserListTab != null ? getUserListTab.addEventListener('click', function () {
 }) : false;
 
 getChatRoomListTab != null ? getChatRoomListTab.addEventListener('click', function () {
-    const chatRoomList = getChatRoomList();
-
-    contentContainer.innerHTML = "<div id=\"chatRoomListDiv\" class=\"flex-column\">\n" +
-        "        <div class=\"d-flex justify-content-end\" id=\"btnAreaForchatRoomList\">\n" +
-        "            <button class=\"btn btn-info me-3\" onclick=\"location.href='/chat/create'\">Create</button>\n" +
-        "        </div>\n" +
-        "        <table class=\"table table-striped table-hover table-responsive\" id='chatRoomTable'>\n" +
-        "            <thead>\n" +
-        "            <tr>\n" +
-        "                <th class=\"col-7\" colspan=\"1\" scope=\"col\">Room Name</th>\n" +
-        "                <th class=\"col-4\" colspan=\"1\" scope=\"col\">Concurrent connected User</th>\n" +
-        "                <th class=\"col-1\" colspan=\"1\" scope=\"col\"></th>\n" +
-        "            </tr>\n" +
-        "            </thead>\n" +
-        "            <tbody class=\"\">\n" +
-        "            </tbody>\n" +
-        "        </table>\n" +
-        "    </div>";
-    createRowsForChatRoomList(document.querySelector("#chatRoomTable"), chatRoomList);
+    getChatRoomListContentLoad();
 }) : false;
 
 

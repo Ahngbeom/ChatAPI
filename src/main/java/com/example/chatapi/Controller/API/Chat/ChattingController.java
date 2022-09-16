@@ -1,4 +1,4 @@
-package com.example.chatapi.Controller.Chat;
+package com.example.chatapi.Controller.API.Chat;
 
 import com.example.chatapi.STOMP.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;

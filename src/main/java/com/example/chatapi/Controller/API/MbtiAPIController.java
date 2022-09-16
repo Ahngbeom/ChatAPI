@@ -1,4 +1,4 @@
-package com.example.chatapi.Controller;
+package com.example.chatapi.Controller.API;
 
 import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.Service.MbtiService;
@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/mbti")
 @RequiredArgsConstructor
-public class MbtiController {
+public class MbtiAPIController {
 
 	private final UserService userService;
 	private final MbtiService mbtiService;
@@ -43,13 +43,13 @@ public class MbtiController {
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
-	public ResponseEntity<List<MbtiDTO>> getList(Principal principal, @RequestParam(required = false) Long userNo) {
+	public ResponseEntity<List<MbtiDTO>> getList(Principal principal, @RequestParam(required = false) String username) {
 		try {
 			log.info(principal.getName());
-			if (userNo == null) {
-				userNo = userService.getUserInfo(principal.getName()).getId();
+			if (username == null) {
+				username = principal.getName();
 			}
-			List<MbtiDTO> list = mbtiService.getUserMbtiList(userNo);
+			List<MbtiDTO> list = mbtiService.getUserMbtiList(username);
 			list.forEach(mbtiDTO -> log.info(mbtiDTO.getCode()));
 			return ResponseEntity.ok().body(list);
 		} catch (Exception e) {

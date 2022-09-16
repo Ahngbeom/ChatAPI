@@ -1,4 +1,4 @@
-package com.example.chatapi.Controller;
+package com.example.chatapi.Controller.API;
 
 import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +21,9 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
-public class UserController {
+public class UserAPIController {
 
 	private final UserService userService;
 
@@ -73,9 +73,9 @@ public class UserController {
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/user-authorities")
-	public ResponseEntity<List<AuthorityDTO>> userAuthorities(@AuthenticationPrincipal Principal principal, @RequestParam Long userNo) {
+	public ResponseEntity<List<AuthorityDTO>> userAuthorities(@RequestParam String username) {
 		try {
-			List<AuthorityDTO> userAuthorities = userService.getUserAuthorities(userNo);
+			List<AuthorityDTO> userAuthorities = userService.getUserAuthorities(username);
 			userAuthorities.forEach(authorityDTO -> {
 				log.info(authorityDTO.getAuthorityName());
 			});

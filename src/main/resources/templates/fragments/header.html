@@ -157,19 +157,22 @@
         <div class="container-fluid p-0" id="navBottomContainer">
             <ul class="nav nav-tabs w-100">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/" id="NavTab-Home">Home</a>
+                    <a class="nav-link" th:classappend="${#httpServletRequest.servletPath} == '/' ? 'active' : ''" aria-current="page" href="/" id="NavTab-Home">Home</a>
                 </li>
 <!--                <li class="nav-item">-->
 <!--                    <a class="nav-link" aria-current="page" href="#test" id="NavTab-Test">Test</a>-->
 <!--                </li>-->
                 <li class="nav-item">
-                    <button class="nav-link" aria-current="page" id="NavTab-MyMBTIList">My MBTI List</button>
+<!--                    <button class="nav-link" aria-current="page" id="NavTab-MyMBTIList">My MBTI List</button>-->
+                    <a class="nav-link" th:classappend="${#httpServletRequest.servletPath} == '/mbti/list' ? 'active' : ''" aria-current="page" href="/mbti/list">My MBTI List</a>
                 </li>
                 <li class="nav-item">
-                    <button sec:authorize="hasRole('ADMIN')" class="nav-link" id="NavTab-UserList">User List</button>
+<!--                    <button sec:authorize="hasRole('ADMIN')" class="nav-link" id="NavTab-UserList">User List</button>-->
+                    <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:classappend="${#httpServletRequest.servletPath} == '/user/list' ? 'active' : ''" href="/user/list">User List</a>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" id="NavTab-ChatRoomList">Chat Room List</button>
+<!--                    <button class="nav-link" id="NavTab-ChatRoomList">Chat Room List</button>-->
+                    <a class="nav-link" th:classappend="${#httpServletRequest.servletPath} == '/chat/list' ? 'active' : ''" href="/chat/list">Chat Room List</a>
                 </li>
                 <li class="nav-item">
                     <button class="nav-link" id="NavTab-Statistics">Statistics</button>

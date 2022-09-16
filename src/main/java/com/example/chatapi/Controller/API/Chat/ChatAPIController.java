@@ -1,4 +1,4 @@
-package com.example.chatapi.Controller.Chat;
+package com.example.chatapi.Controller.API.Chat;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
 import com.example.chatapi.Service.ChatService;
@@ -15,16 +15,22 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 public class ChatAPIController {
 
     private final UserService userService;
     private final ChatService chatService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/listOfAll")
+    public ResponseEntity<List<ChatRoomDTO>> getListOfAllChatRooms() {
+        return ResponseEntity.ok(chatService.getListOfAllChatRooms());
+    }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
-    public ResponseEntity<List<ChatRoomDTO>> getChatRoomList() {
-        return ResponseEntity.ok(chatService.getChatRoomList());
+    public ResponseEntity<List<ChatRoomDTO>> getListOfAllChatRoomsUserHasJoined(Principal principal) {
+        return ResponseEntity.ok(chatService.getListOfAllChatRoomsUserHasJoined(userService.getUserInfo(principal.getName()).getUsername()));
     }
 
     @PreAuthorize("isAuthenticated()")

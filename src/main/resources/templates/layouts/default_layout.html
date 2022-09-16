@@ -9,12 +9,13 @@
 <div class="container-fluid p-0" id="mainContainer">
 
     <th:block layout:fragment="banner">
-        <th:block th:replace="/fragments/banner :: MBTI-banner"/>
+        <th:div th:insert="/fragments/banner :: MBTI-banner" class="d-flex flex-column justify-content-center text-center"/>
     </th:block>
-
+    <hr>
     <th:block layout:fragment="content">
     </th:block>
 
+    <th th:replace="/fragments/toast :: toast('pageToast')"></th>
 </div>
 </body>
 <th:block layout:fragment="defaultScript">

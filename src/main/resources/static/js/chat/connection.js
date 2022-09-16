@@ -7,6 +7,12 @@ const sendMessageBtn = document.getElementById("chat-send-message-btn");
 let socket = null;
 let stompClient = null;
 
+export const enableJoinChattingService = function () {
+    document.querySelector(".joinChattingRoomBtn").addEventListener('click', function () {
+        chattingRoomEnter();
+    });
+}
+
 function chattingRoomEnter() {
     connect();
     chatModal.show();

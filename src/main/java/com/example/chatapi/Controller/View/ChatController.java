@@ -3,20 +3,22 @@ package com.example.chatapi.Controller.View;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
+@RequestMapping("/chat")
 public class ChatController {
 
-    @GetMapping({"/chat"})
+    @GetMapping({"/"})
     public String chatGet() {
 //        log.info("@ChatController, chat GET()");
         return "pages/chat/chat";
     }
 
-    @GetMapping({"/chat-list"})
+    @GetMapping({"/list"})
     public String chatListGet() {
 //        log.info("@ChatController, chat GET()");
-        return "pages/chat/chat-list";
+        return "pages/chat/chatList";
     }
 }

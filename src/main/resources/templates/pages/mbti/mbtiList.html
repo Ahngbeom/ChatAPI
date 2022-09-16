@@ -5,10 +5,15 @@
       layout:decorate="~{layouts/default_layout}">
 <body>
 
-<!--    <th:block th:replace="/fragments/banner :: MBTI-banner"/>-->
+<!--<th:block layout:fragment="banner">-->
+<!--    <th:div th:insert="fragments/banner :: banner('My MBTI', 'My MBTI List')" class="d-flex flex-column ms-3"></th:div>-->
+<!--</th:block>-->
 
 <th:block layout:fragment="content">
-    <th:block th:replace="fragments/mbti :: mbtiTable"></th:block>
+    <th:block th:replace="fragments/mbti :: mbtiTable(${MBTI_List})">
+
+    </th:block>
+
     <th:block th:replace="fragments/modal :: modal('viewUserInfoModal')"></th:block>
 </th:block>
 
