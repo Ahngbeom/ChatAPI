@@ -41,13 +41,12 @@ public class MbtiServiceImpl implements MbtiService {
         MBTIInfoEntity mbtiInfoEntity = mbtiRepository.findById(mbtiDTO.getCode()).orElse(null);
 
         assert mbtiInfoEntity != null;
-        if (userMbtiRepository.existsByMbti_CodeAndUser_id(mbtiInfoEntity.getCode(), userDTO.getId())) {
-            UserMbtiJoinEntity userMbtiJoinEntity = userMbtiRepository.findByMbti_CodeAndUser_id(mbtiInfoEntity.getCode(), userDTO.getId());
+        if (userMbtiRepository.existsByMbti_CodeAndUser_Username(mbtiInfoEntity.getCode(), userDTO.getUsername())) {
+            UserMbtiJoinEntity userMbtiJoinEntity = userMbtiRepository.findByMbti_CodeAndUser_Username(mbtiInfoEntity.getCode(), userDTO.getUsername());
             userMbtiJoinEntity.increaseNumberOfTimes();
             return userMbtiRepository.save(userMbtiJoinEntity).getClass().equals(UserMbtiJoinEntity.class);
         } else {
             return userMbtiRepository.save(UserMbtiJoinEntity.builder()
-                    .id(userDTO.getId())
                     .user(UserEntity.convertToUserEntity(userDTO))
                     .mbti(mbtiInfoEntity)
                     .numberOfTimes(1)
@@ -65,10 +64,10 @@ public class MbtiServiceImpl implements MbtiService {
     }
 
     @Override
-    public List<MbtiDTO> getUserMbtiList(Long userNo) throws RuntimeException {
+    public List<MbtiDTO> getUserMbtiList(String username) throws RuntimeException {
 //        UserEntity userEntity = userRepository.findOneWithAuthoritiesByUsername(username).orElseThrow(() -> new RuntimeException("Not found UserEntity"));
         List<MbtiDTO> mbtiList = new ArrayList<>();
-        userMbtiRepository.findAllByUser_id(userNo).forEach(userMbtiJoinEntity -> {
+        userMbtiRepository.findAllByUser_Username(username).forEach(userMbtiJoinEntity -> {
 //            MbtiDTO mbtiDTO = MbtiDTO.convertMbtiEntityToMbtiDTO(userMbtiJoinEntity.getMbti());
 //            mbtiDTO.setNumberOfTimes(userMbtiJoinEntity.getNumberOfTimes());
             MbtiDTO mbtiDTO = MbtiDTO.convertUserMbtiEntityToMbtiDTO(userMbtiJoinEntity);

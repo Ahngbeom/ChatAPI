@@ -2,7 +2,6 @@ package com.example.chatapi.Service;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
 import com.example.chatapi.DTO.MbtiDTO;
-import com.example.chatapi.Entity.MBTI.MBTIInfoEntity;
 import com.example.chatapi.Repository.ChatMBTIRepository;
 import com.example.chatapi.Repository.ChatRoomRepository;
 import com.example.chatapi.Repository.MbtiRepository;
@@ -12,10 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Set;
 
 @Slf4j
 @SpringBootTest
@@ -44,9 +39,17 @@ class ChatServiceImplTest {
 
     @Test
     void getChatRoomList() {
-        chatService.getChatRoomList().forEach(chatRoomDTO -> {
+        chatService.getListOfAllChatRooms().forEach(chatRoomDTO -> {
             log.info(chatRoomDTO.toString());
         });
+    }
+
+    @Test
+    void getListOfAllChatRooms() {
+    }
+
+    @Test
+    void getListOfAllChatRoomsUserHasJoined() {
     }
 
     @Test
@@ -56,7 +59,7 @@ class ChatServiceImplTest {
             ChatRoomDTO newRoom = ChatRoomDTO.builder()
                     .roomName("TEST ROOM")
                     .description("THIS ROOM IS FOR TESTING")
-                    .permitMBTICode(MbtiDTO.builder().code("....").build())
+                    .permitMBTICode(null)
                     .build();
             log.info(String.valueOf(chatService.createChatRoom("admin", newRoom)));
         } catch (Exception e) {
@@ -71,4 +74,6 @@ class ChatServiceImplTest {
             log.info(String.valueOf(mbtiInfoEntity.getCode().matches("....")));
         });
     }
+
+
 }

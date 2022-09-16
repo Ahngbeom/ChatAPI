@@ -10,10 +10,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Collections;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -40,6 +36,24 @@ class ChatRoomRepositoryTest {
         });
     }
 
+    @Test
+    void findByRoomName() {
+        chatRoomRepository.findAllByFounder_Username("admin").map(chatRoomEntities -> {
+            chatRoomEntities.forEach(chatRoomEntity -> {
+                log.info(chatRoomEntity.getRoomName());
+            });
+            return chatRoomEntities;
+        }).orElseThrow(RuntimeException::new);
+    }
+
+    @Test
+    void findAllByFounder() {
+    }
+
+    @Test
+    void getListOfAllChatRoomsUserHasJoined() {
+    }
+
     public void createChatRoom(String roomName, String permitMBTICode) throws RuntimeException {
         chatRoomRepository.save(
                 ChatRoomEntity.builder()
@@ -47,5 +61,6 @@ class ChatRoomRepositoryTest {
                         .build()
         );
     }
+
 
 }

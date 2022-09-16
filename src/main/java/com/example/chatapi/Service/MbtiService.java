@@ -15,6 +15,6 @@ public interface MbtiService {
 	boolean addMbti(UserDTO userDTO, MbtiDTO mbtiDTO) throws RuntimeException;
 
 	List<MbtiDTO> getAllMbtiList() throws RuntimeException;
-	List<MbtiDTO> getUserMbtiList(Long userNo) throws RuntimeException;
+	List<MbtiDTO> getUserMbtiList(String username) throws RuntimeException;
 
 }

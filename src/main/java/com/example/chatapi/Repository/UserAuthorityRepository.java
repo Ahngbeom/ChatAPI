@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface UserAuthorityRepository extends JpaRepository<UserAuthorityJoinEntity, Long> {
 
-    List<UserAuthorityJoinEntity> findAllByUser_Id(Long userId);
+    List<UserAuthorityJoinEntity> findAllByUser_Username(String username);
 }

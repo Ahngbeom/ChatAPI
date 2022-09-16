@@ -24,11 +24,12 @@ import java.util.Set;
 public class UserEntity implements Serializable {
     // Serializable : 분산환경, 직렬화하여 외부 전송?
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
-    @Column(length = 50, unique = true)
+    @Id
+    @Column(length = 50)
     private String username;
 
     @Column(length = 100)
@@ -65,7 +66,7 @@ public class UserEntity implements Serializable {
 
     public static UserEntity convertToUserEntity(UserDTO dto) {
         return UserEntity.builder()
-                .id(dto.getId())
+//                .id(dto.getId())
                 .username(dto.getUsername())
                 .password(dto.getPassword())
                 .nickname(dto.getPassword())

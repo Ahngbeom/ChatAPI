@@ -14,7 +14,7 @@ public interface UserService {
 
     List<UserDTO> getUserList() throws Exception;
 
-    List<AuthorityDTO> getUserAuthorities(Long userNo);
+    List<AuthorityDTO> getUserAuthorities(String username);
 
     Boolean nicknameValidation(String nickname);
 }

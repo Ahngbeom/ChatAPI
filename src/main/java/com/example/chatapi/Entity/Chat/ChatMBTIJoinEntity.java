@@ -20,10 +20,10 @@ public class ChatMBTIJoinEntity {
 
     @ManyToOne
     @JoinColumn(name = "chat_room_name")
-    private ChatRoomEntity chatRoomName;
+    private ChatRoomEntity chatRoom;
 
     @ManyToOne
-    @JoinColumn(name = "mbti_code")
-    private MBTIInfoEntity mbtiCode;
+    @JoinColumn(name = "permit_mbti_code")
+    private MBTIInfoEntity permitMBTI;
 
 }

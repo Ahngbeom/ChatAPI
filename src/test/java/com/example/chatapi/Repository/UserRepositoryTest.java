@@ -21,6 +21,15 @@ class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
+    void save() {
+        userRepository.save(UserEntity.builder()
+                        .username("admin")
+                        .nickname("ADMIN")
+                        .password("admin")
+                .build());
+    }
+
+    @Test
     void findByUsername() {
 //        UserEntity entity = userRepository.findOneWithAuthoritiesByUsername("admin").orElseThrow(RuntimeException::new);
         UserEntity entity = userRepository.findByUsername("admin").orElseThrow(RuntimeException::new);

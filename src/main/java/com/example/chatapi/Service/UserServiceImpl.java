@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -77,7 +76,7 @@ public class UserServiceImpl implements UserService {
 //        UserEntity entity = userRepository.findOneWithAuthoritiesByUsername(username).orElseThrow(() -> new RuntimeException("Not Found UserEntity in DataBase"));
         UserEntity entity = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not Found UserEntity in DataBase"));
 
-        List<UserAuthorityJoinEntity> userAuthorityEntity = userAuthorityRepository.findAllByUser_Id(entity.getId());
+        List<UserAuthorityJoinEntity> userAuthorityEntity = userAuthorityRepository.findAllByUser_Username(entity.getUsername());
 //        userAuthorityEntity = userAuthorityRepository.findAll();
         Set<AuthorityDTO> authorityDTOHashSet = new HashSet<>();
         userAuthorityEntity.forEach(userAuthorityJoinEntity -> authorityDTOHashSet.add(AuthorityDTO.builder()
@@ -85,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
 //        log.info(authorityDTOHashSet.toString());
         return UserDTO.builder()
-                .id(entity.getId())
+//                .id(entity.getId())
                 .username(entity.getUsername())
                 .password(entity.getPassword())
                 .nickname(entity.getNickname())
@@ -125,9 +124,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<AuthorityDTO> getUserAuthorities(Long userNo) {
+    public List<AuthorityDTO> getUserAuthorities(String username) {
         List<AuthorityDTO> authorities = new ArrayList<>();
-        userAuthorityRepository.findAllByUser_Id(userNo).forEach(entity -> {
+        userAuthorityRepository.findAllByUser_Username(username).forEach(entity -> {
             authorities.add(AuthorityDTO.convertToAuthorityDTO(entity.getAuthority()));
         });
         return authorities;

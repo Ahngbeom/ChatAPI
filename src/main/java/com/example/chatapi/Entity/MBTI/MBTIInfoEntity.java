@@ -41,7 +41,7 @@ public class MBTIInfoEntity {
 //	private Set<ChatRoomEntity> ChatRooms;
 
 	@ToString.Exclude
-	@OneToMany(mappedBy = "mbtiCode")
+	@OneToMany(mappedBy = "permitMBTI")
 	private Set<ChatMBTIJoinEntity> ChatMBTI;
 
 	public static MBTIInfoEntity convertToMbtiEntity(MbtiDTO dto) {

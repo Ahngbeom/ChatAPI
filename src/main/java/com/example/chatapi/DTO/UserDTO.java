@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserDTO {
 
-    private Long id;
+//    private Long id;
 
     @NotNull
     private String username;
@@ -43,7 +43,7 @@ public class UserDTO {
     public static UserDTO convertToUserDTO(UserEntity userEntity) {
         try {
             return UserDTO.builder()
-                    .id(userEntity.getId())
+//                    .id(userEntity.getId())
                     .username(userEntity.getUsername())
                     .password(userEntity.getPassword())
                     .nickname(userEntity.getNickname())

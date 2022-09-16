@@ -21,7 +21,7 @@ class UserMbtiRepositoryTest {
 
     @Test
     void findAllByUser_id() {
-        userMbtiRepository.findAllByUser_id(31L).forEach(entity -> {
+        userMbtiRepository.findAllByUser_Username("admin").forEach(entity -> {
 //            log.info(entity.getUser().toString());
             log.info(entity.getMbti().toString());
             log.info(String.valueOf(entity.getId()));
@@ -31,7 +31,7 @@ class UserMbtiRepositoryTest {
 
     @Test
     void findByMbti_CodeAndUser_id() {
-        UserMbtiJoinEntity entity = userMbtiRepository.findByMbti_CodeAndUser_id("ESTJ-A / ESTJ-T", 31L);
+        UserMbtiJoinEntity entity = userMbtiRepository.findByMbti_CodeAndUser_Username("ESTJ-A / ESTJ-T", "admin");
         log.info(entity.getUser().toString());
         log.info(entity.getMbti().toString());
     }
@@ -39,9 +39,9 @@ class UserMbtiRepositoryTest {
     @Test
     void existsByMbtiAndUser_id() {
         log.info(String.valueOf(userMbtiRepository.existsById(11L)));
-        log.info(String.valueOf(userMbtiRepository.existsByUser_id(31L)));
+        log.info(String.valueOf(userMbtiRepository.existsByUser_Username("admin")));
         log.info(String.valueOf(userMbtiRepository.existsByMbti_Code("ESTJ-A / ESTJ-T")));
-        log.info(String.valueOf(userMbtiRepository.existsByMbti_CodeAndUser_id("ESTJ-A / ESTJ-T", 31L)));
+        log.info(String.valueOf(userMbtiRepository.existsByMbti_CodeAndUser_Username("ESTJ-A / ESTJ-T", "admin")));
 //        log.info(String.valueOf(userMbtiRepository.existsByCodeAndUser_id("ESTJ-A / ESTJ-T", 31L)));
     }
 

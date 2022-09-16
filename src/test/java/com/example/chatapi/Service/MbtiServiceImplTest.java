@@ -48,12 +48,12 @@ class MbtiServiceImplTest {
                 .introduction("용감한 수호자...")
                 .build();
         log.info(String.valueOf(mbtiService.addMbti(user, mbti)));
-        getUserMbtiList(user.getId());
+        getUserMbtiList(user.getUsername());
     }
 
     @Test
-    void getUserMbtiList(Long userNo) {
-        mbtiService.getUserMbtiList(userNo).forEach(mbti -> {
+    void getUserMbtiList(String username) {
+        mbtiService.getUserMbtiList(username).forEach(mbti -> {
             log.info(mbti.toString());
         });
     }

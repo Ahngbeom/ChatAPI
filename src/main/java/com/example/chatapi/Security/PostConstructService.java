@@ -28,7 +28,7 @@ public class PostConstructService{
             초기화 콜백 함수 setAdmin 함수를 추가하여 H2 데이터베이스에 Admin 계정을 등록한다. */
         try {
             if (userRepository.findByUsername("admin").isPresent())
-                throw new RuntimeException("setAdmin(): EXIST [manager] ACCOUNT");
+                throw new RuntimeException("setAdmin(): EXIST [admin] ACCOUNT");
 
             UserDTO adminDTO = UserDTO.builder()
                     .username("admin")

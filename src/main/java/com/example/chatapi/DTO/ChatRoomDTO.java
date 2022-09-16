@@ -25,7 +25,7 @@ public class ChatRoomDTO {
     private String createDate;
 
 //    @ToString.Exclude
-    private MbtiDTO permitMBTICode;
+    private List<MbtiDTO> permitMBTICode;
 
     @ToString.Exclude
     private List<ChatLogDTO> log;
@@ -51,7 +51,7 @@ public class ChatRoomDTO {
 //        this.permitMBTICode = permitMBTICode;
 //    }
 
-    public void setPermitMBTICode(MbtiDTO permitMBTICode) {
+    public void setPermitMBTICode(List<MbtiDTO> permitMBTICode) {
         this.permitMBTICode = permitMBTICode;
     }
 

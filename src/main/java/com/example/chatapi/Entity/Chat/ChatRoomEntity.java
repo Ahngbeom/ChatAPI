@@ -33,7 +33,7 @@ public class ChatRoomEntity {
 //	private Set<MBTIInfoEntity> permitMBTICode;
 
 	@ToString.Exclude
-	@OneToMany(mappedBy = "chatRoomName", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY)
 	private Set<ChatMBTIJoinEntity> permitMBTICodes;
 
 	@Column(name = "create_date")
