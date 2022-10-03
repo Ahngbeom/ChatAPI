@@ -1,12 +1,12 @@
-export function ajaxGetUserAuthorities(userNo) {
+export function ajaxGetUserAuthorities(username) {
     $.ajax({
         type: 'GET',
-        url: '/user-authorities',
+        url: '/api/user/authorities',
         contentType: "application/json; charset=utf-8",
         dataType: 'JSON',
-        data: {userNo: userNo},
+        data: {username: username},
         success: function (data) {
-            const modalElem = document.querySelector("#staticBackdropModal");
+            const modalElem = document.querySelector("#simpleInquiryModal");
             renewalModal({
                 target: modalElem,
                 title: "User's Authorities",

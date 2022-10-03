@@ -12,7 +12,7 @@ public interface UserService {
 
     UserDTO getUserInfo(String username) throws UsernameNotFoundException;
 
-    List<UserDTO> getUserList() throws Exception;
+    List<UserDTO> getUserList();
 
     List<AuthorityDTO> getUserAuthorities(String username);
 

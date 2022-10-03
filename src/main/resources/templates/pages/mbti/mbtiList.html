@@ -5,9 +5,9 @@
       layout:decorate="~{layouts/default_layout}">
 <body>
 
-<!--<th:block layout:fragment="banner">-->
-<!--    <th:div th:insert="fragments/banner :: banner('My MBTI', 'My MBTI List')" class="d-flex flex-column ms-3"></th:div>-->
-<!--</th:block>-->
+<th:div layout:fragment="banner" class="text-center">
+    <h2>My MBTI List</h2>
+</th:div>
 
 <th:block layout:fragment="content">
     <th:block th:replace="fragments/mbti :: mbtiTable(${MBTI_List})">

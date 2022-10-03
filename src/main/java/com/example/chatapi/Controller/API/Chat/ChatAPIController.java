@@ -37,8 +37,7 @@ public class ChatAPIController {
     @PostMapping("/create")
     public ResponseEntity<Boolean> createChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoom) {
         log.warn(chatRoom.toString());
-        chatService.createChatRoom(principal.getName(), chatRoom);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok(chatService.createChatRoom(principal.getName(), chatRoom));
     }
 
 }

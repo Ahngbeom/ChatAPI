@@ -40,7 +40,7 @@ class ChatRoomRepositoryTest {
     void findByRoomName() {
         chatRoomRepository.findAllByFounder_Username("admin").map(chatRoomEntities -> {
             chatRoomEntities.forEach(chatRoomEntity -> {
-                log.info(chatRoomEntity.getRoomName());
+                log.info(String.valueOf(chatRoomEntity));
             });
             return chatRoomEntities;
         }).orElseThrow(RuntimeException::new);

@@ -104,11 +104,10 @@
 </th:block>
 
 <th:block th:fragment="createChatModal">
-    <div class="modal fade show" id="createChatRoomModal" data-bs-backdrop="static" data-bs-keyboard="false"
-         tabindex="-1" aria-labelledby="createChatRoomModalLabel" aria-modal="true" role="dialog"
-         style="display: block;">
+    <div class="modal fade" id="createChatRoomModal" data-bs-backdrop="static" data-bs-keyboard="false"
+         tabindex="-1" aria-labelledby="createChatRoomModalLabel" aria-modal="true" role="dialog">
         <th:block th:replace="/fragments/toast :: toast('modalToast')"></th:block>
-        <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="createChatRoomModalLabel">Create Chatting Room</h5>
@@ -137,7 +136,7 @@
                                 <div class="input-group row mb-3">
                                     <span class="input-group-text col-sm-3 text-wrap">MBTI to allow entry</span>
                                     <div class="form-control col-sm-8 p-2 d-flex flex-column"
-                                         id="createChatRoompermitMBTICode">
+                                         id="createChatRoomPermitMBTICode">
                                         <div class="d-flex justify-content-center">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
@@ -193,8 +192,12 @@
                                                 <label class="form-check-label col-12" for="checkbox_P">P</label>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-outline-primary" id="addPermitMBTICodeBtn">Add</button>
-                                        <th:div th:replace="fragments/toast :: MBTICodeToast"></th:div>
+<!--                                        <button type="button" class="btn btn-outline-primary" id="addPermitMBTICodeBtn">Add</button>-->
+<!--                                        <button type="button" class="btn btn-outline-secondary" id="resetPermitMBTICodeBtn">Reset</button>-->
+                                        <div class="d-flex flex-column" id="MBTICodeToastArea">
+                                            <ul class="list-group list-group-flush">
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </form>

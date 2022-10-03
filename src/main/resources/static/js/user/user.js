@@ -2,6 +2,7 @@ import {ajaxGetUserAuthorities} from "./authority.js";
 import {ajaxAdminGetUserMbtiList} from "/js/mbti/getInfo.js";
 import {replaceChildNode} from "/js/utility/changeElement.js";
 
+
 export const userListContentLoad = function () {
     replaceChildNode(bannerContainer, "<div class=\"d-flex d-block flex-column\">\n" +
         "        <h1 class=\"d-flex justify-content-center\">User List</h1>\n" +
@@ -34,15 +35,16 @@ export const enableUserInfoInteractionBtn = function () {
     const getUserMBTIListBtnList = document.querySelectorAll(".getUserMBTIListBtn");
     getUserAuthoritiesBtnList.forEach(btn => {
         btn.addEventListener('click', function (e) {
-            ajaxGetUserAuthorities(e.currentTarget.dataset.userno);
+            ajaxGetUserAuthorities(e.currentTarget.dataset.username);
         });
     });
     getUserMBTIListBtnList.forEach(btn => {
         btn.addEventListener('click', function (e) {
-            ajaxAdminGetUserMbtiList(e.currentTarget.dataset.userno);
+            ajaxAdminGetUserMbtiList(e.currentTarget.dataset.username);
         });
     });
 }
+enableUserInfoInteractionBtn();
 
 export const createUsersTableElement = function (data) {
     const table = document.createElement('table');

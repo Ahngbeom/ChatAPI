@@ -72,7 +72,7 @@ public class UserAPIController {
 	}
 
 	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/user-authorities")
+	@GetMapping("/authorities")
 	public ResponseEntity<List<AuthorityDTO>> userAuthorities(@RequestParam String username) {
 		try {
 			List<AuthorityDTO> userAuthorities = userService.getUserAuthorities(username);

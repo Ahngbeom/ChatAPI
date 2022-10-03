@@ -25,7 +25,7 @@ public class ChatRoomDTO {
     private String createDate;
 
 //    @ToString.Exclude
-    private List<MbtiDTO> permitMBTICode;
+    private List<String> permitMBTICode;
 
     @ToString.Exclude
     private List<ChatLogDTO> log;
@@ -33,10 +33,6 @@ public class ChatRoomDTO {
     public void setRoomName(String roomName) {
         this.roomName = roomName;
     }
-
-//    public void setCreateDate(LocalDateTime createDate) {
-//        this.createDate = createDate;
-//    }
 
     public void setDescription(String description) {
         this.description = description;
@@ -46,12 +42,7 @@ public class ChatRoomDTO {
         this.createDate = createDate;
     }
 
-
-//    public void setPermitMBTICode(List<MbtiDTO> permitMBTICode) {
-//        this.permitMBTICode = permitMBTICode;
-//    }
-
-    public void setPermitMBTICode(List<MbtiDTO> permitMBTICode) {
+    public void setPermitMBTICode(List<String> permitMBTICode) {
         this.permitMBTICode = permitMBTICode;
     }
 

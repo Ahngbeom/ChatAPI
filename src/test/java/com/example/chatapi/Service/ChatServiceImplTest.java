@@ -50,6 +50,9 @@ class ChatServiceImplTest {
 
     @Test
     void getListOfAllChatRoomsUserHasJoined() {
+        chatService.getListOfAllChatRoomsUserHasJoined("admin").forEach(chatRoomDTO -> {
+            log.info(chatRoomDTO.toString());
+        });
     }
 
     @Test

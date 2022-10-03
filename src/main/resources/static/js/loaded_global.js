@@ -6,3 +6,5 @@ const mainContainer = document.getElementById("mainContainer");
 const contentContainer = document.getElementById("contentContainer");
 
 const bannerContainer = document.querySelector("#bannerContainer");
+
+toastDetector();

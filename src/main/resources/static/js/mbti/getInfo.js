@@ -1,14 +1,33 @@
 
-export const ajaxAdminGetUserMbtiList = function (userNo) {
+export const MBTI_CODES = [
+    "ENFJ",
+    "ENFP",
+    "ENTJ",
+    "ENTP",
+    "ESFJ",
+    "ESFP",
+    "ESTJ",
+    "ESTP",
+    "INFJ",
+    "INFP",
+    "INTJ",
+    "INTP",
+    "ISFJ",
+    "ISFP",
+    "ISTJ",
+    "ISTP",
+].sort();
+
+export const ajaxAdminGetUserMbtiList = function (username) {
     $.ajax({
         type: 'GET',
         url: '/api/mbti/list',
         contentType: 'application/json; charset=utf-8',
         dataType: 'JSON',
-        data: {userNo: userNo},
+        data: {username: username},
         success: function (data) {
-            console.log(data.length);
-            const modalElem = document.querySelector("#staticBackdropModal");
+            console.log(data);
+            const modalElem = document.querySelector("#simpleInquiryModal");
             renewalModal({
                 target: modalElem,
                 title: "User's MBTI List",
@@ -16,7 +35,7 @@ export const ajaxAdminGetUserMbtiList = function (userNo) {
             });
             if (data.length > 0) {
                 data.forEach(mbtiData => {
-                    document.querySelector(".modal-body .list-group").innerHTML = "<li class=\"list-group-item\">" +
+                    modalElem.querySelector(".modal-body .list-group").innerHTML += "<li class=\"list-group-item\">" +
                         "    <div class=\"d-flex w-100 justify-content-between\">\n" +
                         "       <div class=\"mb-1 h3\">" + mbtiData.code +
                         "           <div class='h5'>" + mbtiData.personality + "</div>" +

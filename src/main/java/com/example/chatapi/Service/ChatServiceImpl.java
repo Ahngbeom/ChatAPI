@@ -31,10 +31,10 @@ public class ChatServiceImpl implements ChatService {
 
         chatRoomRepository.findAll().forEach(entity -> {
             List<ChatMBTIJoinEntity> chatMBTIJoinEntities = new ArrayList<>(entity.getPermitMBTICodes());
-            List<MbtiDTO> mbtiDTOList = new ArrayList<>();
+            List<String> mbtiDTOList = new ArrayList<>();
 
             chatMBTIJoinEntities.forEach(chatMBTIJoinEntity -> {
-                mbtiDTOList.add(MbtiDTO.convertMbtiEntityToMbtiDTO(chatMBTIJoinEntity.getPermitMBTI()));
+                mbtiDTOList.add(MbtiDTO.convertMbtiEntityToMbtiDTO(chatMBTIJoinEntity.getPermitMBTI()).getCode());
             });
 
             chatRoomDTOList.add(
@@ -54,15 +54,18 @@ public class ChatServiceImpl implements ChatService {
     public List<ChatRoomDTO> getListOfAllChatRoomsUserHasJoined(String username) throws RuntimeException {
 
         return chatRoomRepository.findAllByFounder_Username(username).map(chatRoomEntities -> {
+
             List<ChatRoomDTO> chatRoomDTOList = new ArrayList<>();
 
-
             chatRoomEntities.forEach(chatRoomEntity -> {
-                List<MbtiDTO> mbtiDTOList = new ArrayList<>();
-                List<ChatMBTIJoinEntity> chatMBTIJoinEntities = new ArrayList<>(chatRoomEntity.getPermitMBTICodes());
+
+                log.warn(String.valueOf(chatRoomEntity));
+                List<ChatMBTIJoinEntity> chatMBTIJoinEntities = new ArrayList<>(chatMBTIRepository.findAllByChatRoom_RoomName(chatRoomEntity.getRoomName()));
+
+                List<String> permitCodeList = new ArrayList<>();
 
                 chatMBTIJoinEntities.forEach(chatMBTIJoinEntity -> {
-                    mbtiDTOList.add(MbtiDTO.convertMbtiEntityToMbtiDTO(chatMBTIJoinEntity.getPermitMBTI()));
+                    permitCodeList.add(chatMBTIJoinEntity.getPermitMBTI().getCode());
                 });
 
                 chatRoomDTOList.add(
@@ -70,7 +73,7 @@ public class ChatServiceImpl implements ChatService {
                                 .roomName(chatRoomEntity.getRoomName())
                                 .description(chatRoomEntity.getDescription())
                                 .createDate(chatRoomEntity.getCreateDate().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)))
-                                .permitMBTICode(mbtiDTOList)
+                                .permitMBTICode(permitCodeList)
                                 .build()
                 );
             });
@@ -93,11 +96,11 @@ public class ChatServiceImpl implements ChatService {
 
 //                Set<ChatMBTIJoinEntity> chatMBTIJoinEntities = new HashSet<>();
 
-                chatRoomDTO.getPermitMBTICode().forEach(mbtiDTO -> {
+                chatRoomDTO.getPermitMBTICode().forEach(code -> {
                     chatMBTIRepository.save(
                             ChatMBTIJoinEntity.builder()
                                     .chatRoom(savedChatRoomEntity)
-                                    .permitMBTI(mbtiRepository.findById(mbtiDTO.getCode()).orElseThrow(RuntimeException::new))
+                                    .permitMBTI(mbtiRepository.findById(code).orElseThrow(RuntimeException::new))
                                     .build()
                     );
                 });
