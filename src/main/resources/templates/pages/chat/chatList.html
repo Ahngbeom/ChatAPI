@@ -2,14 +2,15 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/default_layout}">
 
 <body>
 
 <th:div layout:fragment="banner" class="text-center">
     <h2>Chatting Room List</h2>
-    <button type="button" class="btn btn-secondary">Created By Myself</button>
-    <button type="button" class="btn btn-secondary">I Belong</button>
+    <a th:href="@{/chat/list(username=${#authentication.name})}" class="btn btn-secondary">Created By Myself</a>
+    <a href="#" class="btn btn-secondary">I Belong</a>
 </th:div>
 
 <th:block layout:fragment="content">
@@ -59,8 +60,8 @@
 
 <th:block layout:fragment="additionalScript">
     <script type="module" src="/js/chat/createChatRoom.js"></script>
-    <script type="module" src="/js/chat/getList.js"></script>
     <script type="module" src="/js/chat/connection.js"></script>
+    <script src="/js/chat/getList.js"></script>
 </th:block>
 </body>
 </html>
