@@ -1,9 +1,9 @@
 package com.example.chatapi.Service;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
-import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.Entity.Chat.ChatMBTIJoinEntity;
 import com.example.chatapi.Entity.Chat.ChatRoomEntity;
+import com.example.chatapi.Entity.Chat.ChatUserEntity;
 import com.example.chatapi.Repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -25,24 +26,28 @@ public class ChatServiceImpl implements ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMBTIRepository chatMBTIRepository;
 
+    private final ChatUserRepository chatUserRepository;
+
     @Override
     public List<ChatRoomDTO> getListOfAllChatRooms() {
         List<ChatRoomDTO> chatRoomDTOList = new ArrayList<>();
 
         chatRoomRepository.findAll().forEach(entity -> {
-            List<ChatMBTIJoinEntity> chatMBTIJoinEntities = new ArrayList<>(entity.getPermitMBTICodes());
-            List<String> mbtiDTOList = new ArrayList<>();
+            List<ChatMBTIJoinEntity> chatMBTIJoinEntities = chatMBTIRepository.findAllByChatRoom_RoomName(entity.getRoomName());
+            List<String> permitMBTICodes = new ArrayList<>();
 
             chatMBTIJoinEntities.forEach(chatMBTIJoinEntity -> {
-                mbtiDTOList.add(MbtiDTO.convertMbtiEntityToMbtiDTO(chatMBTIJoinEntity.getPermitMBTI()).getCode());
+                permitMBTICodes.add(chatMBTIJoinEntity.getPermitMBTI().getCode());
             });
 
             chatRoomDTOList.add(
                     ChatRoomDTO.builder()
                             .roomName(entity.getRoomName())
+                            .founder(entity.getFounder().getUsername())
+                            .concurrentUsers(countConcurrentUsers(entity.getRoomName()))
                             .description(entity.getDescription())
                             .createDate(entity.getCreateDate().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)))
-                            .permitMBTICode(mbtiDTOList)
+                            .permitMBTICode(permitMBTICodes)
                             .build()
             );
         });
@@ -59,7 +64,7 @@ public class ChatServiceImpl implements ChatService {
 
             chatRoomEntities.forEach(chatRoomEntity -> {
 
-                log.warn(String.valueOf(chatRoomEntity));
+//                log.warn(String.valueOf(chatRoomEntity));
                 List<ChatMBTIJoinEntity> chatMBTIJoinEntities = new ArrayList<>(chatMBTIRepository.findAllByChatRoom_RoomName(chatRoomEntity.getRoomName()));
 
                 List<String> permitCodeList = new ArrayList<>();
@@ -72,6 +77,7 @@ public class ChatServiceImpl implements ChatService {
                         ChatRoomDTO.builder()
                                 .roomName(chatRoomEntity.getRoomName())
                                 .description(chatRoomEntity.getDescription())
+                                .founder(chatRoomEntity.getFounder().getUsername())
                                 .createDate(chatRoomEntity.getCreateDate().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)))
                                 .permitMBTICode(permitCodeList)
                                 .build()
@@ -94,7 +100,12 @@ public class ChatServiceImpl implements ChatService {
                                 .build()
                 );
 
-//                Set<ChatMBTIJoinEntity> chatMBTIJoinEntities = new HashSet<>();
+                chatUserRepository.save(
+                        ChatUserEntity.builder()
+                                .chatRoom(savedChatRoomEntity)
+                                .userName(savedChatRoomEntity.getFounder())
+                                .build()
+                );
 
                 chatRoomDTO.getPermitMBTICode().forEach(code -> {
                     chatMBTIRepository.save(
@@ -113,5 +124,18 @@ public class ChatServiceImpl implements ChatService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean checkAlreadyJoined(String chatRoomName, String username) {
+        return chatUserRepository.existsByChatRoom_RoomNameAndUserName_Username(chatRoomName, username);
+    }
+
+    public long countConcurrentUsers(String roomName) {
+        List<ChatUserEntity> chatUserEntityList = chatUserRepository.findAllByChatRoom_RoomName(roomName).orElse(null);
+        if (chatUserEntityList == null)
+            return 0L;
+        else
+            return chatUserEntityList.size();
     }
 }

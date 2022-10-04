@@ -22,12 +22,16 @@ public class ChatRoomDTO {
 
     private String description;
 
+    private String founder;
+
+    private long concurrentUsers;
+
     private String createDate;
 
 //    @ToString.Exclude
     private List<String> permitMBTICode;
 
-    @ToString.Exclude
+//    @ToString.Exclude
     private List<ChatLogDTO> log;
 
     public void setRoomName(String roomName) {
@@ -36,6 +40,10 @@ public class ChatRoomDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setFounder(String founder) {
+        this.founder = founder;
     }
 
     public void setCreateDate(String createDate) {

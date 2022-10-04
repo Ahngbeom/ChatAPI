@@ -41,7 +41,7 @@ public class UserAPIController {
 		}
 	}
 
-	@GetMapping("/user-info")
+	@GetMapping("/info")
 	public ResponseEntity<?> userInfo(Principal principal) {
 		try {
 			if (principal == null)

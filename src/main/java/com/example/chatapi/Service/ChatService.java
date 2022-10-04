@@ -11,4 +11,6 @@ public interface ChatService {
     List<ChatRoomDTO> getListOfAllChatRoomsUserHasJoined(String username) throws RuntimeException;
 
     boolean createChatRoom(String username, ChatRoomDTO chatRoomDTO) throws RuntimeException;
+
+    boolean checkAlreadyJoined(String chatRoomName, String username);
 }

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
@@ -25,8 +26,12 @@ public class ChatController {
     }
 
     @GetMapping({"/list"})
-    public ModelAndView chatList(ModelAndView mv, Principal principal) {
-        mv.addObject("chatRoomList", chatService.getListOfAllChatRoomsUserHasJoined(principal.getName()));
+    public ModelAndView myChatRoomList(ModelAndView mv, Principal principal, @RequestParam(required = false) String username) {
+        if (username != null) {
+            mv.addObject("chatRoomList", chatService.getListOfAllChatRoomsUserHasJoined(principal.getName()));
+        } else {
+            mv.addObject("chatRoomList", chatService.getListOfAllChatRooms());
+        }
         mv.setViewName("pages/chat/chatList");
         return mv;
     }
