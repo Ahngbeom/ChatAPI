@@ -47,4 +47,9 @@ class ChatUserRepositoryTest {
             log.info("Welcome");
     }
 
+    @Test
+    void findAllByUserName_Username() {
+        chatUserRepository.findAllByUserName_Username("admin").forEach(chatUserEntity -> log.info(String.valueOf(chatUserEntity)));
+    }
+
 }

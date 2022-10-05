@@ -38,12 +38,12 @@ class ChatRoomRepositoryTest {
 
     @Test
     void findByRoomName() {
-        chatRoomRepository.findAllByFounder_Username("admin").map(chatRoomEntities -> {
-            chatRoomEntities.forEach(chatRoomEntity -> {
-                log.info(String.valueOf(chatRoomEntity));
-            });
-            return chatRoomEntities;
-        }).orElseThrow(RuntimeException::new);
+//        chatRoomRepository.findAllByFounder_Username("admin").stream().map(chatRoomEntities -> {
+//            chatRoomEntities.forEach(chatRoomEntity -> {
+//                log.info(String.valueOf(chatRoomEntity));
+//            });
+//            return chatRoomEntities;
+//        }).orElseThrow(RuntimeException::new);
     }
 
     @Test

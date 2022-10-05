@@ -1,6 +1,6 @@
 /** Connection Chatting room **/
 
-const joinChattingRoomBtn = document.querySelectorAll(".join-chat-room-btn");
+const joinChattingRoomBtn = document.querySelector(".join-chat-room-btn");
 const chatModal = new bootstrap.Modal("#chatModal");
 const chatModalElement = document.getElementById("chatModal");
 const sendMessageBtn = document.getElementById("chat-send-message-btn");
@@ -11,20 +11,29 @@ let stompClient = null;
 
 joinChattingRoomBtn.forEach(btn => {
     btn.addEventListener('click', function (e) {
-        chattingRoomEnter($(this).data("room-name"));
+        const roomName = $(this).data("room-name");
+        $.ajax({
+            type: 'GET',
+            url: '/api/chat/join-availability/' + roomName,
+            async: false,
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                alert(data);
+                // connect(roomName);
+                // chatModal.show();
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        })
     });
 });
 
-export const enableJoinChattingService = function () {
-    document.querySelector(".join-chat-room-btn").addEventListener('click', function () {
-        chattingRoomEnter();
-    });
-}
-
-function chattingRoomEnter(roomName) {
-    connect(roomName);
-    chatModal.show();
-}
+// export const enableJoinChattingService = function () {
+//     document.querySelector(".join-chat-room-btn").addEventListener('click', function () {
+//         chattingRoomEnter();
+//     });
+// }
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -45,15 +54,19 @@ function connect(roomName) {
     stompClient = Stomp.over(socket); // Stomp.over: WebSocket 지정
 
     stompClient.connect({}, function (frame) {
-        setConnected(true);
+        // setConnected(true);
         console.log('Connected: ' + frame);
 
-        console.log(frame.valueOf());
+        stompClient.subscribe('/unicast', function (message) {
+            console.log(message);
+            console.log(JSON.parse(message.body));
+            // alert(JSON.parse(message.body).message);
+        });
 
         stompClient.send("/mbti-chat/join-room/" + roomName, {}, {});
 
         stompClient.subscribe('/topic/mbti-chat/' + roomName, function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+            showGreeting(JSON.parse(greeting.body));
         });
 
 
@@ -123,9 +136,14 @@ function sendMessage() {
         alert("Not Connected.");
 }
 
-function showGreeting(message) {
+function showGreeting(data) {
     // $("#greetings").append("<tr><td>" + message + "</td></tr>");
-    chatModalElement.querySelector(".modal-body").insertAdjacentHTML('beforeend', "<div class='alert alert-warning text-center'>" + message + "</div>")
+    chatModalElement.querySelector(".modal-body")
+        .insertAdjacentHTML('beforeend',
+            "<div class='alert alert-warning text-center'>"
+            + "<h4 class='alert-heading'>" + data.from + "(" +  data.status + ")</h4>"
+            + data.message
+            + "</div>");
 }
 
 function showSendMessage(post) {

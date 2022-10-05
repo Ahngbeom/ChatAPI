@@ -9,18 +9,28 @@
 
 <th:div layout:fragment="banner" class="text-center">
     <h2>Chatting Room List</h2>
-    <a th:href="@{/chat/list(username=${#authentication.name})}" class="btn btn-secondary">Created By Myself</a>
-    <a href="#" class="btn btn-secondary">I Belong</a>
 </th:div>
 
 <th:block layout:fragment="content">
     <div class="container-fluid" id="contentContainer">
         <div id="chatRoomListDiv" class="flex-column">
-            <div class="d-flex justify-content-end" id="btnAreaForMbtiTable">
+            <div class="d-flex justify-content-between" id="btnAreaForMbtiTable">
+                <div>
+                    <select class="form-select form-select-lg" aria-label=".form-select-lg example" onchange="location.href=(this.value)" th:with="paramFounder=${param.getOrDefault('founder', null)}, paramBelongs=${param.getOrDefault('belongs', null)}">
+                        <option value="/chat/list" th:selected="${paramFounder == null && paramBelongs == null}">All Chat Rooms</option>
+                        <option th:value="${'/chat/list?founder=' + #authentication.name}" th:selected="${paramFounder != null}">Created By Myself</option>
+                        <option th:value="${'/chat/list?belongs=' + #authentication.name}" th:selected="${paramBelongs != null}">I Belong</option>
+                    </select>
+                </div>
+<!--                <div>-->
+<!--                    <a th:href="@{/chat/list(username=${#authentication.name})}" class="btn btn-secondary">Created By-->
+<!--                        Myself</a>-->
+<!--                    <a href="#" class="btn btn-secondary">I Belong</a>-->
+<!--                </div>-->
                 <button class="btn btn-info me-3" id="createChatRoomBtn">Create</button>
             </div>
 
-            <div class="row">
+            <div class="row my-1">
                 <div class="col-sm-6" th:each="chatRoom, index : ${chatRoomList}">
                     <div class="card">
                         <!--                        <img />-->

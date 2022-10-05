@@ -10,5 +10,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Long> 
 
     Optional<ChatRoomEntity> findByRoomName(String roomName);
 
-    Optional<List<ChatRoomEntity>> findAllByFounder_Username(String username);
+    List<ChatRoomEntity> findAllByFounder_Username(String username);
+
 }
