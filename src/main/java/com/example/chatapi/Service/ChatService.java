@@ -19,4 +19,6 @@ public interface ChatService {
     boolean joinChatRoom(String roomName, String userName) throws RuntimeException;
 
     boolean checkAlreadyJoined(String chatRoomName, String username);
+
+    boolean leaveChatRoom(String roomName, String userName);
 }

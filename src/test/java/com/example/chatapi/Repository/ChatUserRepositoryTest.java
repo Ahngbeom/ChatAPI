@@ -52,4 +52,7 @@ class ChatUserRepositoryTest {
         chatUserRepository.findAllByUserName_Username("admin").forEach(chatUserEntity -> log.info(String.valueOf(chatUserEntity)));
     }
 
+    @Test
+    void deleteByUserName_Username() {
+    }
 }

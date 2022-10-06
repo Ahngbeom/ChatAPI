@@ -75,7 +75,6 @@ public class ChatServiceImpl implements ChatService {
         List<String> permitMBTICodeList = permitMBTICodesByChatRoom(roomName);
         for (MbtiDTO mbtiDTO : mbtiService.getUserMbtiList(userName)) {
             if (permitMBTICodeList.contains(mbtiDTO.getCode())) {
-
                 return true;
             }
         }
@@ -99,6 +98,16 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public boolean checkAlreadyJoined(String chatRoomName, String username) {
         return chatUserRepository.existsByChatRoom_RoomNameAndUserName_Username(chatRoomName, username);
+    }
+
+    @Override
+    public boolean leaveChatRoom(String roomName, String userName) {
+        ChatRoomEntity chatRoomEntity = chatRoomRepository.findByRoomName(roomName).orElseThrow(RuntimeException::new);
+        if (chatRoomEntity.getFounder().getUsername().equals(userName))
+            return false;
+//        return chatUserRepository.deleteByChatRoom_RoomNameAndUserName_Username(roomName, userName) != 0;
+        chatUserRepository.delete(chatUserRepository.findByChatRoom_RoomNameAndUserName_Username(roomName, userName).orElseThrow(RuntimeException::new));
+        return true;
     }
 
     public long countConcurrentUsers(String roomName) {

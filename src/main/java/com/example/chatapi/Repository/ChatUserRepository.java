@@ -12,5 +12,8 @@ public interface ChatUserRepository extends JpaRepository<ChatUserEntity, Long> 
 
     List<ChatUserEntity> findAllByUserName_Username(String userName);
 
+    Optional<ChatUserEntity> findByChatRoom_RoomNameAndUserName_Username(String roomName, String userName);
+
     boolean existsByChatRoom_RoomNameAndUserName_Username(String chatRoom_roomName, String userName_username);
+
 }

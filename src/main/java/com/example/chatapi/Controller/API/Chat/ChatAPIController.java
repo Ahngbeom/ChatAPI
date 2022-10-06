@@ -50,4 +50,12 @@ public class ChatAPIController {
         return ResponseEntity.ok("Success");
     }
 
+    @GetMapping("/leave-chatroom/{roomName}")
+    public ResponseEntity<String> leaveChatRoom(@PathVariable String roomName, Principal principal) {
+        if (chatService.leaveChatRoom(roomName, principal.getName())) {
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.unprocessableEntity().body("You need to transfer the founder privileges to other users.");
+    }
+
 }
