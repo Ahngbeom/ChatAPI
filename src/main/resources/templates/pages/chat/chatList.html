@@ -12,6 +12,7 @@
 </th:div>
 
 <th:block layout:fragment="content">
+    <th:block th:replace="fragments/modal :: modal('disposable-modal')"></th:block>
     <div class="container-fluid" id="contentContainer">
         <div id="chatRoomListDiv" class="flex-column">
             <div class="d-flex justify-content-between" id="btnAreaForMbtiTable">
@@ -31,7 +32,7 @@
             </div>
 
             <div class="row my-1">
-                <div class="col-sm-6" th:each="chatRoom, index : ${chatRoomList}">
+                <div class="col-sm-6 my-1" th:each="chatRoom, index : ${chatRoomList}">
                     <div class="card">
                         <!--                        <img />-->
                         <div class="card-header">
@@ -52,7 +53,7 @@
                                 <span class="badge text-bg-primary" th:text="${chatRoom.getConcurrentUsers()}"></span>
                             </div>
                             <div>
-                                <a href="#" class="btn btn-secondary ms-1">Edit</a>
+                                <button class="btn btn-secondary ms-1 edit-chat-room-btn" th:data-room-name="${chatRoom.getRoomName()}">Edit</button>
                                 <button type="button" class="btn btn-warning ms-1 join-chat-room-btn"
                                         th:data-room-name="${chatRoom.getRoomName()}">Join
                                 </button>
@@ -64,14 +65,16 @@
 
         </div>
     </div>
-    <th:block th:replace="fragments/modal :: createChatModal"></th:block>
+    <th:block th:replace="fragments/modal :: CRUDChatRoomModal('Create')"></th:block>
+    <th:block th:replace="fragments/modal :: CRUDChatRoomModal('Update')"></th:block>
     <th:block th:replace="fragments/chat :: chat-modal"></th:block>
 </th:block>
 
 <th:block layout:fragment="additionalScript">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script type="module" src="/js/chat/createChatRoom.js"></script>
     <script type="module" src="/js/chat/connection.js"></script>
-    <script src="/js/chat/getList.js"></script>
+    <script type="module" src="/js/chat/utils.js"></script>
 </th:block>
 </body>
 </html>

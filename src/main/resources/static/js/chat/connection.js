@@ -1,6 +1,6 @@
 /** Connection Chatting room **/
+import {JoinAvailability, LeaveAvailability} from "./ajaxToApi.js";
 
-const joinChattingRoomBtn = document.querySelectorAll(".join-chat-room-btn");
 const chatModal = new bootstrap.Modal("#chatModal");
 const chatModalElement = document.getElementById("chatModal");
 const sendMessageInput = chatModalElement.querySelector("#input-send-message");
@@ -10,43 +10,14 @@ const leaveChatRoomBtn = document.getElementById("chat-leave-btn");
 let socket = null;
 let stompClient = null;
 
-
-joinChattingRoomBtn.forEach(btn => {
-    btn.addEventListener('click', function (e) {
-        const roomName = $(this).data("room-name");
-        $.ajax({
-            type: 'GET',
-            url: '/api/chat/join-availability/' + roomName,
-            async: false,
-            contentType: 'application/json; charset=utf-8',
-            success: function (data) {
-                connect(roomName);
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        })
-    });
-});
-
-chatModalElement.addEventListener('hidden.bs.modal', function () {
-    chatModalElement.querySelector(".modal-body").innerHTML = "";
-    sendMessageInput.value = "";
-});
-
 function connect(roomName) {
     socket = new SockJS('/ws/mbti-chat'); // SockJS 통해 서버의 WebSocket 지원 여부, Cookies 필요 여부, CORS를 위한 Origin 정보 등을 응답으로 전달받는다.
     stompClient = Stomp.over(socket); // Stomp.over: WebSocket 지정
 
     stompClient.connect({}, function (frame) {
-        // setConnected(true);
         console.log('Connected: ' + frame);
 
         stompClient.send("/mbti-chat/join-room/" + roomName, {}, {});
-
-        // stompClient.subscribe('/topic/mbti-chat/' + roomName, function (Message) {
-        //     putMessage(JSON.parse(Message.body));
-        // });
 
         stompClient.subscribe('/topic/mbti-chat/' + roomName, putMessage);
 
@@ -101,8 +72,7 @@ function putMessage(Message) {
         if (Message.from === USER_INFO.username) {
             row.classList.add("justify-content-end");
             alert.classList.add("alert-info", "col-6");
-        }
-        else {
+        } else {
             row.classList.add("justify-content-start");
             alert.classList.add("alert-secondary", "col-6");
         }
@@ -112,49 +82,24 @@ function putMessage(Message) {
 }
 
 function disconnect(roomName) {
-    $.ajax({
-        type: "GET",
-        url: "/api/chat/leave-chatroom/" + roomName,
-        async: false,
-        contentType: 'application/json; charset=utf-8',
-        success: function () {
-            stompClient.send("/mbti-chat/leave-room/" +  roomName, {}, {});
-            if (stompClient !== null) {
-                stompClient.disconnect();
-            }
-            console.log("Disconnected");
-            chatModal.hide();
-        },
-        error: function (xhr) {
-            alert(xhr.responseText);
+    if (LeaveAvailability(roomName)) {
+        stompClient.send("/mbti-chat/leave-room/" + roomName, {}, {});
+        if (stompClient !== null) {
+            stompClient.disconnect();
         }
-    });
+        console.log("Disconnected");
+        chatModal.hide();
+    }
 }
 
-function showSendMessage(post) {
-    console.log(post);
-    // $("#chatting").append("<tr><td>" + post.from + ": " + post.message + "</td></tr>");
-    chatModalElement.querySelector(".modal-body").insertAdjacentHTML('beforeend', "<div class='alert alert-primary text-end'>" + post.message + "</div>")
-}
+$(".join-chat-room-btn").on('click', function () {
+    const roomName = $(this).data("room-name");
+    if (JoinAvailability(roomName))
+        connect(roomName);
+});
 
-function showReceiveMessage(post) {
-    console.log(post);
-    // $("#chatting").append("<tr><td>" + post.from + ": " + post.message + "</td></tr>");
-    chatModalElement.querySelector(".modal-body").insertAdjacentHTML('beforeend', "<div class='alert alert-secondary text-start'>" + post.message + "</div>")
-}
-
-// $(function () {
-//     // $("form").on('submit', function (e) {
-//     //     e.preventDefault();
-//     // });
-//
-//     // $("#connect").click(function () {
-//     //     connect();
-//     // });
-//     // $("#disconnect").click(function () {
-//     //     disconnect();
-//     // });
-//     // $("#send").click(function () {
-//     //     sendMessage();
-//     // });
-// });
+chatModalElement.addEventListener('hidden.bs.modal', function () {
+    chatModalElement.querySelector(".modal-body").innerHTML = "";
+    sendMessageInput.value = "";
+    location.reload();
+});

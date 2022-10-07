@@ -14,6 +14,8 @@ public interface ChatService {
 
     List<ChatRoomDTO> getListOfAllChatRoomsUserBelongs(String username);
 
+    ChatRoomDTO getInfoChatRoom(String roomName);
+
     boolean joinChatRoomAvailability(String roomName, String userName);
 
     boolean joinChatRoom(String roomName, String userName) throws RuntimeException;

@@ -40,6 +40,11 @@ public class ChatAPIController {
         return ResponseEntity.ok(chatService.createChatRoom(principal.getName(), chatRoom));
     }
 
+    @GetMapping("/info")
+    public ResponseEntity<ChatRoomDTO> getInfoChatRoom(@RequestParam String roomName, Principal principal) {
+        return ResponseEntity.ok(chatService.getInfoChatRoom(roomName));
+    }
+
     @GetMapping("/join-availability/{roomName}")
     public ResponseEntity<String> joinChatRoomAvailability(@PathVariable String roomName, Principal principal) {
         if (!chatService.checkAlreadyJoined(roomName, principal.getName())) {
