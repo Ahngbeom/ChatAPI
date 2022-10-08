@@ -1,64 +1,59 @@
-/** Utilities for Chatting Room **/
+/************ Utilities for Chatting Room ************/
 import {
+    checkboxMBTIElemList,
     enableAllPermitMBTICodeSwitch,
-    enableSelectPermitMBTICode, MBTI_survey,
-    ReflectionPermitMbtiCode
+    enableSelectPermitMBTICode
 } from "./checkPermitMBTI.js";
 
-const disposable = document.querySelector("#disposable-modal");
-const updateChatRoomModalElem = document.querySelector("#UpdateChatRoomModal");
+/** disposable Modal Element **/
+export const disposableModalElem = document.querySelector("#disposable-modal");
+export const confirmModalElem = document.querySelector("#confirmModal");
+export const confirmModalCancelBtn = confirmModalElem.querySelector("#confirmModalCancelBtn");
+export const confirmModalAcceptBtn = confirmModalElem.querySelector("#confirmModalAcceptBtn");
 
-export let CRUDChatRoomModalElem = null;
-
-$(".permitMBTICode-all-select-btn").on('change', function () {
-
-});
-
-
-$(".edit-chat-room-btn").on('click', function () {
-
-    $.ajax({
-        type: 'GET',
-        url: '/api/chat/info',
-        async: false,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'JSON',
-        data: {
-            roomName: $(this).data('room-name')
-        },
-        success: function (data) {
-            console.log(data);
-            updateChatRoomModalElem.querySelector("input[name='roomName']").value = data.roomName;
-            updateChatRoomModalElem.querySelector("textarea[name='description']").value = data.description;
-            showModalTarget(updateChatRoomModalElem);
-
-            ReflectionPermitMbtiCode(new Set(data.permitMBTICode));
-        },
-        error: function (xhr) {
-            renewalModal({
-                target: disposable,
-                title: "Error",
-                body: "<p class='text-danger'>" + xhr.responseText + "</p>"
-            });
-        }
-    });
-
-
-});
-
-function checked_to_MBTI_Survey(target) {
-    if (target.value.match(/[EI]/)) {
-        MBTI_survey.focused = MBTI_survey.focused === null ? this.value : ".";
-    } else if (target.value.match(/[SN]/)) {
-        MBTI_survey.recognition = MBTI_survey.recognition === null ? this.value : ".";
-    } else if (target.value.match(/[TF]/)) {
-        MBTI_survey.decision = MBTI_survey.decision === null ? this.value : ".";
-    } else if (target.value.match(/[JP]/)) {
-        MBTI_survey.coping = MBTI_survey.coping === null ? this.value : ".";
-    }
+export let chatRoomJsonData = {
+    roomName: null,
+    description: null,
+    permitMBTICode: new Set()
 }
 
-$(".CRUD-chatRoom-modal").on('shown.bs.modal', function () {
+export function chatRoomJsonData_init(...args) {
+    chatRoomJsonData.roomName = args[0];
+    chatRoomJsonData.description = args[1];
+    if (args[2] !== undefined)
+        chatRoomJsonData.permitMBTICode = args[2];
+    // else
+    //     chatRoomJsonData.permitMBTICode = new Set();
+}
+
+/** Convert the data in the form to JSON format **/
+export function formDataToJsonFormatterForChatRoom(formElem) {
+    chatRoomJsonData_init(
+        formElem.querySelector("input[name='roomName']").value,
+        formElem.querySelector("textarea[name='description']").value
+    );
+
+    chatRoomJsonData.roomName = formElem.querySelector("input[name='roomName']").value;
+    chatRoomJsonData.description = formElem.querySelector("textarea[name='description']").value;
+
+    if (chatRoomJsonData.roomName.length === 0) {
+        alert("채팅방 이름을 입력해주세요.");
+        return false;
+    }
+    if (chatRoomJsonData.permitMBTICode.size === 0) {
+        alert("채팅방에 입장 가능한 MBTI를 선택해주세요.");
+        return false;
+    }
+
+    console.log(chatRoomJsonData);
+    return true;
+}
+
+
+/** Both Modal Elements for Create and Update **/
+export let CRUDChatRoomModalElem = null;
+
+$(".CRUD-chatRoom-modal").on('show.bs.modal', function () {
     CRUDChatRoomModalElem = $(this);
     checkboxMBTIElemList.forEach(input => input.checked = false);
     enableAllPermitMBTICodeSwitch();

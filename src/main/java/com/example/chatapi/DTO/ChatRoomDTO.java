@@ -18,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class ChatRoomDTO {
 
+    private String origRoomName; // For Modify | Update
     private String roomName;
 
     private String description;

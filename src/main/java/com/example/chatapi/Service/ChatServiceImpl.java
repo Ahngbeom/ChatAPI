@@ -84,6 +84,22 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    public void updateChatRoom(ChatRoomDTO chatRoomDTO) {
+        ChatRoomEntity updatedChatRoomEntity = chatRoomRepository.save(ChatRoomEntity.builder()
+                .roomName(chatRoomDTO.getRoomName())
+                .description(chatRoomDTO.getDescription())
+//              .founder()
+                .build());
+    }
+
+    @Override
+    public void removeChatRoom(String roomName) {
+        chatUserRepository.deleteAll(chatUserRepository.findAllByChatRoom_RoomName(roomName));
+        chatMBTIRepository.deleteAll(chatMBTIRepository.findAllByChatRoom_RoomName(roomName));
+        chatRoomRepository.delete(chatRoomRepository.findByRoomName(roomName).orElseThrow(RuntimeException::new));
+    }
+
+    @Override
     public boolean joinChatRoomAvailability(String roomName, String userName) {
         List<String> permitMBTICodeList = permitMBTICodesByChatRoom(roomName);
         for (MbtiDTO mbtiDTO : mbtiService.getUserMbtiList(userName)) {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<th:block th:fragment="modal(id)">
+<th:block th:fragment="staticModal(id)">
     <!-- Vertically centered scrollable modal -->
     <div class="modal fade" th:id="${id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          th:aria-labelledby="${id + 'Label'}" aria-hidden="true">
@@ -17,6 +17,28 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="modalInteractionBtn">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block th:fragment="confirmModal(confirmBtnColor)">
+    <!-- Vertically centered scrollable modal -->
+    <div aria-hidden="true" aria-labelledby="confirmModalLabe" class="modal fade" data-bs-backdrop="static"
+         data-bs-keyboard="false"
+         id="confirmModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Modal title</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" id="confirmModalCancelBtn" type="button">
+                        Cancel
+                    </button>
+                    <!--                    <button type="button" class="btn btn-primary" id="confirmModalAcceptBtn">Accept</button>-->
                 </div>
             </div>
         </div>
@@ -104,9 +126,9 @@
 </th:block>
 
 <th:block th:fragment="CRUDChatRoomModal(type)">
-    <div class="modal fade CRUD-chatRoom-modal" th:id="${type} + ChatRoomModal" data-bs-backdrop="static" data-bs-keyboard="false"
+    <div class="modal fade CRUD-chatRoom-modal" data-bs-keyboard="false" th:id="${type} + ChatRoomModal"
          tabindex="-1" th:aria-labelledby="${type} + ChatRoomModalLabel" aria-modal="true" role="dialog">
-        <th:block th:replace="/fragments/toast :: toast('modalToast')"></th:block>
+        <!--        <th:block th:replace="/fragments/toast :: toast"></th:block>-->
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -220,7 +242,8 @@
                     <button th:if="${type == 'Create'}" type="button" class="btn btn-primary"
                             th:id="${type} + ChatRoomSubmitBtn" th:text="${type}"></button>
                     <button th:if="${type == 'Update'}" type="button" class="btn btn-danger"
-                            th:id="${type} + ChatRoomSubmitBtn" th:text="Remove"></button>
+                            id="RemoveChatRoomSubmitBtn">Remove
+                    </button>
                     <button th:if="${type == 'Update'}" type="button" class="btn btn-warning"
                             th:id="${type} + ChatRoomSubmitBtn" th:text="${type}"></button>
                 </div>

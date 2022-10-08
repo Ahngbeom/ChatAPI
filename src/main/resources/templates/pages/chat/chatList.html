@@ -8,11 +8,11 @@
 <body>
 
 <th:div layout:fragment="banner" class="text-center">
+<!--    <p th:text="${#authentication.principal.username}"></p>-->
     <h2>Chatting Room List</h2>
 </th:div>
 
 <th:block layout:fragment="content">
-    <th:block th:replace="fragments/modal :: modal('disposable-modal')"></th:block>
     <div class="container-fluid" id="contentContainer">
         <div id="chatRoomListDiv" class="flex-column">
             <div class="d-flex justify-content-between" id="btnAreaForMbtiTable">
@@ -53,7 +53,10 @@
                                 <span class="badge text-bg-primary" th:text="${chatRoom.getConcurrentUsers()}"></span>
                             </div>
                             <div>
-                                <button class="btn btn-secondary ms-1 edit-chat-room-btn" th:data-room-name="${chatRoom.getRoomName()}">Edit</button>
+                                <button class="btn btn-secondary ms-1 edit-chat-room-btn"
+                                        th:data-room-name="${chatRoom.getRoomName()}"
+                                        th:if="${#authentication.principal.username == chatRoom.getFounder()}">Edit
+                                </button>
                                 <button type="button" class="btn btn-warning ms-1 join-chat-room-btn"
                                         th:data-room-name="${chatRoom.getRoomName()}">Join
                                 </button>
@@ -68,11 +71,13 @@
     <th:block th:replace="fragments/modal :: CRUDChatRoomModal('Create')"></th:block>
     <th:block th:replace="fragments/modal :: CRUDChatRoomModal('Update')"></th:block>
     <th:block th:replace="fragments/chat :: chat-modal"></th:block>
+    <th:block th:replace="fragments/modal :: confirmModal('danger')"></th:block>
 </th:block>
 
 <th:block layout:fragment="additionalScript">
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script type="module" src="/js/chat/createChatRoom.js"></script>
+    <script src="/js/chat/updateChatRoom.js" type="module"></script>
     <script type="module" src="/js/chat/connection.js"></script>
     <script type="module" src="/js/chat/utils.js"></script>
 </th:block>
