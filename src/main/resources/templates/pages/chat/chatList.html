@@ -2,7 +2,8 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layouts/default_layout}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/default_layout}">
 
 <body>
 
@@ -11,39 +12,69 @@
 </th:div>
 
 <th:block layout:fragment="content">
+    <th:block th:replace="fragments/modal :: modal('disposable-modal')"></th:block>
     <div class="container-fluid" id="contentContainer">
         <div id="chatRoomListDiv" class="flex-column">
-            <div class="d-flex justify-content-end" id="btnAreaForMbtiTable">
+            <div class="d-flex justify-content-between" id="btnAreaForMbtiTable">
+                <div>
+                    <select class="form-select form-select-lg" aria-label=".form-select-lg example" onchange="location.href=(this.value)" th:with="paramFounder=${param.getOrDefault('founder', null)}, paramBelongs=${param.getOrDefault('belongs', null)}">
+                        <option value="/chat/list" th:selected="${paramFounder == null && paramBelongs == null}">All Chat Rooms</option>
+                        <option th:value="${'/chat/list?founder=' + #authentication.name}" th:selected="${paramFounder != null}">Created By Myself</option>
+                        <option th:value="${'/chat/list?belongs=' + #authentication.name}" th:selected="${paramBelongs != null}">I Belong</option>
+                    </select>
+                </div>
+<!--                <div>-->
+<!--                    <a th:href="@{/chat/list(username=${#authentication.name})}" class="btn btn-secondary">Created By-->
+<!--                        Myself</a>-->
+<!--                    <a href="#" class="btn btn-secondary">I Belong</a>-->
+<!--                </div>-->
                 <button class="btn btn-info me-3" id="createChatRoomBtn">Create</button>
             </div>
 
-            <th:div th:text="${chatRoomList}"></th:div>
-            <table class="table table-striped table-hover table-responsive">
-                <thead>
-                <tr>
-                    <th class="col-8" colspan="1" scope="col">Room name</th>
-                    <th class="col-3" colspan="1" scope="col">Concurrent Users</th>
-                    <th class="col-1" colspan="1" scope="col"></th>
-                </tr>
-                </thead>
-                <tbody class="">
-                    <tr th:each="chatRoom, index : ${chatRoomList}">
-                        <td th:text="${chatRoom.getRoomName()}">
+            <div class="row my-1">
+                <div class="col-sm-6 my-1" th:each="chatRoom, index : ${chatRoomList}">
+                    <div class="card">
+                        <!--                        <img />-->
+                        <div class="card-header">
+                            <h5 class="card-title fw-bold" th:text="${chatRoom.getRoomName()}"></h5>
+                            <div class="card-subtitle d-flex justify-content-end">
+                                <h6 class="fst-italic" th:text="${chatRoom.getFounder()}"></h6>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text" th:text="${chatRoom.getDescription()}"></p>
+                            <span class="badge text-bg-info"
+                                  th:each="permitMBTICode, index : ${chatRoom.getPermitMBTICode()}"
+                                  th:text="${permitMBTICode}">
+                            </span>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <div>
+                                <span class="badge text-bg-primary" th:text="${chatRoom.getConcurrentUsers()}"></span>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary ms-1 edit-chat-room-btn" th:data-room-name="${chatRoom.getRoomName()}">Edit</button>
+                                <button type="button" class="btn btn-warning ms-1 join-chat-room-btn"
+                                        th:data-room-name="${chatRoom.getRoomName()}">Join
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
-    <th:block th:replace="fragments/modal :: createChatModal"></th:block>
+    <th:block th:replace="fragments/modal :: CRUDChatRoomModal('Create')"></th:block>
+    <th:block th:replace="fragments/modal :: CRUDChatRoomModal('Update')"></th:block>
     <th:block th:replace="fragments/chat :: chat-modal"></th:block>
 </th:block>
 
 <th:block layout:fragment="additionalScript">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script type="module" src="/js/chat/createChatRoom.js"></script>
-    <script type="module" src="/js/chat/getList.js"></script>
     <script type="module" src="/js/chat/connection.js"></script>
+    <script type="module" src="/js/chat/utils.js"></script>
 </th:block>
 </body>
 </html>

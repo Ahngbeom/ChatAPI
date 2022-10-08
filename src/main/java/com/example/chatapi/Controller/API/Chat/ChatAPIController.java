@@ -5,6 +5,7 @@ import com.example.chatapi.Service.ChatService;
 import com.example.chatapi.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/chat")
+@PreAuthorize("isAuthenticated()")
 public class ChatAPIController {
 
     private final UserService userService;
@@ -27,17 +29,38 @@ public class ChatAPIController {
         return ResponseEntity.ok(chatService.getListOfAllChatRooms());
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public ResponseEntity<List<ChatRoomDTO>> getListOfAllChatRoomsUserHasJoined(Principal principal) {
         return ResponseEntity.ok(chatService.getListOfAllChatRoomsUserHasJoined(userService.getUserInfo(principal.getName()).getUsername()));
     }
 
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public ResponseEntity<Boolean> createChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoom) {
         log.warn(chatRoom.toString());
         return ResponseEntity.ok(chatService.createChatRoom(principal.getName(), chatRoom));
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<ChatRoomDTO> getInfoChatRoom(@RequestParam String roomName, Principal principal) {
+        return ResponseEntity.ok(chatService.getInfoChatRoom(roomName));
+    }
+
+    @GetMapping("/join-availability/{roomName}")
+    public ResponseEntity<String> joinChatRoomAvailability(@PathVariable String roomName, Principal principal) {
+        if (!chatService.checkAlreadyJoined(roomName, principal.getName())) {
+            if (!chatService.joinChatRoomAvailability(roomName, principal.getName())) {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Your MBTI code does not allow access to this chat room.");
+            }
+        }
+        return ResponseEntity.ok("Success");
+    }
+
+    @GetMapping("/leave-chatroom/{roomName}")
+    public ResponseEntity<String> leaveChatRoom(@PathVariable String roomName, Principal principal) {
+        if (chatService.leaveChatRoom(roomName, principal.getName())) {
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.unprocessableEntity().body("You need to transfer the founder privileges to other users.");
     }
 
 }

@@ -103,14 +103,15 @@
     </div>
 </th:block>
 
-<th:block th:fragment="createChatModal">
-    <div class="modal fade" id="createChatRoomModal" data-bs-backdrop="static" data-bs-keyboard="false"
-         tabindex="-1" aria-labelledby="createChatRoomModalLabel" aria-modal="true" role="dialog">
+<th:block th:fragment="CRUDChatRoomModal(type)">
+    <div class="modal fade CRUD-chatRoom-modal" th:id="${type} + ChatRoomModal" data-bs-backdrop="static" data-bs-keyboard="false"
+         tabindex="-1" th:aria-labelledby="${type} + ChatRoomModalLabel" aria-modal="true" role="dialog">
         <th:block th:replace="/fragments/toast :: toast('modalToast')"></th:block>
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createChatRoomModalLabel">Create Chatting Room</h5>
+                    <h5 class="modal-title" th:id="${type} + ChatRoomModalLabel"
+                        th:text="${type + ' Chatting Room'}"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -119,81 +120,91 @@
                             <form action="/chat/create" method="post" class="form-group flex-column w-100"
                                   id="createChatRoom">
                                 <div class="input-group mb-3 row">
-                                    <label for="createChatRoomRoomName"
+                                    <label th:for="${type} + ChatRoomRoomName"
                                            class="input-group-text col-sm-3 col-form-label">Room Name</label>
-                                    <input type="text" class="form-control" id="createChatRoomRoomName" name="roomName">
+                                    <input type="text" class="form-control" th:id="${type} + ChatRoomRoomName"
+                                           name="roomName">
                                     <button class="btn btn-secondary col-sm-2 justify-content-evenly" type="button"
-                                            id="createChatRoomRoomNameValidateBtn" disabled="">
+                                            th:id="${type} + ChatRoomRoomNameValidateBtn" disabled="">
                                         <span>Validate</span>
                                     </button>
                                 </div>
                                 <div class="input-group mb-3 row">
-                                    <label for="createChatRoomDescription"
+                                    <label th:for="${type} + ChatRoomDescription"
                                            class="input-group-text col-sm-3 col-form-label">Description</label>
-                                    <textarea class="form-control" id="createChatRoomDescription"
+                                    <textarea class="form-control" th:id="${type} + ChatRoomDescription"
                                               name="description"></textarea>
                                 </div>
                                 <div class="input-group row mb-3">
                                     <span class="input-group-text col-sm-3 text-wrap">MBTI to allow entry</span>
                                     <div class="form-control col-sm-8 p-2 d-flex flex-column"
-                                         id="createChatRoomPermitMBTICode">
+                                         th:id="${type} + ChatRoomPermitMBTICode">
                                         <div class="d-flex justify-content-center">
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                <input class="form-check-input permitMBTICode-all-select-btn"
+                                                       type="checkbox" role="switch"
                                                        id="checkbox_switch_ALL">
                                                 <label class="form-check-label" for="checkbox_switch_ALL">All</label>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-evenly">
                                             <div class="form-check col-5 border rounded">
-                                                <input class="form-check-input" type="checkbox" name="permitMBTICode"
-                                                       id="checkbox_E" value="E">
-                                                <label class="form-check-label col-12" for="checkbox_E">E</label>
+                                                <label class="form-check-label col-12">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           name="permitMBTICode" value="E">
+                                                    E</label>
                                             </div>
                                             <div class="form-check col-5 border rounded">
-                                                <input class="form-check-input" type="checkbox" name="permitMBTICode"
-                                                       id="checkbox_I" value="I">
-                                                <label class="form-check-label col-12" for="checkbox_I">I</label>
+                                                <label class="form-check-label col-12">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           name="permitMBTICode" value="I">
+                                                    I</label>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-evenly">
                                             <div class="form-check col-5 border rounded">
-                                                <input class="form-check-input" type="checkbox" name="permitMBTICode"
-                                                       id="checkbox_S" value="S">
-                                                <label class="form-check-label col-12" for="checkbox_S">S</label>
+                                                <label class="form-check-label col-12">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           name="permitMBTICode" value="S">
+                                                    S</label>
                                             </div>
                                             <div class="form-check col-5 border rounded">
-                                                <input class="form-check-input" type="checkbox" name="permitMBTICode"
-                                                       id="checkbox_N" value="N">
-                                                <label class="form-check-label col-12" for="checkbox_N">N</label>
+                                                <label class="form-check-label col-12">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           name="permitMBTICode" value="N">
+                                                    N</label>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-evenly">
                                             <div class="form-check col-5 border rounded">
-                                                <input class="form-check-input" type="checkbox" name="permitMBTICode"
-                                                       id="checkbox_T" value="T">
-                                                <label class="form-check-label col-12" for="checkbox_T">T</label>
+                                                <label class="form-check-label col-12">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           name="permitMBTICode" value="T">
+                                                    T</label>
                                             </div>
                                             <div class="form-check col-5 border rounded">
-                                                <input class="form-check-input" type="checkbox" name="permitMBTICode"
-                                                       id="checkbox_F" value="F">
-                                                <label class="form-check-label col-12" for="checkbox_F">F</label>
+                                                <label class="form-check-label col-12">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           name="permitMBTICode" value="F">
+                                                    F</label>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-evenly">
                                             <div class="form-check col-5 border rounded">
-                                                <input class="form-check-input" type="checkbox" name="permitMBTICode"
-                                                       id="checkbox_J" value="J">
-                                                <label class="form-check-label col-12" for="checkbox_J">J</label>
+                                                <label class="form-check-label col-12">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           name="permitMBTICode" value="J">
+                                                    J</label>
                                             </div>
                                             <div class="form-check col-5 border rounded">
-                                                <input class="form-check-input" type="checkbox" name="permitMBTICode"
-                                                       id="checkbox_P" value="P">
-                                                <label class="form-check-label col-12" for="checkbox_P">P</label>
+                                                <label class="form-check-label col-12">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           name="permitMBTICode" value="P">
+                                                    P</label>
                                             </div>
                                         </div>
-<!--                                        <button type="button" class="btn btn-outline-primary" id="addPermitMBTICodeBtn">Add</button>-->
-<!--                                        <button type="button" class="btn btn-outline-secondary" id="resetPermitMBTICodeBtn">Reset</button>-->
+                                        <!--                                        <button type="button" class="btn btn-outline-primary" id="addPermitMBTICodeBtn">Add</button>-->
+                                        <!--                                        <button type="button" class="btn btn-outline-secondary" id="resetPermitMBTICodeBtn">Reset</button>-->
                                         <div class="d-flex flex-column" id="MBTICodeToastArea">
                                             <ul class="list-group list-group-flush">
                                             </ul>
@@ -206,7 +217,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="createChatRoomSubmitBtn">Create</button>
+                    <button th:if="${type == 'Create'}" type="button" class="btn btn-primary"
+                            th:id="${type} + ChatRoomSubmitBtn" th:text="${type}"></button>
+                    <button th:if="${type == 'Update'}" type="button" class="btn btn-danger"
+                            th:id="${type} + ChatRoomSubmitBtn" th:text="Remove"></button>
+                    <button th:if="${type == 'Update'}" type="button" class="btn btn-warning"
+                            th:id="${type} + ChatRoomSubmitBtn" th:text="${type}"></button>
                 </div>
             </div>
         </div>

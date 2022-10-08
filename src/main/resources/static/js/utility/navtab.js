@@ -7,7 +7,7 @@ import {
     enableUserInfoInteractionBtn,
     userListContentLoad
 } from "/js/user/user.js";
-import {createRowsForChatRoomList, getChatRoomList, getChatRoomListContentLoad} from "/js/chat/getList.js";
+import {createRowsForChatRoomList, getChatRoomList, getChatRoomListContentLoad} from "/js/chat/utils.js";
 import {removeChildNode, replaceChildNode} from "/js/utility/changeElement.js";
 
 export const navTab = document.querySelector("#navBottomContainer .nav-tabs");

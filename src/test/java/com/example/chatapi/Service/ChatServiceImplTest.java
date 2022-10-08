@@ -12,6 +12,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 @Slf4j
 @SpringBootTest
 class ChatServiceImplTest {
@@ -62,9 +65,26 @@ class ChatServiceImplTest {
             ChatRoomDTO newRoom = ChatRoomDTO.builder()
                     .roomName("TEST ROOM")
                     .description("THIS ROOM IS FOR TESTING")
-                    .permitMBTICode(null)
+                    .permitMBTICode(Arrays.asList(
+                            "ENFJ",
+                            "ENFP",
+                            "ENTJ",
+                            "ENTP",
+                            "ESFJ",
+                            "ESFP",
+                            "ESTJ",
+                            "ESTP",
+                            "INFJ",
+                            "INFP",
+                            "INTJ",
+                            "INTP",
+                            "ISFJ",
+                            "ISFP",
+                            "ISTJ",
+                            "ISTP"
+                    ))
                     .build();
-            log.info(String.valueOf(chatService.createChatRoom("admin", newRoom)));
+            log.info(String.valueOf(chatService.createChatRoom("manager", newRoom)));
         } catch (Exception e) {
             e.printStackTrace();
         }
