@@ -81,7 +81,17 @@ updateChatRoomSubmitBtn.addEventListener('click', function () {
                 permitMBTICode: Array.from(chatRoomJsonData.permitMBTICode)
             }),
             success: function (data) {
-                console.log(data);
+                if (data) {
+                    renewalModal({
+                        target: confirmModalElem,
+                        type: "success",
+                        title: "채팅방이 수정되었습니다.",
+                    }, "<button class='btn btn-primary' id='confirmModalAcceptBtn'>확인</button>");
+                    showModalTarget(confirmModalElem);
+                    $("#confirmModalAcceptBtn").one('click', function () {
+                        location.reload();
+                    });
+                }
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
