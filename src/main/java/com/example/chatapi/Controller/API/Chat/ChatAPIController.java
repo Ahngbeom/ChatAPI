@@ -50,6 +50,7 @@ public class ChatAPIController {
         log.info(chatRoomDTO.toString());
         if (!principal.getName().equals(chatService.getInfoChatRoom(chatRoomDTO.getOrigRoomName()).getFounder()))
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(false);
+        chatRoomDTO.setFounder(principal.getName());
         chatService.updateChatRoom(chatRoomDTO);
         return ResponseEntity.ok(true);
     }

@@ -1,7 +1,7 @@
 package com.example.chatapi.Entity.MBTI;
 
 import com.example.chatapi.DTO.MbtiDTO;
-import com.example.chatapi.Entity.Chat.ChatMBTIJoinEntity;
+import com.example.chatapi.Entity.Chat.ChatMBTIEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,9 +40,9 @@ public class MBTIInfoEntity {
 //	@JoinColumn(name = "room_name")
 //	private Set<ChatRoomEntity> ChatRooms;
 
-	@ToString.Exclude
-	@OneToMany(mappedBy = "permitMBTI")
-	private Set<ChatMBTIJoinEntity> ChatMBTI;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "permitMBTI")
+    private Set<ChatMBTIEntity> ChatMBTI;
 
 	public static MBTIInfoEntity convertToMbtiEntity(MbtiDTO dto) {
 		return MBTIInfoEntity.builder()

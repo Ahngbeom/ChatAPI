@@ -2,20 +2,17 @@ package com.example.chatapi.Service;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
 import com.example.chatapi.DTO.MbtiDTO;
-import com.example.chatapi.Entity.Chat.ChatMBTIJoinEntity;
+import com.example.chatapi.Entity.Chat.ChatMBTIEntity;
 import com.example.chatapi.Entity.Chat.ChatRoomEntity;
 import com.example.chatapi.Entity.Chat.ChatUserEntity;
 import com.example.chatapi.Repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -43,7 +40,7 @@ public class ChatServiceImpl implements ChatService {
                 chatUserRepository.save(ChatUserEntity.builder().chatRoom(savedChatRoomEntity).userName(savedChatRoomEntity.getFounder()).build());
 
                 chatRoomDTO.getPermitMBTICode().forEach(code -> {
-                    chatMBTIRepository.save(ChatMBTIJoinEntity.builder().chatRoom(savedChatRoomEntity).permitMBTI(mbtiRepository.findById(code).orElseThrow(RuntimeException::new)).build());
+                    chatMBTIRepository.save(ChatMBTIEntity.builder().chatRoom(savedChatRoomEntity).permitMBTI(mbtiRepository.findById(code).orElseThrow(RuntimeException::new)).build());
                 });
 
             } else throw new RuntimeException("Exist Chatting Room Name");
@@ -85,11 +82,43 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void updateChatRoom(ChatRoomDTO chatRoomDTO) {
-        ChatRoomEntity updatedChatRoomEntity = chatRoomRepository.save(ChatRoomEntity.builder()
-                .roomName(chatRoomDTO.getRoomName())
-                .description(chatRoomDTO.getDescription())
-//              .founder()
-                .build());
+
+        ChatRoomEntity updatedChatRoomEntity = chatRoomRepository.findByRoomName(chatRoomDTO.getRoomName())
+                .orElse(chatRoomRepository.save(ChatRoomEntity.builder()
+                        .roomName(chatRoomDTO.getRoomName())
+                        .description(chatRoomDTO.getDescription())
+                        .founder(userRepository.findByUsername(chatRoomDTO.getFounder()).orElseThrow(RuntimeException::new))
+                        .createDate(chatRoomRepository.findByRoomName(chatRoomDTO.getOrigRoomName()).orElseThrow(RuntimeException::new).getCreateDate())
+                        .build()));
+
+        List<String> originPermitCodeList = permitMBTICodesByChatRoom(chatRoomDTO.getOrigRoomName());
+
+        for (String updatePermitCode : chatRoomDTO.getPermitMBTICode()) {
+            if (!originPermitCodeList.contains(updatePermitCode)) {
+                chatMBTIRepository.save(ChatMBTIEntity.builder()
+                        .chatRoom(updatedChatRoomEntity)
+                        .permitMBTI(mbtiRepository.getReferenceById(updatePermitCode))
+                        .build());
+            }
+        }
+
+        chatMBTIRepository.findAllByChatRoom_RoomName(chatRoomDTO.getOrigRoomName()).forEach(chatMBTIEntity -> {
+            if (chatRoomDTO.getPermitMBTICode().contains(chatMBTIEntity.getPermitMBTI().getCode())) {
+                chatMBTIEntity.setChatRoom(updatedChatRoomEntity);
+                chatMBTIRepository.save(chatMBTIEntity);
+            } else {
+                chatMBTIRepository.delete(chatMBTIEntity);
+            }
+
+        });
+
+        chatUserRepository.findAllByChatRoom_RoomName(chatRoomDTO.getOrigRoomName()).forEach(chatUserEntity -> {
+            chatUserEntity.setChatRoom(updatedChatRoomEntity);
+            chatUserRepository.save(chatUserEntity);
+        });
+        if (!chatRoomDTO.getOrigRoomName().equals(chatRoomDTO.getRoomName())) {
+            chatRoomRepository.delete(chatRoomRepository.findByRoomName(chatRoomDTO.getOrigRoomName()).orElseThrow(RuntimeException::new));
+        }
     }
 
     @Override
@@ -144,6 +173,6 @@ public class ChatServiceImpl implements ChatService {
     }
 
     public List<String> permitMBTICodesByChatRoom(String chatRoomName) {
-        return chatMBTIRepository.findAllByChatRoom_RoomName(chatRoomName).stream().map(chatMBTIJoinEntity -> chatMBTIJoinEntity.getPermitMBTI().getCode()).collect(Collectors.toList());
+        return chatMBTIRepository.findAllByChatRoom_RoomName(chatRoomName).stream().map(chatMBTIEntity -> chatMBTIEntity.getPermitMBTI().getCode()).collect(Collectors.toList());
     }
 }
