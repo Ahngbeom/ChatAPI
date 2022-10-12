@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:fragment="mbtiTable(mbtiList)">
+<th:block th:fragment="mbtiTable(mbtiList, totalNumberOfTests)">
     <div id="mbtiListDiv" class="flex-column">
         <div class="d-flex justify-content-end" id="btnAreaForMbtiTable">
             <button class="btn btn-info me-3" onclick="location.href='/mbti/register'">Add</button>
@@ -28,8 +28,11 @@
                 <div>
                     <td colspan="12" class="p-0">
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-label="Basic example" th:style="'width: ' + ${mbti.numberOfTimes} + '%'"
-                                 th:aria-valuenow="${mbti.numberOfTimes}" aria-valuemin="0" aria-valuemax="100" th:text="${mbti.numberOfTimes}">
+                            <div aria-label="Basic example" aria-valuemin="0" class="progress-bar" role="progressbar"
+                                 th:aria-valuemax="${totalNumberOfTests}"
+                                 th:aria-valuenow="${mbti.numberOfTimes * 100 / totalNumberOfTests}"
+                                 th:style="'width: ' + ${mbti.numberOfTimes * 100 / totalNumberOfTests} + '%'"
+                                 th:text="${mbti.numberOfTimes}">
                             </div>
                         </div>
                         <div class="accordion accordion-flush" th:id="accordionFlush + ${index.index}">

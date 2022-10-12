@@ -46,10 +46,10 @@ $(".edit-chat-room-btn").on('click', function () {
                         PermitMBTI_survey.decision = ".";
                 }
                 if (code.match(/[JP]/)) {
-                    if (PermitMBTI_survey.coping === null)
-                        PermitMBTI_survey.coping = code.charAt(3);
-                    else if (PermitMBTI_survey.coping !== code.charAt(3))
-                        PermitMBTI_survey.coping = ".";
+                    if (PermitMBTI_survey.fulfillment === null)
+                        PermitMBTI_survey.fulfillment = code.charAt(3);
+                    else if (PermitMBTI_survey.fulfillment !== code.charAt(3))
+                        PermitMBTI_survey.fulfillment = ".";
                 }
             });
             // console.log(PermitMBTI_survey);

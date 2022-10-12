@@ -25,7 +25,7 @@ function mbtiResultConverter(jsonData) {
                 else
                     result += "F";
                 break;
-            case "coping":
+            case "fulfillment":
                 if (value === "Judging")
                     result += "J";
                 else
@@ -44,7 +44,7 @@ const getRadioValueForMBTI = function () {
         focused: null,
         recognition: null,
         decision: null,
-        coping: null
+        fulfillment: null
     }
     for (const [key, value] of Object.entries(mbtiRadioJson)) {
         $(".form-check-input[name='" + key + "']").each((index, item) => {

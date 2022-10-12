@@ -8,14 +8,14 @@ export let PermitMBTI_survey = {
     focused: null,
     recognition: null,
     decision: null,
-    coping: null,
+    fulfillment: null,
 }
 
 export function PermitMBTI_survey_init() {
     PermitMBTI_survey.focused = null;
     PermitMBTI_survey.recognition = null;
     PermitMBTI_survey.decision = null;
-    PermitMBTI_survey.coping = null;
+    PermitMBTI_survey.fulfillment = null;
 }
 
 
@@ -29,13 +29,13 @@ export const enableAllPermitMBTICodeSwitch = function () {
             PermitMBTI_survey.focused = ".";
             PermitMBTI_survey.recognition = ".";
             PermitMBTI_survey.decision = ".";
-            PermitMBTI_survey.coping = ".";
+            PermitMBTI_survey.fulfillment = ".";
         } else {
             chatRoomJsonData.permitMBTICode.clear();
             PermitMBTI_survey.focused = null;
             PermitMBTI_survey.recognition = null;
             PermitMBTI_survey.decision = null;
-            PermitMBTI_survey.coping = null;
+            PermitMBTI_survey.fulfillment = null;
         }
         ReflectionPermitMbtiCode(chatRoomJsonData.permitMBTICode);
     });
@@ -51,7 +51,7 @@ export const enableSelectPermitMBTICode = function () {
             } else if (this.value.match(/[TF]/)) {
                 PermitMBTI_survey.decision = PermitMBTI_survey.decision === null ? this.value : ".";
             } else if (this.value.match(/[JP]/)) {
-                PermitMBTI_survey.coping = PermitMBTI_survey.coping === null ? this.value : ".";
+                PermitMBTI_survey.fulfillment = PermitMBTI_survey.fulfillment === null ? this.value : ".";
             }
         } else {
             if (this.value.match(/[EI]/)) {
@@ -76,17 +76,17 @@ export const enableSelectPermitMBTICode = function () {
                     PermitMBTI_survey.decision = null;
                 }
             } else if (this.value.match(/[JP]/)) {
-                if (PermitMBTI_survey.coping === ".") {
-                    if (this.value === "J") PermitMBTI_survey.coping = "P";
-                    else PermitMBTI_survey.coping = "J";
+                if (PermitMBTI_survey.fulfillment === ".") {
+                    if (this.value === "J") PermitMBTI_survey.fulfillment = "P";
+                    else PermitMBTI_survey.fulfillment = "J";
                 } else {
-                    PermitMBTI_survey.coping = null;
+                    PermitMBTI_survey.fulfillment = null;
                 }
             }
         }
         console.log(PermitMBTI_survey);
 
-        let code = PermitMBTI_survey.focused + PermitMBTI_survey.recognition + PermitMBTI_survey.decision + PermitMBTI_survey.coping;
+        let code = PermitMBTI_survey.focused + PermitMBTI_survey.recognition + PermitMBTI_survey.decision + PermitMBTI_survey.fulfillment;
         MBTI_CODES.forEach(value => {
             if (this.checked && value.match(code)) {
                 chatRoomJsonData.permitMBTICode.add(value);
