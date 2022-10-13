@@ -60,17 +60,17 @@ public class WebSecurityConfig {
 				.rememberMe()
 				.key("MBTI Chatting Application Login Remember Me")
 				.rememberMeParameter("remember-me")
-				.tokenValiditySeconds(86400 * 30) // 1 Month
-				.userDetailsService(customUserDetailService)
-				.authenticationSuccessHandler(myAuthenticationSuccessHandler())
-				.and()
+                .tokenValiditySeconds(86400 * 30) // 1 Month
+                .userDetailsService(customUserDetailService)
+                .authenticationSuccessHandler(myAuthenticationSuccessHandler())
+                .and()
 
                 // Logout
-				.logout()
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login?logout")
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
                 // 로그아웃 시 Session 무효화, JSESSIONID 쿠키 삭제
-				.invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me")
 				.permitAll();
 
 		return http.build();

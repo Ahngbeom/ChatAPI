@@ -12,7 +12,7 @@ import javax.persistence.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatMBTIJoinEntity {
+public class ChatMBTIEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +26,11 @@ public class ChatMBTIJoinEntity {
     @JoinColumn(name = "permit_mbti_code")
     private MBTIInfoEntity permitMBTI;
 
+    public void setChatRoom(ChatRoomEntity chatRoom) {
+        this.chatRoom = chatRoom;
+    }
+
+    public void setPermitMBTI(MBTIInfoEntity permitMBTI) {
+        this.permitMBTI = permitMBTI;
+    }
 }

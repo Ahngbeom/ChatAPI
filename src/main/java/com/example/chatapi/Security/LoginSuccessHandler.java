@@ -52,14 +52,14 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     protected String determineTargetUrl(final Authentication authentication) {
 
         Map<String, String> roleTargetUrlMap = new HashMap<>();
-        roleTargetUrlMap.put("ROLE_ADMIN", "/");
-        roleTargetUrlMap.put("ROLE_MANAGER", "/");
+        roleTargetUrlMap.put("ROLE_ADMIN", "/user/list");
+        roleTargetUrlMap.put("ROLE_MANAGER", "/chat/list");
         roleTargetUrlMap.put("ROLE_USER", "/");
 
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) {
             String authorityName = grantedAuthority.getAuthority();
-            if(roleTargetUrlMap.containsKey(authorityName)) {
+            if (roleTargetUrlMap.containsKey(authorityName)) {
                 return roleTargetUrlMap.get(authorityName);
             }
         }

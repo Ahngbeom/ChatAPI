@@ -16,6 +16,10 @@ public interface ChatService {
 
     ChatRoomDTO getInfoChatRoom(String roomName);
 
+    void updateChatRoom(ChatRoomDTO chatRoomDTO);
+
+    void removeChatRoom(String roomName);
+
     boolean joinChatRoomAvailability(String roomName, String userName);
 
     boolean joinChatRoom(String roomName, String userName) throws RuntimeException;

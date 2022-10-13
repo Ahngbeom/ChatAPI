@@ -26,4 +26,11 @@ public class ChatUserEntity {
     @JoinColumn(name = "user_name")
     private UserEntity userName;
 
+    public void setChatRoom(ChatRoomEntity chatRoom) {
+        this.chatRoom = chatRoom;
+    }
+
+    public void setUserName(UserEntity userName) {
+        this.userName = userName;
+    }
 }

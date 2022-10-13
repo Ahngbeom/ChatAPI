@@ -1,5 +1,6 @@
 package com.example.chatapi.Controller.View;
 
+import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.Service.MbtiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -21,8 +24,9 @@ public class MBTIController {
 	@GetMapping({ "/list"})
 	public ModelAndView myMbtiList(ModelAndView mv, Principal principal) {
 
-		mv.addObject("MBTI_List", mbtiService.getUserMbtiList(principal.getName()));
-//		log.info(mbtiService.getUserMbtiList(principal.getName()).toString());
+		List<MbtiDTO> mbtiDTOList = mbtiService.getUserMbtiList(principal.getName());
+		mv.addObject("MBTI_List", mbtiDTOList);
+		mv.addObject("totalNumberOfTests", mbtiDTOList.stream().map(MbtiDTO::getNumberOfTimes).reduce(0, Integer::sum));
 		mv.setViewName("pages/mbti/mbtiList");
 		return mv;
 	}

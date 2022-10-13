@@ -73,13 +73,14 @@
             <h3 class="d-flex justify-content-center">당신의 대처 방식은 어떠합니까?</h3>
             <div class="d-flex justify-content-center">
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="coping" id="copingJudging" value="Judging">
+                    <input class="form-check-input" id="copingJudging" name="fulfillment" type="radio" value="Judging">
                     <label class="form-check-label" for="copingJudging">
                         판단(Judging)
                     </label>
                 </div>
                 <div class="form-check-inline m-2">
-                    <input class="form-check-input" type="radio" name="coping" id="copingPerceiving" value="Perceiving">
+                    <input class="form-check-input" id="copingPerceiving" name="fulfillment" type="radio"
+                           value="Perceiving">
                     <label class="form-check-label" for="copingPerceiving">
                         인식(Perceiving)
                     </label>
@@ -95,7 +96,7 @@
 
         </div>
     </div>
-    <th:block th:replace="fragments/modal :: modal('mbtiRegisterModal')"/>
+    <th:block th:replace="fragments/modal :: staticModal('mbtiRegisterModal')"/>
 </th:block>
 
 </body>

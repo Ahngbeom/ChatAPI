@@ -45,6 +45,25 @@ public class ChatAPIController {
         return ResponseEntity.ok(chatService.getInfoChatRoom(roomName));
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<Boolean> updateChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoomDTO) {
+        log.info(chatRoomDTO.toString());
+        if (!principal.getName().equals(chatService.getInfoChatRoom(chatRoomDTO.getOrigRoomName()).getFounder()))
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(false);
+        chatRoomDTO.setFounder(principal.getName());
+        chatService.updateChatRoom(chatRoomDTO);
+        return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("/remove")
+    public ResponseEntity<Boolean> removeChatRoom(Principal principal, @RequestParam(value = "roomName") String roomName) {
+        log.info(roomName);
+        if (principal.getName().equals(chatService.getInfoChatRoom(roomName).getFounder()))
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(false);
+        chatService.removeChatRoom(roomName);
+        return ResponseEntity.ok(true);
+    }
+
     @GetMapping("/join-availability/{roomName}")
     public ResponseEntity<String> joinChatRoomAvailability(@PathVariable String roomName, Principal principal) {
         if (!chatService.checkAlreadyJoined(roomName, principal.getName())) {
