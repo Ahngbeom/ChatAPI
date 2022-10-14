@@ -15,17 +15,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-	/*
-	PasswordEncoder는 Spring Security의 Interface 객체이다.
-	따라서 PasswordEncoder의 구현체를 대입해주고, Bean으로 등록해줄 필요가 있다.
-	PasswordEncoder의 구현체로 BCryptPasswordEncoder 객체를 지정한다.
-	BCryptPasswordEncoder 객체는 Hash 함수를 이용하여 패스워드를 암호화하는 구현체이다.
-	PasswordEncoder는 UserServiceImpl 클래스에서 유저를 DB에 등록하기 전, 패스워드를 암호화하는 과정에 사용된다.
-	https://youngjinmo.github.io/2021/05/passwordencoder/
-	 */
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+	private final CustomUserDetailService customUserDetailService;
+
+	public WebSecurityConfig(CustomUserDetailService customUserDetailService) {
+		this.customUserDetailService = customUserDetailService;
 	}
 
 	@Bean
@@ -33,8 +26,18 @@ public class WebSecurityConfig {
 		return new LoginSuccessHandler();
 	}
 
-
-	private CustomUserDetailService customUserDetailService;
+	/*
+        PasswordEncoder는 Spring Security의 Interface 객체이다.
+        따라서 PasswordEncoder의 구현체를 대입해주고, Bean으로 등록해줄 필요가 있다.
+        PasswordEncoder의 구현체로 BCryptPasswordEncoder 객체를 지정한다.
+        BCryptPasswordEncoder 객체는 Hash 함수를 이용하여 패스워드를 암호화하는 구현체이다.
+        PasswordEncoder는 UserServiceImpl 클래스에서 유저를 DB에 등록하기 전, 패스워드를 암호화하는 과정에 사용된다.
+        https://youngjinmo.github.io/2021/05/passwordencoder/
+         */
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
