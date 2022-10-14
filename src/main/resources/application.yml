@@ -5,9 +5,9 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
 #    username: root
 #    username: ahngbeom
-    username: ${JawsDB_USER}
+    username: ${JAWSDB_USER}
 #    password: 1234
-    password: ${JawsDB_PASSWORD}
+    password: ${JAWSDB_PASSWORD}
   jpa:
     open-in-view: false
     generate-ddl: true
