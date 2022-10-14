@@ -5,7 +5,7 @@
     <!-- Vertically centered scrollable modal -->
     <div class="modal fade" th:id="${id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          th:aria-labelledby="${id + 'Label'}" aria-hidden="true">
-        <th:block th:replace="/fragments/toast :: toast('modalToast')"></th:block>
+        <th:block th:replace="fragments/toast :: toast('modalToast')"></th:block>
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -128,7 +128,7 @@
 <th:block th:fragment="CRUDChatRoomModal(type)">
     <div class="modal fade CRUD-chatRoom-modal" data-bs-keyboard="false" th:id="${type} + ChatRoomModal"
          tabindex="-1" th:aria-labelledby="${type} + ChatRoomModalLabel" aria-modal="true" role="dialog">
-        <!--        <th:block th:replace="/fragments/toast :: toast"></th:block>-->
+        <!--        <th:block th:replace="fragments/toast :: toast"></th:block>-->
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
