@@ -1,5 +1,6 @@
 package com.example.chatapi.Config;
 
+import com.example.chatapi.Repository.UserRepository;
 import com.example.chatapi.Security.CustomUserDetailService;
 import com.example.chatapi.Security.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
@@ -16,9 +17,11 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class WebSecurityConfig {
 
 	private final CustomUserDetailService customUserDetailService;
+	private final UserRepository userRepository;
 
-	public WebSecurityConfig(CustomUserDetailService customUserDetailService) {
+	public WebSecurityConfig(CustomUserDetailService customUserDetailService, UserRepository userRepository) {
 		this.customUserDetailService = customUserDetailService;
+		this.userRepository = userRepository;
 	}
 
 	@Bean
@@ -69,14 +72,17 @@ public class WebSecurityConfig {
                 .and()
 
                 // Logout
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                // 로그아웃 시 Session 무효화, JSESSIONID 쿠키 삭제
-                .invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me")
+				.logout()
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/login?logout")
+				// 로그아웃 시 Session 무효화, JSESSIONID 쿠키 삭제
+				.invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me")
 				.permitAll();
 
 		return http.build();
 	}
 
+	public UserRepository getUserRepository() {
+		return userRepository;
+	}
 }
