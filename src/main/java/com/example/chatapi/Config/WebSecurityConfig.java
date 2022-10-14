@@ -1,6 +1,5 @@
 package com.example.chatapi.Config;
 
-import com.example.chatapi.Repository.UserRepository;
 import com.example.chatapi.Security.CustomUserDetailService;
 import com.example.chatapi.Security.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
@@ -17,11 +16,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class WebSecurityConfig {
 
 	private final CustomUserDetailService customUserDetailService;
-	private final UserRepository userRepository;
 
-	public WebSecurityConfig(CustomUserDetailService customUserDetailService, UserRepository userRepository) {
+	public WebSecurityConfig(CustomUserDetailService customUserDetailService) {
 		this.customUserDetailService = customUserDetailService;
-		this.userRepository = userRepository;
 	}
 
 	@Bean
@@ -45,6 +42,7 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
+				.userDetailsService(customUserDetailService)
                 // CSRF 비활성화
 				.csrf().disable()
 				// 특정 경로 접근 권한 설정. "/signup", "/sign-up", "/webjars/**" 패턴의 요청 주소는 모두에게 접근 허용
@@ -82,7 +80,4 @@ public class WebSecurityConfig {
 		return http.build();
 	}
 
-	public UserRepository getUserRepository() {
-		return userRepository;
-	}
 }

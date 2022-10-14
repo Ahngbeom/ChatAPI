@@ -2,7 +2,7 @@ spring:
   datasource:
 #    url: jdbc:mariadb://localhost:3306/chat_api
     url: ${JAWSDB_MARIA_URL}
-#    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
 #    username: root
 #    username: ahngbeom
     username: ${JawsDB_USER}
@@ -17,7 +17,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  #      ddl-auto: create-drop
+    #      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
+  #    defer-datasource-initialization: true
 
   thymeleaf:
     prefix: classpath:/templates/

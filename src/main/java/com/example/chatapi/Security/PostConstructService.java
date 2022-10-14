@@ -15,7 +15,7 @@ import java.util.Collections;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PostConstructService{
+public class PostConstructService {
 
     private final UserService userService;
     private final UserRepository userRepository;

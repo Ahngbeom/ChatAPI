@@ -2,6 +2,7 @@ package com.example.chatapi.Security;
 
 import com.example.chatapi.Entity.User.UserEntity;
 import com.example.chatapi.Repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,15 +18,12 @@ import java.util.stream.Collectors;
 
 //@Component("userDetailsService")
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(CustomUserDetailService.class);
 
     private final UserRepository userRepository;
-
-    public CustomUserDetailService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
