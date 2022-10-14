@@ -2,23 +2,24 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<th:block th:replace="/fragments/header :: header"/>
+<th:block th:replace="fragments/header :: header"/>
 
 <body style="padding-top: 120px;">
-<th:block th:replace="/fragments/header :: offcanvas"/>
+<th:block th:replace="fragments/header :: offcanvas"/>
 <div class="container-fluid p-0" id="mainContainer">
 
     <th:block layout:fragment="banner">
-        <th:div th:insert="/fragments/banner :: MBTI-banner" class="d-flex flex-column justify-content-center text-center"/>
+        <th:div class="d-flex flex-column justify-content-center text-center"
+                th:insert="fragments/banner :: MBTI-banner"/>
     </th:block>
     <th:block layout:fragment="content">
     </th:block>
 
-    <th th:replace="/fragments/toast :: toast('pageToast')"></th>
+    <th th:replace="fragments/toast :: toast('pageToast')"></th>
 </div>
 </body>
 <th:block layout:fragment="defaultScript">
-    <th:block th:replace="/fragments/footer :: footer"/>
+    <th:block th:replace="fragments/footer :: footer"/>
 </th:block>
 <th:block layout:fragment="additionalScript">
 </th:block>
