@@ -2,15 +2,15 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     #    url: jdbc:mariadb://localhost:3306/chat_api
-    #    url: ${JAWSDB_MARIA_URL}
-    url: jdbc:mysql://bjkctor85hfatt59:hkcrgvq8er97i0qu@iu51mf0q32fkhfpl.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/zn33iu1z0n1gct1k
+    url: ${JAWSDB_MARIA_URL}
+    #    url: jdbc:mariadb://iu51mf0q32fkhfpl.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/zn33iu1z0n1gct1k
     #    username: root
     #    username: ahngbeom
-    #    username: ${JAWSDB_USER}
-    username: bjkctor85hfatt59
+    username: ${JAWSDB_USER}
+    #    username: bjkctor85hfatt59
     #    password: 1234
-    #    password: ${JAWSDB_PASSWORD}
-    password: hkcrgvq8er97i0qu
+    password: ${JAWSDB_PASSWORD}
+  #    password: hkcrgvq8er97i0qu
   jpa:
     open-in-view: false
     generate-ddl: true
