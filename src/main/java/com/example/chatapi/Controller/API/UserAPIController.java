@@ -88,7 +88,7 @@ public class UserAPIController {
 
 	@GetMapping("/username-validation")
 	public ResponseEntity<?> usernameValidation(@RequestParam String username) throws RuntimeException {
-		List<String> forbiddenWords = new ArrayList<>(Arrays.asList("administrator", "admin", "manager", "user"));
+		List<String> forbiddenWords = new ArrayList<>(Arrays.asList("administrator", "admin", "manager", "user", "server"));
 		try {
 			forbiddenWords.forEach(word -> {
 				if (username.toLowerCase().contains(word))

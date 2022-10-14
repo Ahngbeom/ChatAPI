@@ -10,17 +10,11 @@ import lombok.*;
 @NoArgsConstructor
 public class ChatLogDTO {
 
-    private Long id;
-
     private String fromUsername;
 
     private String message;
 
-    private ChatRoomEntity chatRoomId;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String type;
 
     public void setFromUsername(String fromUsername) {
         this.fromUsername = fromUsername;
@@ -30,7 +24,4 @@ public class ChatLogDTO {
         this.message = message;
     }
 
-    public void setChatRoomId(ChatRoomEntity chatRoomId) {
-        this.chatRoomId = chatRoomId;
-    }
 }

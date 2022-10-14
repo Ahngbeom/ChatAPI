@@ -1,8 +1,10 @@
 package com.example.chatapi.STOMP;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class Message {
 
 	public static final String SERVER = "Server";
@@ -10,11 +12,12 @@ public class Message {
 	public static final String COMMON = "COMMON";
 	public static final String IMPORTANT = "IMPORTANT";
 	public static final String ERROR = "ERROR";
-	String status;
 
-	String from;
+	private final String status;
 
-	String message;
+	private String from;
+
+	private String message;
 
 	public Message(String status, String from, String message) {
 		this.status = status;
