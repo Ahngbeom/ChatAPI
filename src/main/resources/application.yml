@@ -6,10 +6,10 @@ spring:
     #    url: jdbc:mariadb://iu51mf0q32fkhfpl.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/zn33iu1z0n1gct1k
     #    username: root
     #    username: ahngbeom
-#    username: ${JAWSDB_USER}
+    username: ${JAWSDB_USER}
     #    username: bjkctor85hfatt59
     #    password: 1234
-  #    password: ${JAWSDB_PASSWORD}
+    password: ${JAWSDB_PASSWORD}
   #    password: hkcrgvq8er97i0qu
   jpa:
     open-in-view: false
@@ -21,7 +21,7 @@ spring:
       hibernate:
         format_sql: true
     #        ddl-auto: create-drop
-    database-platform: org.hibernate.dialect.MariaDB103Dialect
+    database-platform: org.hibernate.dialect.MariaDB104Dialect
   #    defer-datasource-initialization: true
 
   thymeleaf:
