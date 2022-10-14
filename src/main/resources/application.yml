@@ -27,8 +27,9 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
-    cache: false
+    cache: true
     check-template-location: true
+    enabled: true
 
   output:
     ansi:
