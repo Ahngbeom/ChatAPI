@@ -21,7 +21,7 @@ spring:
       hibernate:
         format_sql: true
     #        ddl-auto: create-drop
-    database-platform: org.hibernate.dialect.MariaDB104Dialect
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
   #    defer-datasource-initialization: true
 
   thymeleaf:
