@@ -21,7 +21,7 @@
         <th:block th:replace="fragments/modal :: signUpModal"/>
 
         <div class="d-flex flex-column justify-content-center align-items-center">
-            <th:block th:replace="/fragments/alert :: alert"></th:block>
+            <th:block th:replace="fragments/alert :: alert"></th:block>
             <div class="d-flex justify-content-center mx-1">
                 <form th:action="@{/login}" method="post" class="form-group flex-column" id="loginForm">
                     <div class="mb-3 row">

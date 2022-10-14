@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="kr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 
-<th:block th:replace="/fragments/header :: header"/>
+<th:block th:replace="fragments/header :: header"/>
 <body>
 <div class="container-fluid mt-3">
-    <th:block th:replace="/fragments/header :: MBTI-header"/>
+    <th:block th:replace="fragments/header :: MBTI-header"/>
 
     <h1>Sign Up</h1>
 
     <div class="d-flex flex-column justify-content-center align-items-center">
-        <th:block th:replace="/fragments/alert :: alert"/>
+        <th:block th:replace="fragments/alert :: alert"/>
         <div class="d-flex justify-content-center w-75 mx-1">
             <form action="/signup" method="post" class="form-group flex-column w-100" id="signUpForm">
                 <div class="mb-3 row justify-content-center">
@@ -76,6 +76,6 @@
     </div>
 </div>
 </body>
-<th:block th:replace="/fragments/footer :: footer"/>
+<th:block th:replace="fragments/footer :: footer"/>
 <script src="/js/signup/signup.js"></script>
 </html>

@@ -4,14 +4,14 @@
 <!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
 <!--layout:decorator="~{layouts/default_layout}"-->
 
-<th:block th:replace="/fragments/header :: header"/>
+<th:block th:replace="fragments/header :: header"/>
 <body style="padding-top: 100px;">
 
 <!--<th:block th:replace="fragments/header :: navbar"/>-->
-<th:block th:replace="/fragments/header :: offcanvas"/>
+<th:block th:replace="fragments/header :: offcanvas"/>
 <div class="container-fluid mt-xl-5" id="mainContainer">
 
-    <th:block th:replace="/fragments/header :: MBTI-header"/>
+    <th:block th:replace="fragments/header :: MBTI-header"/>
 
     <div id="mbtiListDiv" class="flex-column">
         <div class="d-flex justify-content-end" id="btnAreaForMbtiTable">
