@@ -1,6 +1,6 @@
 package com.example.chatapi.Controller.View;
 
-import com.example.chatapi.Service.ChatService;
+import com.example.chatapi.Service.Chat.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

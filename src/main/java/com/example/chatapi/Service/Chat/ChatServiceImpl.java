@@ -1,4 +1,4 @@
-package com.example.chatapi.Service;
+package com.example.chatapi.Service.Chat;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
 import com.example.chatapi.DTO.MbtiDTO;
@@ -6,6 +6,7 @@ import com.example.chatapi.Entity.Chat.ChatMBTIEntity;
 import com.example.chatapi.Entity.Chat.ChatRoomEntity;
 import com.example.chatapi.Entity.Chat.ChatUserEntity;
 import com.example.chatapi.Repository.*;
+import com.example.chatapi.Service.MbtiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

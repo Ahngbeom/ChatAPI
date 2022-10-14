@@ -1,4 +1,4 @@
-package com.example.chatapi.Service;
+package com.example.chatapi.Service.Chat;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
 

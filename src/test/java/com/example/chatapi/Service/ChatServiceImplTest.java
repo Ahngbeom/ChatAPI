@@ -1,10 +1,10 @@
 package com.example.chatapi.Service;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
-import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.Repository.ChatMBTIRepository;
 import com.example.chatapi.Repository.ChatRoomRepository;
 import com.example.chatapi.Repository.MbtiRepository;
+import com.example.chatapi.Service.Chat.ChatServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @Slf4j
