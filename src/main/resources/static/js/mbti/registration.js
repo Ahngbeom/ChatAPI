@@ -83,12 +83,12 @@ const getMBTIInformation = function (mbtiRadioJson) {
                 imgSrc: mbtiHeaderExtractByOfficialSite.querySelector("img").src
             };
             renewalModal({
-                target: mbtiRegisterModalElem,
-                title: "MBTI Result",
-                body: insertMBTIDataToModal(mbtiRegisterModalElem, mbtiJson),
-                interactionBtnType: "primary",
-                interactionBtnText: "Submit"
-            });
+                    target: mbtiRegisterModalElem,
+                    title: "MBTI Result",
+                    body: insertMBTIDataToModal(mbtiRegisterModalElem, mbtiJson)
+                }, "<button type=\"button\" class=\"btn btn-primary\" id=\"modalInteractionBtn\">Submit</button>"
+            );
+
             showModalTarget(mbtiRegisterModalElem);
         },
         error: function (data) {

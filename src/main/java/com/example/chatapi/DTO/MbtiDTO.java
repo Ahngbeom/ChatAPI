@@ -15,35 +15,38 @@ import java.util.Calendar;
 @NoArgsConstructor
 public class MbtiDTO {
 
-	private String code;
+    private String code;
 
-	private String personality;
+    private String personality;
 
-	private String introduction;
+    private String introduction;
 
-	private String imgSrc;
+    private String imgSrc;
 
-	private int numberOfTimes; // Number of times this MBTI Result
+    private int numberOfTimes; // Number of times this MBTI Result
 
-	private LocalDateTime regDate;
-	private LocalDateTime recentRegDate;
+    private boolean represent;
 
-	public static MbtiDTO convertMbtiEntityToMbtiDTO(MBTIInfoEntity entity) {
-		return MbtiDTO.builder()
-				.code(entity.getCode())
-				.personality(entity.getPersonality())
-				.introduction(entity.getIntroduction())
-				.imgSrc(entity.getImgSrc())
-				.build();
-	}
+    private LocalDateTime regDate;
+    private LocalDateTime recentRegDate;
 
-	public static MbtiDTO convertUserMbtiEntityToMbtiDTO(UserMbtiJoinEntity entity) {
-		return MbtiDTO.builder()
-				.code(entity.getMbti().getCode())
-				.personality(entity.getMbti().getPersonality())
-				.introduction(entity.getMbti().getIntroduction())
-				.imgSrc(entity.getMbti().getImgSrc())
-				.numberOfTimes(entity.getNumberOfTimes())
+    public static MbtiDTO convertMbtiEntityToMbtiDTO(MBTIInfoEntity entity) {
+        return MbtiDTO.builder()
+                .code(entity.getCode())
+                .personality(entity.getPersonality())
+                .introduction(entity.getIntroduction())
+                .imgSrc(entity.getImgSrc())
+                .build();
+    }
+
+    public static MbtiDTO convertUserMbtiEntityToMbtiDTO(UserMbtiJoinEntity entity) {
+        return MbtiDTO.builder()
+                .code(entity.getMbti().getCode())
+                .personality(entity.getMbti().getPersonality())
+                .introduction(entity.getMbti().getIntroduction())
+                .imgSrc(entity.getMbti().getImgSrc())
+                .numberOfTimes(entity.getNumberOfTimes())
+                .represent(entity.isRepresent())
 				.regDate(entity.getRegDate())
 				.recentRegDate(entity.getRecentRegDate())
 				.build();

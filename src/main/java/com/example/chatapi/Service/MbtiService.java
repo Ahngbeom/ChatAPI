@@ -8,13 +8,18 @@ import java.util.List;
 
 public interface MbtiService {
 
-	MBTIInfoEntity register(MbtiDTO mbtiDTO);
+    MBTIInfoEntity register(MbtiDTO mbtiDTO);
 
-	List<MBTIInfoEntity> getList();
+    List<MBTIInfoEntity> getList();
 
-	boolean addMbti(UserDTO userDTO, MbtiDTO mbtiDTO) throws RuntimeException;
+    boolean addMbti(UserDTO userDTO, MbtiDTO mbtiDTO) throws RuntimeException;
 
-	List<MbtiDTO> getAllMbtiList() throws RuntimeException;
-	List<MbtiDTO> getUserMbtiList(String username) throws RuntimeException;
+    List<MbtiDTO> getAllMbtiList() throws RuntimeException;
+
+    List<MbtiDTO> getUserMbtiList(String username) throws RuntimeException;
+
+    void assignRepresentMBTI(String username, String mbtiCode);
+
+    void releaseRepresentMBTI(String username);
 
 }

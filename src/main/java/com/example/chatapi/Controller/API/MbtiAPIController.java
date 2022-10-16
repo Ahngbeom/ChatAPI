@@ -19,12 +19,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/mbti")
 @RequiredArgsConstructor
+@PostAuthorize("isAuthenticated()")
 public class MbtiAPIController {
 
 	private final UserService userService;
 	private final MbtiService mbtiService;
 
-	@PostAuthorize("isAuthenticated()")
 	@PostMapping("/registration")
 	public ResponseEntity<?> mbtiRegister(Principal principal, @Valid @RequestBody MbtiDTO mbtiDTO) {
 		try {
@@ -41,7 +41,6 @@ public class MbtiAPIController {
 		}
 	}
 
-	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
 	public ResponseEntity<List<MbtiDTO>> getList(Principal principal, @RequestParam(required = false) String username) {
 		try {
@@ -56,5 +55,11 @@ public class MbtiAPIController {
 			e.printStackTrace();
 		}
 		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
+	}
+
+	@GetMapping("/select-represent")
+	public ResponseEntity<Boolean> selectRepresentMBTI(Principal principal, @RequestParam String mbtiCode) {
+		mbtiService.assignRepresentMBTI(principal.getName(), mbtiCode);
+		return ResponseEntity.ok(true);
 	}
 }

@@ -6,15 +6,17 @@
 <body>
 
 <th:div layout:fragment="banner" class="text-center">
-    <h2>My MBTI List</h2>
+    <h2 class="mb-3">My MBTI List</h2>
 </th:div>
 
 <th:block layout:fragment="content">
-    <th:block th:replace="fragments/mbti :: mbtiTable(${MBTI_List}, ${totalNumberOfTests})">
-
-    </th:block>
+    <th:block th:replace="fragments/mbti :: mbtiTable(${MBTI_List}, ${totalNumberOfTests})"></th:block>
 
     <th:block th:replace="fragments/modal :: staticModal('viewUserInfoModal')"></th:block>
+</th:block>
+
+<th:block layout:fragment="additionalScript">
+    <script src="/js/mbti/representMBTI.js" type="module"></script>
 </th:block>
 
 </body>
