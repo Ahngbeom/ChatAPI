@@ -1,8 +1,10 @@
 package com.example.chatapi.Service;
 
+import com.example.chatapi.DTO.MBTICode;
 import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Repository.MbtiRepository;
+import com.example.chatapi.Service.User.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -56,5 +58,10 @@ class MbtiServiceImplTest {
         mbtiService.getUserMbtiList(username).forEach(mbti -> {
             log.info(mbti.toString());
         });
+    }
+
+    @Test
+    void getInfo() {
+        log.info(String.valueOf(mbtiService.getInfo(MBTICode.ENTJ.name())));
     }
 }

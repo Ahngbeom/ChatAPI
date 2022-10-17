@@ -3,6 +3,7 @@ package com.example.chatapi.Service;
 import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Repository.UserRepository;
+import com.example.chatapi.Service.User.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ class UserServiceImplTest {
                     .nickname("ADMIN")
                     .authorities(authorities)
                     .build();
-            log.info("Create USER: " + (userService.signUp(user) ? "SUCCESS" : "FALSE"));
+            log.info("Created USER: " + userService.signUp(user));
             getUserInfo(user.getUsername());
 //            createdUserEntity.getAuthorities().forEach(userAuthorityJoinEntity -> log.info(userAuthorityJoinEntity.getAuthority().getAuthorityName()));
 

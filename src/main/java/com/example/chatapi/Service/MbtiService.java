@@ -22,4 +22,6 @@ public interface MbtiService {
 
     void releaseRepresentMBTI(String username);
 
+    MbtiDTO getInfo(String code);
+
 }

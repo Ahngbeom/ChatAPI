@@ -1,5 +1,6 @@
 package com.example.chatapi.Service;
 
+import com.example.chatapi.DTO.MBTICode;
 import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Entity.MBTI.MBTIInfoEntity;
@@ -8,6 +9,7 @@ import com.example.chatapi.Entity.MBTI.UserMbtiJoinEntity;
 import com.example.chatapi.Repository.MbtiRepository;
 import com.example.chatapi.Repository.UserMbtiRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +17,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MbtiServiceImpl implements MbtiService {
@@ -95,6 +98,12 @@ public class MbtiServiceImpl implements MbtiService {
                 break;
             }
         }
+    }
+
+    @Override
+    public MbtiDTO getInfo(String code) {
+        log.info(String.valueOf(mbtiRepository.findByCode(code)));
+        return MbtiDTO.convertMbtiEntityToMbtiDTO(mbtiRepository.findByCode(code).orElseThrow(RuntimeException::new));
     }
 
     @Transactional

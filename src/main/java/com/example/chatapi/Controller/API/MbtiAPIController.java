@@ -2,13 +2,12 @@ package com.example.chatapi.Controller.API;
 
 import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.Service.MbtiService;
-import com.example.chatapi.Service.UserService;
+import com.example.chatapi.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

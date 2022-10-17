@@ -4,6 +4,7 @@ import com.example.chatapi.Security.CustomUserDetailService;
 import com.example.chatapi.Security.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // @Secured, @PreAuthorize, @PostAuthorize 활성화
 public class WebSecurityConfig {
 
 	private final CustomUserDetailService customUserDetailService;
@@ -43,12 +45,12 @@ public class WebSecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 				.userDetailsService(customUserDetailService)
-                // CSRF 비활성화
+				// CSRF 비활성화
 				.csrf().disable()
 				// 특정 경로 접근 권한 설정. "/signup", "/sign-up", "/webjars/**" 패턴의 요청 주소는 모두에게 접근 허용
-                .authorizeRequests()
+				.authorizeRequests()
 				.antMatchers("/webjars/**", "/js/**", "/template/**", "/test/**").permitAll()
-				.antMatchers("/signup", "/sign-up", "/username-validation", "/nickname-validation").permitAll()
+				.antMatchers("/api/user/signup", "/**/*-validation").permitAll()
 				.anyRequest().authenticated()
 				.and()
 

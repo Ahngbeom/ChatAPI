@@ -2,7 +2,7 @@ package com.example.chatapi.Controller.API.Chat;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
 import com.example.chatapi.Service.Chat.ChatService;
-import com.example.chatapi.Service.UserService;
+import com.example.chatapi.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
