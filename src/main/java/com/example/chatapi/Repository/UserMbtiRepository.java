@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserMbtiRepository extends JpaRepository<UserMbtiJoinEntity, Long> {
@@ -12,7 +13,9 @@ public interface UserMbtiRepository extends JpaRepository<UserMbtiJoinEntity, Lo
     //    @Query("select distinct UserMbtiJoinEntity.mbti, UserMbtiJoinEntity.user from UserMbtiJoinEntity left outer join UserEntity on UserEntity.id = UserMbtiJoinEntity.user.id where UserMbtiJoinEntity.user.id = ?1")
     List<UserMbtiJoinEntity> findAllByUser_Username(String username);
 
-    UserMbtiJoinEntity findByMbti_CodeAndUser_Username(String code, String username);
+    Optional<UserMbtiJoinEntity> findByMbti_CodeAndUser_Username(String code, String username);
+
+    Optional<UserMbtiJoinEntity> findByUser_UsernameAndRepresentIsTrue(String username);
 
     boolean existsByUser_Username(String username);
 

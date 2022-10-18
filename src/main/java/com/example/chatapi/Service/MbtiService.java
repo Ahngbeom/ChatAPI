@@ -18,6 +18,8 @@ public interface MbtiService {
 
     List<MbtiDTO> getUserMbtiList(String username) throws RuntimeException;
 
+    MbtiDTO getRepresentMBTI(String username);
+
     void assignRepresentMBTI(String username, String mbtiCode);
 
     void releaseRepresentMBTI(String username);

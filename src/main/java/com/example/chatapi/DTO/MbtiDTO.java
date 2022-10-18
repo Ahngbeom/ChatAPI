@@ -40,16 +40,16 @@ public class MbtiDTO {
     }
 
     public static MbtiDTO convertUserMbtiEntityToMbtiDTO(UserMbtiJoinEntity entity) {
-        return MbtiDTO.builder()
+        return entity == null ? null : MbtiDTO.builder()
                 .code(entity.getMbti().getCode())
                 .personality(entity.getMbti().getPersonality())
                 .introduction(entity.getMbti().getIntroduction())
                 .imgSrc(entity.getMbti().getImgSrc())
                 .numberOfTimes(entity.getNumberOfTimes())
                 .represent(entity.isRepresent())
-				.regDate(entity.getRegDate())
-				.recentRegDate(entity.getRecentRegDate())
-				.build();
+                .regDate(entity.getRegDate())
+                .recentRegDate(entity.getRecentRegDate())
+                .build();
 	}
 
 }

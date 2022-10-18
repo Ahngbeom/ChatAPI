@@ -28,14 +28,14 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findAllWithAuthoritiesByUsername(username).map(user -> {
-                    log.info(user.toString());
+//                    log.info(user.toString());
                     return createUser(username, user);
                 })
                 .orElseThrow(() -> new UsernameNotFoundException(username + " -> Not Founded in Database"));
     }
 
     private org.springframework.security.core.userdetails.User createUser(String username, UserEntity user) {
-        log.info("CustomUserDetailService - createUser");
+//        log.info("CustomUserDetailService - createUser");
 
         if (!user.isActivate()) // 인자로 넘어온 User 객체의 활성화 여부 검사
             throw new RuntimeException(username + " -> 활성화되어 있지 않습니다.");

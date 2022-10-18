@@ -21,44 +21,56 @@ import java.util.List;
 @PostAuthorize("isAuthenticated()")
 public class MbtiAPIController {
 
-	private final UserService userService;
-	private final MbtiService mbtiService;
+    private final UserService userService;
+    private final MbtiService mbtiService;
 
-	@PostMapping("/registration")
-	public ResponseEntity<?> mbtiRegister(Principal principal, @Valid @RequestBody MbtiDTO mbtiDTO) {
-		try {
-			log.info(userService.getUserInfo(principal.getName()).toString());
-			log.warn(mbtiDTO.toString());
+    @PostMapping("/registration")
+    public ResponseEntity<?> mbtiRegister(Principal principal, @Valid @RequestBody MbtiDTO mbtiDTO) {
+        try {
+//			log.info(userService.getUserInfo(principal.getName()).toString());
+//			log.warn(mbtiDTO.toString());
 
 //			userEntity.getMbtiList().forEach(element -> {
 //				log.info(element.getMbti() + ", " + element.getPersonality() + ", " + element.getIntroduction());
 //			});
-			return ResponseEntity.ok(mbtiService.addMbti(userService.getUserInfo(principal.getName()), mbtiDTO));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
+            return ResponseEntity.ok(mbtiService.addMbti(userService.getUserInfo(principal.getName()), mbtiDTO));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
-	@GetMapping("/list")
-	public ResponseEntity<List<MbtiDTO>> getList(Principal principal, @RequestParam(required = false) String username) {
-		try {
-			log.info(principal.getName());
-			if (username == null) {
-				username = principal.getName();
-			}
-			List<MbtiDTO> list = mbtiService.getUserMbtiList(username);
-			list.forEach(mbtiDTO -> log.info(mbtiDTO.getCode()));
-			return ResponseEntity.ok().body(list);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
-	}
+    @GetMapping("/list")
+    public ResponseEntity<List<MbtiDTO>> getList(Principal principal, @RequestParam(required = false) String username) {
+        try {
+            if (username == null) {
+                username = principal.getName();
+            }
+            List<MbtiDTO> list = mbtiService.getUserMbtiList(username);
+            return ResponseEntity.ok().body(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
+    }
 
-	@GetMapping("/select-represent")
-	public ResponseEntity<Boolean> selectRepresentMBTI(Principal principal, @RequestParam String mbtiCode) {
-		mbtiService.assignRepresentMBTI(principal.getName(), mbtiCode);
-		return ResponseEntity.ok(true);
-	}
+    @GetMapping("/get-represent")
+    public ResponseEntity<MbtiDTO> getRepresentMBTI(Principal principal, @RequestParam(required = false) String username) {
+        return ResponseEntity.ok(
+                username != null
+                        ? mbtiService.getRepresentMBTI(username)
+                        : mbtiService.getRepresentMBTI(principal.getName()));
+    }
+
+    @GetMapping("/assign-represent")
+    public ResponseEntity<Boolean> assignRepresentMBTI(Principal principal, @RequestParam String mbtiCode) {
+        mbtiService.assignRepresentMBTI(principal.getName(), mbtiCode);
+        return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("/release-represent")
+    public ResponseEntity<Boolean> releaseRepresentMBTI(Principal principal) {
+        mbtiService.releaseRepresentMBTI(principal.getName());
+        return ResponseEntity.ok(true);
+    }
 }

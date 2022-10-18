@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -47,7 +48,7 @@ public class MbtiServiceImpl implements MbtiService {
 
         assert mbtiInfoEntity != null;
         if (userMbtiRepository.existsByMbti_CodeAndUser_Username(mbtiInfoEntity.getCode(), userDTO.getUsername())) {
-            UserMbtiJoinEntity userMbtiJoinEntity = userMbtiRepository.findByMbti_CodeAndUser_Username(mbtiInfoEntity.getCode(), userDTO.getUsername());
+            UserMbtiJoinEntity userMbtiJoinEntity = userMbtiRepository.findByMbti_CodeAndUser_Username(mbtiInfoEntity.getCode(), userDTO.getUsername()).orElseThrow(RuntimeException::new);
             userMbtiJoinEntity.increaseNumberOfTimes();
             return userMbtiRepository.save(userMbtiJoinEntity).getClass().equals(UserMbtiJoinEntity.class);
         } else {
@@ -82,9 +83,14 @@ public class MbtiServiceImpl implements MbtiService {
     }
 
     @Override
+    public MbtiDTO getRepresentMBTI(String username) {
+        return MbtiDTO.convertUserMbtiEntityToMbtiDTO(Objects.requireNonNull(userMbtiRepository.findByUser_UsernameAndRepresentIsTrue(username).orElse(null)));
+    }
+
+    @Override
     public void assignRepresentMBTI(String username, String mbtiCode) {
         releaseRepresentMBTI(username);
-        UserMbtiJoinEntity entity = userMbtiRepository.findByMbti_CodeAndUser_Username(mbtiCode, username);
+        UserMbtiJoinEntity entity = userMbtiRepository.findByMbti_CodeAndUser_Username(mbtiCode, username).orElseThrow(RuntimeException::new);
         entity.setRepresent(true);
         userMbtiRepository.save(entity);
     }
@@ -102,7 +108,6 @@ public class MbtiServiceImpl implements MbtiService {
 
     @Override
     public MbtiDTO getInfo(String code) {
-        log.info(String.valueOf(mbtiRepository.findByCode(code)));
         return MbtiDTO.convertMbtiEntityToMbtiDTO(mbtiRepository.findByCode(code).orElseThrow(RuntimeException::new));
     }
 
