@@ -18,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class ChatRoomDTO {
 
+    @ToString.Exclude
     private String origRoomName; // For Modify | Update
     private String roomName;
 

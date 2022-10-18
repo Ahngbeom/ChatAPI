@@ -59,7 +59,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<ChatRoomDTO> getListOfAllChatRoomsUserHasJoined(String username) throws RuntimeException {
+    public List<ChatRoomDTO> getListAllChatRoomsByFounder(String username) throws RuntimeException {
         return chatRoomRepository.findAllByFounder_Username(username).stream().map(entity -> ChatRoomDTO.builder().roomName(entity.getRoomName()).description(entity.getDescription()).founder(entity.getFounder().getUsername()).concurrentUsers(countConcurrentUsers(entity.getRoomName())).createDate(entity.getCreateDate().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG))).permitMBTICode(permitMBTICodesByChatRoom(entity.getRoomName())).build()).collect(Collectors.toList());
     }
 

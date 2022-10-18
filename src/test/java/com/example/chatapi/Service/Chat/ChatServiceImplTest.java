@@ -1,10 +1,11 @@
-package com.example.chatapi.Service;
+package com.example.chatapi.Service.Chat;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
 import com.example.chatapi.Repository.ChatMBTIRepository;
 import com.example.chatapi.Repository.ChatRoomRepository;
 import com.example.chatapi.Repository.MbtiRepository;
 import com.example.chatapi.Service.Chat.ChatServiceImpl;
+import com.example.chatapi.Service.MbtiServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -51,8 +52,15 @@ class ChatServiceImplTest {
     }
 
     @Test
-    void getListOfAllChatRoomsUserHasJoined() {
-        chatService.getListOfAllChatRoomsUserHasJoined("admin").forEach(chatRoomDTO -> {
+    void getListAllChatRoomsByFounder() {
+        chatService.getListAllChatRoomsByFounder("admin").forEach(chatRoomDTO -> {
+            log.info(chatRoomDTO.toString());
+        });
+    }
+
+    @Test
+    void getListOfAllChatRoomsUserBelongs() {
+        chatService.getListOfAllChatRoomsUserBelongs("admin").forEach(chatRoomDTO -> {
             log.info(chatRoomDTO.toString());
         });
     }

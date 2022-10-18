@@ -24,14 +24,14 @@ public class ChatAPIController {
     private final ChatService chatService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/listOfAll")
-    public ResponseEntity<List<ChatRoomDTO>> getListOfAllChatRooms() {
+    @GetMapping("/list/all")
+    public ResponseEntity<List<ChatRoomDTO>> getListAllChatRooms() {
         return ResponseEntity.ok(chatService.getListOfAllChatRooms());
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<ChatRoomDTO>> getListOfAllChatRoomsUserHasJoined(Principal principal) {
-        return ResponseEntity.ok(chatService.getListOfAllChatRoomsUserHasJoined(userService.getUserInfo(principal.getName()).getUsername()));
+    public ResponseEntity<List<ChatRoomDTO>> getListAllChatRoomsByFounder(Principal principal, @RequestParam(required = false) String username) {
+        return ResponseEntity.ok(chatService.getListAllChatRoomsByFounder(username == null ? principal.getName() : username));
     }
 
     @PostMapping("/create")

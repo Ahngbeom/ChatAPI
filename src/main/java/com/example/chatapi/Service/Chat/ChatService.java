@@ -10,7 +10,7 @@ public interface ChatService {
 
     List<ChatRoomDTO> getListOfAllChatRooms();
 
-    List<ChatRoomDTO> getListOfAllChatRoomsUserHasJoined(String username) throws RuntimeException;
+    List<ChatRoomDTO> getListAllChatRoomsByFounder(String username) throws RuntimeException;
 
     List<ChatRoomDTO> getListOfAllChatRoomsUserBelongs(String username);
 

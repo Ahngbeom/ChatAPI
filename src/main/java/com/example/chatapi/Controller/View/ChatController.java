@@ -28,7 +28,7 @@ public class ChatController {
     @GetMapping({"/list"})
     public ModelAndView myChatRoomList(ModelAndView mv, Principal principal, @RequestParam(required = false) String founder, @RequestParam(required = false) String belongs) {
         if (founder != null) {
-            mv.addObject("chatRoomList", chatService.getListOfAllChatRoomsUserHasJoined(principal.getName()));
+            mv.addObject("chatRoomList", chatService.getListAllChatRoomsByFounder(principal.getName()));
         } else if (belongs != null) {
             mv.addObject("chatRoomList", chatService.getListOfAllChatRoomsUserBelongs(principal.getName()));
         } else {

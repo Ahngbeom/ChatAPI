@@ -9,9 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.transaction.Transactional;
+
+import java.net.URI;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest // Test를 위한 Application Context 로딩 및 관련 속성 제공
 @Disabled // 해당 테스트 클래스 또는 테스트 메소드를 실행하지 않음.
@@ -26,9 +35,5 @@ public class ChatApplicationIntegrationTests {
 
     @Autowired
     protected ObjectMapper objectMapper;
-
-    @Test
-    void contextLoads() {
-    }
 
 }
