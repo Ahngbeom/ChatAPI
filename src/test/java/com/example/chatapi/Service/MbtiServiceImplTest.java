@@ -4,6 +4,7 @@ import com.example.chatapi.DTO.MBTICode;
 import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Repository.MbtiRepository;
+import com.example.chatapi.Service.MBTI.MbtiServiceImpl;
 import com.example.chatapi.Service.User.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -62,6 +63,6 @@ class MbtiServiceImplTest {
 
     @Test
     void getInfo() {
-        log.info(String.valueOf(mbtiService.getInfo(MBTICode.ENTJ.name())));
+        log.info(String.valueOf(mbtiService.getInfo(MBTICode.ENTJ)));
     }
 }

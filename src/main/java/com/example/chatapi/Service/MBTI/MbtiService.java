@@ -1,4 +1,4 @@
-package com.example.chatapi.Service;
+package com.example.chatapi.Service.MBTI;
 
 import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.DTO.UserDTO;

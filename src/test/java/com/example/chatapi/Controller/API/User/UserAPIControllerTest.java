@@ -1,4 +1,4 @@
-package com.example.chatapi.Controller.API;
+package com.example.chatapi.Controller.API.User;
 
 import com.example.chatapi.ChatApplicationIntegrationTests;
 import com.example.chatapi.DTO.AuthorityDTO;

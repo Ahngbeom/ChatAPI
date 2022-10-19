@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ChatService {
 
-    boolean createChatRoom(String username, ChatRoomDTO chatRoomDTO) throws RuntimeException;
+    ChatRoomDTO createChatRoom(String username, ChatRoomDTO chatRoomDTO) throws RuntimeException;
 
     List<ChatRoomDTO> getListOfAllChatRooms();
 
@@ -16,7 +16,7 @@ public interface ChatService {
 
     ChatRoomDTO getInfoChatRoom(String roomName);
 
-    void updateChatRoom(ChatRoomDTO chatRoomDTO);
+    ChatRoomDTO updateChatRoom(String username, ChatRoomDTO chatRoomDTO);
 
     void removeChatRoom(String roomName);
 

@@ -1,22 +1,19 @@
-package com.example.chatapi.Controller.API;
+package com.example.chatapi.Controller.API.MBTI;
 
 import com.example.chatapi.ChatApplicationIntegrationTests;
 import com.example.chatapi.DTO.MBTICode;
 import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.Repository.MbtiRepository;
-import com.example.chatapi.Security.CustomUserDetailService;
-import com.example.chatapi.Service.MbtiServiceImpl;
+import com.example.chatapi.Service.MBTI.MbtiServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,7 +33,7 @@ class MbtiAPIControllerTest extends ChatApplicationIntegrationTests {
     @WithUserDetails("admin")
     void mbtiRegister() throws Exception {
         // Given
-        MbtiDTO mbtiDTO = mbtiService.getInfo(MBTICode.ISTJ.name());
+        MbtiDTO mbtiDTO = mbtiService.getInfo(MBTICode.ISTJ);
 
         // When
         ResultActions resultActions = mvc.perform(post("/api/mbti/registration")
@@ -83,7 +80,7 @@ class MbtiAPIControllerTest extends ChatApplicationIntegrationTests {
     void assignRepresentMBTI() throws Exception {
         // When
         MvcResult mvcResult = mvc.perform(get("/api/mbti/assign-represent")
-                        .param("mbtiCode", MBTICode.INTP.name())
+                        .param("mbtiCode", MBTICode.INTP)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

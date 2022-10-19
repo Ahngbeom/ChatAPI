@@ -1,7 +1,7 @@
 package com.example.chatapi.Controller.API;
 
 import com.example.chatapi.DTO.MbtiDTO;
-import com.example.chatapi.Service.MbtiService;
+import com.example.chatapi.Service.MBTI.MbtiService;
 import com.example.chatapi.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

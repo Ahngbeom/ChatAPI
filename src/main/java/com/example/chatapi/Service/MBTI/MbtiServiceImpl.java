@@ -1,6 +1,5 @@
-package com.example.chatapi.Service;
+package com.example.chatapi.Service.MBTI;
 
-import com.example.chatapi.DTO.MBTICode;
 import com.example.chatapi.DTO.MbtiDTO;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Entity.MBTI.MBTIInfoEntity;
