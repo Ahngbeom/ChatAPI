@@ -5,3 +5,4 @@ export const insertMBTIDataToModal = function (target, mbtiJson) {
         "<div>" + mbtiJson.introduction + "</div>" +
         "<a href='https://www.16personalities.com/" + mbtiJson.shortMbti + "-personality' target='_blank'>View details on the official site</a>";
 }
+

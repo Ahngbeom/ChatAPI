@@ -31,7 +31,7 @@ class UserMbtiRepositoryTest {
 
     @Test
     void findByMbti_CodeAndUser_id() {
-        UserMbtiJoinEntity entity = userMbtiRepository.findByMbti_CodeAndUser_Username("ESTJ-A / ESTJ-T", "admin");
+        UserMbtiJoinEntity entity = userMbtiRepository.findByMbti_CodeAndUser_Username("ESTJ-A / ESTJ-T", "admin").orElseThrow(RuntimeException::new);
         log.info(entity.getUser().toString());
         log.info(entity.getMbti().toString());
     }

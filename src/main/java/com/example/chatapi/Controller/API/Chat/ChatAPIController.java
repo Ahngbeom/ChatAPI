@@ -2,7 +2,7 @@ package com.example.chatapi.Controller.API.Chat;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
 import com.example.chatapi.Service.Chat.ChatService;
-import com.example.chatapi.Service.UserService;
+import com.example.chatapi.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,35 +24,34 @@ public class ChatAPIController {
     private final ChatService chatService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/listOfAll")
-    public ResponseEntity<List<ChatRoomDTO>> getListOfAllChatRooms() {
+    @GetMapping("/list/all")
+    public ResponseEntity<List<ChatRoomDTO>> getListAllChatRooms() {
         return ResponseEntity.ok(chatService.getListOfAllChatRooms());
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<ChatRoomDTO>> getListOfAllChatRoomsUserHasJoined(Principal principal) {
-        return ResponseEntity.ok(chatService.getListOfAllChatRoomsUserHasJoined(userService.getUserInfo(principal.getName()).getUsername()));
+    public ResponseEntity<List<ChatRoomDTO>> getListAllChatRoomsByFounder(Principal principal, @RequestParam(required = false) String username) {
+        return ResponseEntity.ok(chatService.getListAllChatRoomsByFounder(username == null ? principal.getName() : username));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Boolean> createChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoom) {
-        log.warn(chatRoom.toString());
-        return ResponseEntity.ok(chatService.createChatRoom(principal.getName(), chatRoom));
+    public ResponseEntity<ChatRoomDTO> createChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoom) {
+        ChatRoomDTO chatRoomDTO = chatService.createChatRoom(principal.getName(), chatRoom);
+        log.info(chatRoomDTO.toString());
+        return ResponseEntity.status(chatRoomDTO != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(chatRoomDTO);
     }
 
     @GetMapping("/info")
-    public ResponseEntity<ChatRoomDTO> getInfoChatRoom(@RequestParam String roomName, Principal principal) {
+    public ResponseEntity<ChatRoomDTO> getInfoChatRoom(@RequestParam String roomName) {
         return ResponseEntity.ok(chatService.getInfoChatRoom(roomName));
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Boolean> updateChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoomDTO) {
-        log.info(chatRoomDTO.toString());
-        if (!principal.getName().equals(chatService.getInfoChatRoom(chatRoomDTO.getOrigRoomName()).getFounder()))
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(false);
-        chatRoomDTO.setFounder(principal.getName());
-        chatService.updateChatRoom(chatRoomDTO);
-        return ResponseEntity.ok(true);
+    public ResponseEntity<ChatRoomDTO> updateChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoomDTO) {
+
+        ChatRoomDTO updatedChatRoomDTO = chatService.updateChatRoom(principal.getName(), chatRoomDTO);
+        return ResponseEntity.status(updatedChatRoomDTO != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(updatedChatRoomDTO);
+
     }
 
     @GetMapping("/remove")

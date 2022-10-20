@@ -15,7 +15,8 @@
     <th:block layout:fragment="content">
     </th:block>
 
-    <th th:replace="fragments/toast :: toast('pageToast')"></th>
+    <th:block th:replace="fragments/modal :: confirmModal('danger')"></th:block>
+    <th:block th:replace="fragments/toast :: toast('pageToast')"></th:block>
 </div>
 </body>
 <th:block layout:fragment="defaultScript">

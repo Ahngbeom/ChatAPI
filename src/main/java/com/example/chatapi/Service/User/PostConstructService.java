@@ -1,9 +1,8 @@
-package com.example.chatapi.Security;
+package com.example.chatapi.Service.User;
 
 import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Repository.UserRepository;
-import com.example.chatapi.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

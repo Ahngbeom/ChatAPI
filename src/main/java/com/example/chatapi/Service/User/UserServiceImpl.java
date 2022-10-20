@@ -1,4 +1,4 @@
-package com.example.chatapi.Service;
+package com.example.chatapi.Service.User;
 
 import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,11 +33,10 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-
     @Override
     @Transactional
-    public boolean signUp(UserDTO userDTO) throws RuntimeException {
-        AtomicBoolean result = new AtomicBoolean(true);
+    public UserDTO signUp(UserDTO userDTO) throws RuntimeException {
+//        AtomicBoolean result = new AtomicBoolean(true);
 
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
             throw new RuntimeException("Exist Username");
@@ -48,27 +48,34 @@ public class UserServiceImpl implements UserService {
                     .authorityName(authorityDTO.getAuthorityName())
                     .build();
             authorityEntityHashSet.add(authority);
-            result.set(result.get() & authorityRepository.save(authority).getClass().equals(AuthorityEntity.class));
+//            result.set(result.get() & authorityRepository.save(authority).getClass().equals(AuthorityEntity.class));
         });
 
         // Storing requested User's Information in user table
-        UserEntity userEntity =
+        UserEntity userEntity = userRepository.save(
                 UserEntity.builder()
                         .username(userDTO.getUsername())
                         .password(passwordEncoder.encode(userDTO.getPassword()))
                         .nickname(userDTO.getNickname())
                         .activate(true)
-                        .build();
-        result.set(result.get() | userRepository.save(userEntity).getClass().equals(UserEntity.class));
+                        .build()
+        );
+//        result.set(result.get() | userRepository.save(userEntity).getClass().equals(UserEntity.class));
 
         // Storing UserEntity and AuthorityEntity object variables in user_authority table
-        authorityEntityHashSet.forEach(authorityEntity -> result.set(result.get() | userAuthorityRepository.save(UserAuthorityJoinEntity.builder()
-                .user(userEntity)
-                .authority(authorityEntity)
-                .build()).getClass().equals(UserAuthorityJoinEntity.class)));
+        authorityEntityHashSet.forEach(authorityEntity ->
+                userAuthorityRepository.save(UserAuthorityJoinEntity.builder()
+                        .user(userEntity)
+                        .authority(authorityEntity)
+                        .build()));
 
         // Returns whether the result of the above three processes
-        return result.get();
+        userDTO = UserDTO.convertToUserDTO(userEntity);
+        assert userDTO != null;
+        userDTO.setAuthorities(userAuthorityRepository.findAllByUser_Username(userEntity.getUsername()).stream().map(userAuthorityJoinEntity ->
+                AuthorityDTO.builder().authorityName(userAuthorityJoinEntity.getAuthority().getAuthorityName()).build()).collect(Collectors.toSet())
+        );
+        return userDTO;
     }
 
     @Override
@@ -89,6 +96,8 @@ public class UserServiceImpl implements UserService {
                 .password(entity.getPassword())
                 .nickname(entity.getNickname())
                 .activate(entity.isActivate())
+                .regDate(entity.getRegDate())
+                .updateDate(entity.getUpdateDate())
                 .authorities(authorityDTOHashSet)
 //                    .mbtiInfoList(entity.getMbtiList())
                 .build();
@@ -125,11 +134,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<AuthorityDTO> getUserAuthorities(String username) {
-        List<AuthorityDTO> authorities = new ArrayList<>();
-        userAuthorityRepository.findAllByUser_Username(username).forEach(entity -> {
-            authorities.add(AuthorityDTO.convertToAuthorityDTO(entity.getAuthority()));
-        });
-        return authorities;
+        return userAuthorityRepository.findAllByUser_Username(username)
+                .stream()
+                .map(userAuthorityJoinEntity ->
+                        AuthorityDTO.convertToAuthorityDTO(userAuthorityJoinEntity.getAuthority()))
+                .collect(Collectors.toList());
     }
 
     @Override

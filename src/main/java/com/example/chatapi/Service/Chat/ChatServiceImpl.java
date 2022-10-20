@@ -6,14 +6,17 @@ import com.example.chatapi.Entity.Chat.ChatMBTIEntity;
 import com.example.chatapi.Entity.Chat.ChatRoomEntity;
 import com.example.chatapi.Entity.Chat.ChatUserEntity;
 import com.example.chatapi.Repository.*;
-import com.example.chatapi.Service.MbtiService;
+import com.example.chatapi.Service.MBTI.MbtiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,67 +35,84 @@ public class ChatServiceImpl implements ChatService {
     private final MbtiService mbtiService;
 
     @Override
-    public boolean createChatRoom(String username, ChatRoomDTO chatRoomDTO) throws RuntimeException {
+    public ChatRoomDTO createChatRoom(String username, ChatRoomDTO chatRoomDTO) throws RuntimeException {
         try {
             if (!chatRoomRepository.findByRoomName(chatRoomDTO.getRoomName()).isPresent()) {
 
-                ChatRoomEntity savedChatRoomEntity = chatRoomRepository.save(ChatRoomEntity.builder().roomName(chatRoomDTO.getRoomName()).description(chatRoomDTO.getDescription()).founder(userRepository.findByUsername(username).orElse(null)).build());
+                ChatRoomEntity savedChatRoomEntity = chatRoomRepository.saveAndFlush(
+                        ChatRoomEntity.builder()
+                                .roomName(chatRoomDTO.getRoomName())
+                                .description(chatRoomDTO.getDescription())
+                                .founder(userRepository.findByUsername(username).orElseThrow(RuntimeException::new))
+                                .build());
+                chatRoomDTO = new ChatRoomDTO(savedChatRoomEntity);
 
                 chatUserRepository.save(ChatUserEntity.builder().chatRoom(savedChatRoomEntity).userName(savedChatRoomEntity.getFounder()).build());
+                chatRoomDTO.setConcurrentUsers(countConcurrentUsers(savedChatRoomEntity.getRoomName()));
 
-                chatRoomDTO.getPermitMBTICode().forEach(code -> {
-                    chatMBTIRepository.save(ChatMBTIEntity.builder().chatRoom(savedChatRoomEntity).permitMBTI(mbtiRepository.findById(code).orElseThrow(RuntimeException::new)).build());
-                });
+                chatRoomDTO.addAllChatMBTIEntityList(
+                        chatMBTIRepository.saveAllAndFlush(
+                                chatRoomDTO.getPermitMBTICode().stream()
+                                        .map(code -> ChatMBTIEntity.builder()
+                                                .chatRoom(savedChatRoomEntity)
+                                                .permitMBTI(mbtiRepository.findById(code).orElseThrow(RuntimeException::new))
+                                                .build())
+                                        .collect(Collectors.toSet())
+                        )
+                );
 
-            } else throw new RuntimeException("Exist Chatting Room Name");
+                return chatRoomDTO;
+            } else
+                throw new RuntimeException("Exist Chatting Room Name");
         } catch (RuntimeException e) {
             e.printStackTrace();
             log.error(e.getMessage());
-            return false;
+            return null;
         }
-        return true;
     }
 
     @Override
     public List<ChatRoomDTO> getListOfAllChatRooms() {
-        return chatRoomRepository.findAll().stream().map(entity -> ChatRoomDTO.builder().roomName(entity.getRoomName()).founder(entity.getFounder().getUsername()).concurrentUsers(countConcurrentUsers(entity.getRoomName())).description(entity.getDescription()).createDate(entity.getCreateDate().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG))).permitMBTICode(permitMBTICodesByChatRoom(entity.getRoomName())).build()).collect(Collectors.toList());
+        return chatRoomRepository.findAll().stream().map(entity ->
+                        new ChatRoomDTO(entity.getRoomName(), entity.getDescription(), entity.getFounder().getUsername(), permitMBTICodesByChatRoom(entity.getRoomName())))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<ChatRoomDTO> getListOfAllChatRoomsUserHasJoined(String username) throws RuntimeException {
-        return chatRoomRepository.findAllByFounder_Username(username).stream().map(entity -> ChatRoomDTO.builder().roomName(entity.getRoomName()).description(entity.getDescription()).founder(entity.getFounder().getUsername()).concurrentUsers(countConcurrentUsers(entity.getRoomName())).createDate(entity.getCreateDate().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG))).permitMBTICode(permitMBTICodesByChatRoom(entity.getRoomName())).build()).collect(Collectors.toList());
+    public List<ChatRoomDTO> getListAllChatRoomsByFounder(String username) throws RuntimeException {
+        return chatRoomRepository.findAllByFounder_Username(username).stream().map(ChatRoomDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ChatRoomDTO> getListOfAllChatRoomsUserBelongs(String username) {
-        return chatUserRepository.findAllByUserName_Username(username).stream().map(entity -> ChatRoomDTO.builder().roomName(entity.getChatRoom().getRoomName()).description(entity.getChatRoom().getDescription()).founder(entity.getChatRoom().getFounder().getUsername()).concurrentUsers(countConcurrentUsers(entity.getChatRoom().getRoomName())).createDate(entity.getChatRoom().getCreateDate().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG))).permitMBTICode(permitMBTICodesByChatRoom(entity.getChatRoom().getRoomName())).build()).collect(Collectors.toList());
+        return chatUserRepository.findAllByUserName_Username(username).stream().map(ChatRoomDTO::new).collect(Collectors.toList());
     }
 
     @Override
     public ChatRoomDTO getInfoChatRoom(String roomName) {
-        ChatRoomEntity entity = chatRoomRepository.findByRoomName(roomName).orElseThrow(RuntimeException::new);
-        return ChatRoomDTO.builder()
-                .roomName(entity.getRoomName())
-                .founder(entity.getFounder().getUsername())
-                .concurrentUsers(countConcurrentUsers(entity.getRoomName()))
-                .description(entity.getDescription())
-                .createDate(entity.getCreateDate().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)))
-                .permitMBTICode(permitMBTICodesByChatRoom(entity.getRoomName()))
-                .build();
+        return chatRoomRepository.findByRoomName(roomName).map(chatRoomEntity ->
+                        new ChatRoomDTO(chatRoomEntity.getRoomName(), chatRoomEntity.getDescription(), chatRoomEntity.getFounder().getUsername(), permitMBTICodesByChatRoom(chatRoomEntity.getRoomName())))
+                .orElseThrow(RuntimeException::new);
     }
 
     @Override
-    public void updateChatRoom(ChatRoomDTO chatRoomDTO) {
+    public ChatRoomDTO updateChatRoom(String username, ChatRoomDTO chatRoomDTO) throws RuntimeException {
 
-        ChatRoomEntity updatedChatRoomEntity = chatRoomRepository.findByRoomName(chatRoomDTO.getRoomName())
-                .orElse(chatRoomRepository.save(ChatRoomEntity.builder()
+        if (username.equals(getInfoChatRoom(chatRoomDTO.getOrigRoomName()).getFounder()))
+            throw new RuntimeException("Permission Denied.");
+        else if (chatRoomRepository.existsByRoomName(chatRoomDTO.getRoomName()))
+            throw new RuntimeException("Already room name.");
+
+        ChatRoomEntity updatedChatRoomEntity = chatRoomRepository.save(
+                ChatRoomEntity.builder()
                         .roomName(chatRoomDTO.getRoomName())
                         .description(chatRoomDTO.getDescription())
                         .founder(userRepository.findByUsername(chatRoomDTO.getFounder()).orElseThrow(RuntimeException::new))
                         .createDate(chatRoomRepository.findByRoomName(chatRoomDTO.getOrigRoomName()).orElseThrow(RuntimeException::new).getCreateDate())
-                        .build()));
+                        .build());
 
-        List<String> originPermitCodeList = permitMBTICodesByChatRoom(chatRoomDTO.getOrigRoomName());
+        Set<String> originPermitCodeList = permitMBTICodesByChatRoom(chatRoomDTO.getOrigRoomName());
 
         for (String updatePermitCode : chatRoomDTO.getPermitMBTICode()) {
             if (!originPermitCodeList.contains(updatePermitCode)) {
@@ -120,6 +140,8 @@ public class ChatServiceImpl implements ChatService {
         if (!chatRoomDTO.getOrigRoomName().equals(chatRoomDTO.getRoomName())) {
             chatRoomRepository.delete(chatRoomRepository.findByRoomName(chatRoomDTO.getOrigRoomName()).orElseThrow(RuntimeException::new));
         }
+
+        return new ChatRoomDTO(updatedChatRoomEntity);
     }
 
     @Override
@@ -131,7 +153,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public boolean joinChatRoomAvailability(String roomName, String userName) {
-        List<String> permitMBTICodeList = permitMBTICodesByChatRoom(roomName);
+        Set<String> permitMBTICodeList = permitMBTICodesByChatRoom(roomName);
         for (MbtiDTO mbtiDTO : mbtiService.getUserMbtiList(userName)) {
             if (permitMBTICodeList.contains(mbtiDTO.getCode())) {
                 return true;
@@ -173,7 +195,7 @@ public class ChatServiceImpl implements ChatService {
         return chatUserRepository.findAllByChatRoom_RoomName(roomName).size();
     }
 
-    public List<String> permitMBTICodesByChatRoom(String chatRoomName) {
-        return chatMBTIRepository.findAllByChatRoom_RoomName(chatRoomName).stream().map(chatMBTIEntity -> chatMBTIEntity.getPermitMBTI().getCode()).collect(Collectors.toList());
+    public Set<String> permitMBTICodesByChatRoom(String chatRoomName) {
+        return chatMBTIRepository.findAllByChatRoom_RoomName(chatRoomName).stream().map(chatMBTIEntity -> chatMBTIEntity.getPermitMBTI().getCode()).collect(Collectors.toSet());
     }
 }

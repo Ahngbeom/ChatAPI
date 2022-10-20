@@ -1,12 +1,14 @@
 package com.example.chatapi.DTO;
 
 import com.example.chatapi.Entity.User.UserEntity;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -18,14 +20,14 @@ public class UserDTO {
 
 //    private Long id;
 
-    @NotNull
+    //    @NotNull
     private String username;
 
     @ToString.Exclude
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @NotNull
+    //    @NotNull
     private String nickname;
 
     private boolean activate;
@@ -33,10 +35,10 @@ public class UserDTO {
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
 
-    @ToString.Exclude
+    //    @ToString.Exclude
     private Set<AuthorityDTO> authorities;
 
-    @ToString.Exclude
+    //    @ToString.Exclude
     private Set<MbtiDTO> mbtiInfoList;
 
     //    public static UserDTO convertToUserDTO(UserEntity userEntity, AuthorityEntity authorityEntity, MBTIInfoEntity mbtiInfoEntity) {
@@ -48,7 +50,8 @@ public class UserDTO {
                     .password(userEntity.getPassword())
                     .nickname(userEntity.getNickname())
                     .activate(userEntity.isActivate())
-//                    .authorities(Collections.singleton(AuthorityDTO.convertToAuthorityDTO(authorityEntity)))
+                    .regDate(userEntity.getRegDate())
+                    .updateDate(userEntity.getUpdateDate())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

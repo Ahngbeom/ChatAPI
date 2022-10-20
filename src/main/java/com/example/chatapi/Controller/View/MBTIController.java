@@ -1,7 +1,7 @@
 package com.example.chatapi.Controller.View;
 
 import com.example.chatapi.DTO.MbtiDTO;
-import com.example.chatapi.Service.MbtiService;
+import com.example.chatapi.Service.MBTI.MbtiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller

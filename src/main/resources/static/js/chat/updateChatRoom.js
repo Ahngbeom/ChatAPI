@@ -1,7 +1,7 @@
 import {PermitMBTI_survey, PermitMBTI_survey_init, ReflectionPermitMbtiCode} from "./checkPermitMBTI.js";
 import {
     chatRoomJsonData,
-    chatRoomJsonData_init, confirmModalAcceptBtn, confirmModalCancelBtn, confirmModalElem,
+    chatRoomJsonData_init,
     disposableModalElem,
     formDataToJsonFormatterForChatRoom
 } from "./utils.js";

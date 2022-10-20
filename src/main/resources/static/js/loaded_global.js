@@ -7,4 +7,8 @@ const contentContainer = document.getElementById("contentContainer");
 
 const bannerContainer = document.querySelector("#bannerContainer");
 
+const confirmModalElem = document.querySelector("#confirmModal");
+const confirmModalCancelBtn = confirmModalElem.querySelector("#confirmModalCancelBtn");
+const confirmModalAcceptBtn = confirmModalElem.querySelector("#confirmModalAcceptBtn");
+
 toastDetector();

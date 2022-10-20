@@ -33,6 +33,9 @@ public class UserMbtiJoinEntity {
     @Column(name = "number_of_times")
     private int numberOfTimes;
 
+    @Column
+    private boolean represent;
+
     @Column(name = "reg_date")
     @CreationTimestamp
     private LocalDateTime regDate;

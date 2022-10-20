@@ -7,9 +7,6 @@ import {
 
 /** disposable Modal Element **/
 export const disposableModalElem = document.querySelector("#disposable-modal");
-export const confirmModalElem = document.querySelector("#confirmModal");
-export const confirmModalCancelBtn = confirmModalElem.querySelector("#confirmModalCancelBtn");
-export const confirmModalAcceptBtn = confirmModalElem.querySelector("#confirmModalAcceptBtn");
 
 export let chatRoomJsonData = {
     roomName: null,
@@ -48,7 +45,6 @@ export function formDataToJsonFormatterForChatRoom(formElem) {
     console.log(chatRoomJsonData);
     return true;
 }
-
 
 /** Both Modal Elements for Create and Update **/
 export let CRUDChatRoomModalElem = null;
