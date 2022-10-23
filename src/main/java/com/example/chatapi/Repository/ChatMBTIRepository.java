@@ -13,7 +13,7 @@ public interface ChatMBTIRepository extends JpaRepository<ChatMBTIEntity, Long> 
 
     List<ChatMBTIEntity> findAllByChatRoom_Founder(String username);
 
-    List<ChatMBTIEntity> findAllByChatRoom_RoomName(String roomName);
+    List<ChatMBTIEntity> findAllByChatRoom_Id(Long roomId);
 
     List<ChatMBTIEntity> findAllByPermitMBTI_Code(String mbtiCode);
 }

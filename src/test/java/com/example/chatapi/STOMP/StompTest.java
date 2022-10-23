@@ -1,117 +1,91 @@
 package com.example.chatapi.STOMP;
 
-//import com.example.chatapi.DTO.UserDTO;
-//import lombok.Getter;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.test.web.server.LocalServerPort;
-//import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-//import org.springframework.messaging.simp.stomp.StompFrameHandler;
-//import org.springframework.messaging.simp.stomp.StompHeaders;
-//import org.springframework.messaging.simp.stomp.StompSession;
-//import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
-//import org.springframework.test.context.junit.jupiter.SpringExtension;
-//import org.springframework.util.Assert;
-//import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-//import org.springframework.web.socket.messaging.WebSocketStompClient;
-//import org.springframework.web.socket.sockjs.client.SockJsClient;
-//import org.springframework.web.socket.sockjs.client.Transport;
-//import org.springframework.web.socket.sockjs.client.WebSocketTransport;
-//
-//import java.lang.reflect.Type;
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.List;
-//import java.util.concurrent.CompletableFuture;
-//import java.util.concurrent.ExecutionException;
-//import java.util.concurrent.TimeUnit;
-//import java.util.concurrent.TimeoutException;
-//
-//import static com.sun.xml.internal.ws.api.ComponentFeature.Target.ENDPOINT;
+import com.example.chatapi.ChatApplicationIntegrationTests;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.Assert;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.springframework.web.socket.sockjs.client.SockJsClient;
+import org.springframework.web.socket.sockjs.client.WebSocketTransport;
+
+import javax.transaction.Transactional;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.*;
 
 //@ExtendWith(SpringExtension.class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//public class StompTest {
-//    protected StompSession stompSession;
-//
-//    @LocalServerPort
-//    private int port;
-//
-//    private final String url;
-//
-//    private final WebSocketStompClient webSocketStompClient;
-//
-//    public StompTest() {
-//        this.url = "ws://localhost:";
-//        this.webSocketStompClient = new WebSocketStompClient(new SockJsClient(createTransport()));
-//        this.webSocketStompClient.setMessageConverter(new MappingJackson2MessageConverter());
-//    }
-//
-//    @BeforeEach
-//    public void connect() throws ExecutionException, InterruptedException, TimeoutException {
-//        this.stompSession = this.webSocketStompClient.connect(url + port + ENDPOINT, new StompSessionHandlerAdapter() {}).get(3, TimeUnit.SECONDS);
-//    }
-//
-//    @AfterEach
-//    public void disconnect() {
-//        if (this.stompSession.isConnected())
-//            this.stompSession.disconnect();
-//    }
-//
-//    private List<Transport> createTransport() {
-//        List<Transport> transports = new ArrayList<>(1);
-//        transports.add(new WebSocketTransport(new StandardWebSocketClient()));
-//        return transports;
-//    }
-//
-//    @Test
-//    public void findUsers() throws ExecutionException, InterruptedException, TimeoutException {
-//        MessageFrameHandler<UserDTO[]> handler = new MessageFrameHandler<>(UserDTO[].class);
-//        this.stompSession.subscribe("/topic/greetings", handler);
-//
-//        this.stompSession.send("/send/hello", "");
-//
-//        List<UserDTO> userDTOList = Arrays.asList(handler.getCompletableFuture().get(3, TimeUnit.SECONDS));
-//
-//    }
-//
-//    public class MessageFrameHandler<T> implements StompFrameHandler {
-//
-//        @Getter
-//        private final CompletableFuture<T> completableFuture = new CompletableFuture<>();
-//
-//        private final Class<T> tClass;
-//
-//        public MessageFrameHandler(Class<T> tClass) {
-//            this.tClass = tClass;
-//        }
-//
-//        /**
-//         * Invoked before {@link #handleFrame(StompHeaders, Object)} to determine the
-//         * type of Object the payload should be converted to.
-//         *
-//         * @param headers the headers of a message
-//         */
-//        @Override
-//        public Type getPayloadType(StompHeaders headers) {
-//            return this.tClass;
-//        }
-//
-//        /**
-//         * Handle a STOMP frame with the payload converted to the target type returned
-//         * from {@link #getPayloadType(StompHeaders)}.
-//         *
-//         * @param headers the headers of the frame
-//         * @param payload the payload, or {@code null} if there was no payload
-//         */
-//        @Override
-//        public void handleFrame(StompHeaders headers, Object payload) {
-//            completableFuture.complete((T) payload);
-//        }
-//    }
-//
-//}
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@SpringBootTest
+@ActiveProfiles("local")
+@Transactional // 클래스 내부의 각각의 테스트 메소드가 실행될 때마다, DB 롤백.
+public class StompTest {
+
+    static final String WEBSOCKET_URI = "ws://localhost:8080/ws/mbti-chat";
+    static final String WEBSOCKET_TOPIC = "/topic/greetings";
+    BlockingQueue<String> blockingQueue;
+    WebSocketStompClient stompClient;
+    List<StompSession> socketSession;
+    @LocalServerPort
+    private Integer PORT;
+
+    @BeforeEach
+    public void setup() {
+        blockingQueue = new LinkedBlockingDeque<>();
+        stompClient =
+                new WebSocketStompClient(
+                        new SockJsClient(
+                                Collections.singletonList(new WebSocketTransport(new StandardWebSocketClient()))));
+
+        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+        socketSession = new ArrayList<>(500);
+    }
+
+    @Test
+    public void shouldReceiveAMessageFromTheServer() throws Exception {
+        StompSession session = stompClient
+                .connect("ws://localhost:" + PORT + "/ws/mbti-chat", new StompSessionHandlerAdapter() {
+                })
+//                .connect(WEBSOCKET_URI, new StompSessionHandlerAdapter() {})
+                .get(1, TimeUnit.SECONDS);
+        session.subscribe(WEBSOCKET_TOPIC, new DefaultStompFrameHandler());
+
+        String message = "MESSAGE TEST";
+        session.subscribe(WEBSOCKET_TOPIC, new DefaultStompFrameHandler());
+        session.send("/hello", "Ahng".getBytes(StandardCharsets.UTF_8));
+        socketSession.add(session);
+        assert message.equals(blockingQueue.poll(1, TimeUnit.SECONDS));
+    }
+
+    class DefaultStompFrameHandler implements StompFrameHandler {
+        @Override
+        public Type getPayloadType(StompHeaders stompHeaders) {
+            return byte[].class;
+        }
+
+        @Override
+        public void handleFrame(StompHeaders stompHeaders, Object o) {
+//            blockingQueue.offer(new String((byte[]) o));
+            assert o != null;
+            blockingQueue.add(o.toString());
+        }
+    }
+
+}
 

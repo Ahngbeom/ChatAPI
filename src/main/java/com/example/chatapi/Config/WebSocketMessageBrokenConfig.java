@@ -5,6 +5,9 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.RequestUpgradeStrategy;
+import org.springframework.web.socket.server.standard.TomcatRequestUpgradeStrategy;
+import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 // Reference: https://dev-gorany.tistory.com/224
 
@@ -27,10 +30,11 @@ public class WebSocketMessageBrokenConfig implements WebSocketMessageBrokerConfi
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        RequestUpgradeStrategy upgradeStrategy = new TomcatRequestUpgradeStrategy();
         registry
                 .addEndpoint("/ws/mbti-chat") // 클라이언트에서 WebSocket에 접속하는 EndPoint 등록
 //                .setAllowedOriginPatterns("*") // 보안 위험, 취약
-                .setAllowedOriginPatterns("http://localhost:8080"/*, "http://*:8080", "http://*.*.*.*:8080"*/)
+//                .setAllowedOriginPatterns("http://localhost:8080"/*, "http://*:8080", "http://*.*.*.*:8080"*/)
 
 //                .setHandshakeHandler(new DefaultHandshakeHandler() {
 //                    public boolean beforeHandshake(
@@ -50,6 +54,10 @@ public class WebSocketMessageBrokenConfig implements WebSocketMessageBrokerConfi
 //                    }
 //                })
                 .withSockJS(); // withSockJS를 통해 소켓을 등록. 만약 브라우저에서 WebSocket을 지원하지 않을 경우 FallBack 옵션 활성화.
+
+        registry.addEndpoint("/ws/mbti-chat")
+                .setHandshakeHandler(new DefaultHandshakeHandler(upgradeStrategy))
+                .setAllowedOrigins("*");
     }
 
 

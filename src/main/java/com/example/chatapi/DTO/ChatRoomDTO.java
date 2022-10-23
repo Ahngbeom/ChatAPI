@@ -19,13 +19,12 @@ import java.util.*;
 @Getter
 //@Builder
 @ToString
-//@AllArgsConstructor
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ChatRoomDTO {
 
-    @ToString.Exclude
-    private String origRoomName; // For Modify | Update
+    private Long id;
+
     private String roomName;
 
     private String description;
@@ -35,6 +34,7 @@ public class ChatRoomDTO {
     private long concurrentUsers;
 
     private String createDate;
+    private String updateDate;
 
     //    @ToString.Exclude
     private List<String> permitMBTICode = new ArrayList<>();
@@ -56,21 +56,25 @@ public class ChatRoomDTO {
     }
 
     public ChatRoomDTO(ChatRoomEntity entity) {
+        this.id = entity.getId();
         this.roomName = entity.getRoomName();
         this.description = entity.getDescription();
         this.founder = entity.getFounder().getUsername();
         this.setCreateDate(entity.getCreateDate());
+        this.setUpdateDate(entity.getUpdateDate());
     }
 
     public ChatRoomDTO(ChatUserEntity entity) {
+        this.id = entity.getChatRoom().getId();
         this.roomName = entity.getChatRoom().getRoomName();
         this.description = entity.getChatRoom().getDescription();
         this.founder = entity.getChatRoom().getFounder().getUsername();
         this.setCreateDate(entity.getChatRoom().getCreateDate());
+        this.setUpdateDate(entity.getChatRoom().getUpdateDate());
     }
 
-    public void setOrigRoomName(String origRoomName) {
-        this.origRoomName = origRoomName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setRoomName(String roomName) {
@@ -92,6 +96,15 @@ public class ChatRoomDTO {
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
+
+    public void setUpdateDate(LocalDateTime localDateTime) {
+        this.updateDate = localDateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG));
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
 
     public void setPermitMBTICode(List<String> permitMBTICode) {
         this.permitMBTICode = permitMBTICode;

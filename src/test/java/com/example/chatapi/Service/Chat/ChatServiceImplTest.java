@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ import java.util.Collections;
 
 @Slf4j
 @SpringBootTest
+@ActiveProfiles("local")
 class ChatServiceImplTest {
 
     @InjectMocks
@@ -68,11 +70,10 @@ class ChatServiceImplTest {
     }
 
     @Test
-    @Transactional
     void createChatRoom() {
         try {
-            ChatRoomDTO newRoom = new ChatRoomDTO("TEST ROOM 2", "THIS ROOM IS FOR TESTING", Collections.singleton(MBTICode.INTP));
-            log.info(String.valueOf(chatService.createChatRoom("manager", newRoom)));
+            ChatRoomDTO newRoom = new ChatRoomDTO("JUNIT TEST ROOM", "Junit", MBTICode.matchCode("IS.."));
+            log.info(String.valueOf(chatService.createChatRoom("admin", newRoom)));
         } catch (Exception e) {
             e.printStackTrace();
         }
