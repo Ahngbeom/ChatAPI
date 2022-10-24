@@ -35,12 +35,13 @@ const renewalModal = function (data, ...btns) {
     }
     data.target.querySelector(".modal-title").innerHTML = data.title;
 
-    if (data.body != null) {
-        if (data.target.querySelector(".modal-body"))
-            data.target.querySelector(".modal-body").remove();
-        data.target.querySelector(".modal-header").insertAdjacentHTML("afterend", "<div class=\"modal-body\">" + data.body + "</div>")
-    } else
-        data.target.querySelector(".modal-body").remove();
+    if (data.target.querySelector(".modal-body")) {
+        if (data.body != null) {
+            data.target.querySelector(".modal-body").classList.remove("visually-hidden");
+            data.target.querySelector(".modal-body").insertHTML = data.body;
+        } else
+            data.target.querySelector(".modal-body").classList.add("visually-hidden");
+    }
 
     data.target.querySelectorAll(".modal-footer button").forEach(button => {
         if (!button.hasAttribute("data-bs-dismiss"))

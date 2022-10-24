@@ -65,22 +65,23 @@ const getMBTIInformation = function (mbtiRadioJson) {
         return null;
 
     const mbtiResult = mbtiResultConverter(mbtiRadioJson);
+    console.log(mbtiResult);
     let mbtiJson;
     $.ajax({
         type: 'GET',
-        url: "https://www.16personalities.com/" + mbtiResult + "-personality",
-        cache: false,
+        // url: "https://www.16personalities.com/" + mbtiResult + "-personality",
+        url: "/api/mbti/info/" + mbtiResult,
+        contentType: "application/json; charset=utf-8",
+        dataType: "JSON",
+        // cache: false,
         async: false,
         success: function (data) {
-            let mbtiHeaderExtractByOfficialSite = $($.parseHTML(data)).find("header")[0];
-            let mbtiArticleExtractByOfficialSite = $($.parseHTML(data)).find("article")[0];
-
             mbtiJson = {
-                shortMbti: mbtiResult,
-                code: mbtiHeaderExtractByOfficialSite.querySelector("div[class='code']").innerHTML.slice(0, 4),
-                personality: mbtiHeaderExtractByOfficialSite.querySelector("span").innerHTML,
-                introduction: mbtiArticleExtractByOfficialSite.querySelectorAll("div[class='definition'] p").item(1).innerText,
-                imgSrc: mbtiHeaderExtractByOfficialSite.querySelector("img").src
+                // shortMbti: data.code,
+                code: data.code,
+                personality: data.personality,
+                introduction: data.introduction,
+                imgSrc: data.imgSrc
             };
             renewalModal({
                     target: mbtiRegisterModalElem,
@@ -88,7 +89,6 @@ const getMBTIInformation = function (mbtiRadioJson) {
                     body: insertMBTIDataToModal(mbtiRegisterModalElem, mbtiJson)
                 }, "<button type=\"button\" class=\"btn btn-primary\" id=\"modalInteractionBtn\">Submit</button>"
             );
-
             showModalTarget(mbtiRegisterModalElem);
         },
         error: function (data) {
@@ -100,11 +100,11 @@ const getMBTIInformation = function (mbtiRadioJson) {
 }
 
 checkMBTIResultBtn.addEventListener('click', function () {
-    const mbtiSubmitBtn = document.querySelector("#mbtiRegisterModal #modalInteractionBtn");
+    const mbtiSubmitBtn = mbtiRegisterModalElem.querySelector("#modalInteractionBtn");
     const mbtiRadioJson = getRadioValueForMBTI();
     const mbtiJson = getMBTIInformation(mbtiRadioJson);
 
-    mbtiSubmitBtn.addEventListener('click', function () {
+    $("#mbtiRegisterModal #modalInteractionBtn").one("click", function () {
         console.log(JSON.stringify(mbtiJson));
         $.ajax({
             async: false,
@@ -118,17 +118,17 @@ checkMBTIResultBtn.addEventListener('click', function () {
                 mbtiRegisterModalElem.querySelector(".modal-header").innerHTML = "Alert";
                 mbtiRegisterModalElem.querySelector(".modal-body").innerHTML = "Registration was successful.";
                 mbtiSubmitBtn.innerHTML = "Return to MBTI List";
-                mbtiSubmitBtn.addEventListener('click', function () {
+                $("#mbtiRegisterModal #modalInteractionBtn").one("click", function () {
                     location.href = "/mbti/list";
-                }, {once: true});
-                mbtiRegisterModalElem.querySelector("button[data-bs-dismiss='modal']").addEventListener('click', function () {
+                });
+                $("#mbtiRegisterModal button[data-bs-dismiss='modal']").one("click", function () {
                     location.reload();
-                }, {once: true});
+                });
             },
             error: function (data) {
                 console.log(data);
             }
         });
-    }, {once: true});
+    });
 });
 

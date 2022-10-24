@@ -24,6 +24,12 @@ public class MbtiAPIController {
     private final UserService userService;
     private final MbtiService mbtiService;
 
+    @GetMapping("/info/{code}")
+    public ResponseEntity<MbtiDTO> mbtiInfo(@PathVariable String code) {
+        log.info(code);
+        return ResponseEntity.ok(mbtiService.getInfo(code));
+    }
+
     @PostMapping("/registration")
     public ResponseEntity<?> mbtiRegister(Principal principal, @Valid @RequestBody MbtiDTO mbtiDTO) {
         try {

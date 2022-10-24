@@ -36,8 +36,10 @@ public class ChatAPIController {
 
     @PostMapping("/create")
     public ResponseEntity<ChatRoomDTO> createChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoom) {
+        log.info(chatRoom.toString());
         ChatRoomDTO chatRoomDTO = chatService.createChatRoom(principal.getName(), chatRoom);
-        log.info(chatRoomDTO.toString());
+        chatRoomDTO.setPermitMBTICode(chatService.addPermitMBTICodes(chatRoomDTO.getRoomId(), chatRoom.getPermitMBTICode()));
+        chatService.joinChatRoom(chatRoomDTO.getRoomId(), principal.getName());
         return ResponseEntity.status(HttpStatus.OK).body(chatRoomDTO);
     }
 

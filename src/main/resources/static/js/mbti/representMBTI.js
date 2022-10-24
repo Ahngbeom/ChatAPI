@@ -3,6 +3,15 @@ const representMBTIUpdateBtn = document.querySelector("#representMBTIUpdateBtn")
 
 representMBTIUpdateBtn.addEventListener('click', function () {
     const representMBTICode = $("#representMBTIUpdateSelect option:selected").val();
+    if (representMBTICode === "") {
+        renewalModal({
+            target: confirmModalElem,
+            title: "대표 MBTI 지정",
+            body: "지정 또는 변경하실 대표 MBTI를 선택하세요."
+        });
+        showModalTarget(confirmModalElem);
+        return;
+    }
 
     console.log(representMBTICode);
 
@@ -17,7 +26,7 @@ representMBTIUpdateBtn.addEventListener('click', function () {
 
         $.ajax({
             type: 'GET',
-            url: '/api/mbti/select-represent',
+            url: '/api/mbti/assign-represent',
             async: false,
             contentType: 'application/json; charset=utf-8',
             data: {mbtiCode: representMBTICode},

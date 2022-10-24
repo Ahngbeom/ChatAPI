@@ -6,32 +6,34 @@
 <body>
 
 <th:block layout:fragment="content">
-    <div class="navbar navbar-expand-lg navbar-dark sticky-top p-0 justify-content-around" style="top: 120px;">
-        <ul class="nav nav-pills nav-fill nav-justified">
-            <li class="nav-item" th:each="mbti, index : ${mbtiInfoList}">
-                <a class="nav-link text-bg-secondary" aria-current="page" th:href="${'#card-mbti-' + mbti.code}"
-                   target="_top"
-                   th:text="${mbti.code}"></a>
-            </li>
-        </ul>
-    </div>
+    <!--    <div class="navbar navbar-expand-lg navbar-dark sticky-top p-0 justify-content-around" style="top: 120px;">-->
+    <!--        <ul class="nav nav-pills nav-fill nav-justified">-->
+    <!--            <li class="nav-item" th:each="mbti, index : ${mbtiInfoList}">-->
+    <!--                <a class="nav-link text-bg-secondary" aria-current="page" th:href="${'#card-mbti-' + mbti.code}"-->
+    <!--                   target="_top"-->
+    <!--                   th:text="${mbti.code}"></a>-->
+    <!--            </li>-->
+    <!--        </ul>-->
+    <!--    </div>-->
 
     <div class="container-fluid" id="contentContainer">
-        <div class="card col-12 d-block my-2" th:each="mbti,index : ${mbtiInfoList}"
-             th:id="${'card-mbti-' + mbti.code}"
-             style="scroll-margin-top: 200px;" data-bs-toggle="collapse" th:href="${'#collapse' + index.index}"
-             role="button"
-             aria-expanded="false" th:aria-controls="${'collapse' + index.index}">
-            <img th:src="${mbti.imgSrc}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h1 class="" th:text="${mbti.code}"></h1>
-                <h3 class="" th:text="${mbti.personality}"></h3>
-            </div>
-            <div class="card-footer collapse" th:id="${'collapse' + index.index}">
-                <p class="card-text" th:text="${mbti.introduction}"></p>
-                <a th:href="${'https://www.16personalities.com/' + mbti.code + '-personality'}" target="_blank">Go
-                    to
-                    the official site for more details</a>
+        <div class="d-flex row">
+            <div aria-expanded="false" class="card col-3 my-2"
+                 data-bs-toggle="collapse"
+                 role="button" style="scroll-margin-top: 200px;" th:aria-controls="${'collapse' + index.index}"
+                 th:each="mbti,index : ${mbtiInfoList}"
+                 th:href="${'#collapse' + index.index}" th:id="${'card-mbti-' + mbti.code}">
+                <img alt="..." class="card-img-top" th:src="${mbti.imgSrc}">
+                <div class="card-body">
+                    <h1 class="" th:text="${mbti.code}"></h1>
+                    <h3 class="" th:text="${mbti.personality}"></h3>
+                </div>
+                <div class="card-footer collapse" th:id="${'collapse' + index.index}">
+                    <p class="card-text" th:text="${mbti.introduction}"></p>
+                    <a target="_blank" th:href="${'https://www.16personalities.com/' + mbti.code + '-personality'}">Go
+                        to
+                        the official site for more details</a>
+                </div>
             </div>
         </div>
     </div>

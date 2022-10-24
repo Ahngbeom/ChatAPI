@@ -3,22 +3,12 @@ package com.example.chatapi.Controller.API.Chat;
 import com.example.chatapi.ChatApplicationIntegrationTests;
 import com.example.chatapi.DTO.ChatRoomDTO;
 import com.example.chatapi.DTO.MBTICode;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -102,7 +92,7 @@ class ChatAPIControllerTest extends ChatApplicationIntegrationTests {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Long roomId = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ChatRoomDTO.class).getId();
+        Long roomId = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ChatRoomDTO.class).getRoomId();
         mvcResult = mvc.perform(get("/api/chat/remove")
                         .param("roomId", roomId.toString()))
                 .andExpect(status().isOk())
@@ -120,7 +110,7 @@ class ChatAPIControllerTest extends ChatApplicationIntegrationTests {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Long roomId = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ChatRoomDTO.class).getId();
+        Long roomId = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ChatRoomDTO.class).getRoomId();
         mvcResult = mvc.perform(get("/api/chat/join-availability/" + roomId))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -136,7 +126,7 @@ class ChatAPIControllerTest extends ChatApplicationIntegrationTests {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Long roomId = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ChatRoomDTO.class).getId();
+        Long roomId = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ChatRoomDTO.class).getRoomId();
         mvcResult = mvc.perform(get("/api/chat/leave-chatroom/" + roomId))
                 .andExpect(status().isOk())
                 .andReturn();

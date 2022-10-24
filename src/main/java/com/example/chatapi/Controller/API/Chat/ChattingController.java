@@ -25,8 +25,9 @@ public class ChattingController {
     @SendTo("/topic/mbti-chat/{roomId}")
     public Message joinChatRoom(@DestinationVariable("roomName") Long roomId, Principal principal) throws InterruptedException {
         if (!chatService.checkAlreadyJoined(roomId, principal.getName())) {
-            if (chatService.joinChatRoom(roomId, principal.getName())) {
+            if (chatService.joinChatRoomAvailability(roomId, principal.getName())) {
 //                Thread.sleep(1000);
+                chatService.joinChatRoom(roomId, principal.getName());
                 return new Message(Message.COMMON, Message.SERVER, "Welcome, " + principal.getName());
             }
         }

@@ -9,16 +9,18 @@ import {
 export const disposableModalElem = document.querySelector("#disposable-modal");
 
 export let chatRoomJsonData = {
+    roomId: null,
     roomName: null,
     description: null,
     permitMBTICode: new Set()
 }
 
 export function chatRoomJsonData_init(...args) {
-    chatRoomJsonData.roomName = args[0];
-    chatRoomJsonData.description = args[1];
-    if (args[2] !== undefined)
-        chatRoomJsonData.permitMBTICode = args[2];
+    chatRoomJsonData.roomId = args[0];
+    chatRoomJsonData.roomName = args[1];
+    chatRoomJsonData.description = args[2];
+    if (args[3] !== undefined)
+        chatRoomJsonData.permitMBTICode = args[3];
     // else
     //     chatRoomJsonData.permitMBTICode = new Set();
 }
@@ -26,12 +28,14 @@ export function chatRoomJsonData_init(...args) {
 /** Convert the data in the form to JSON format **/
 export function formDataToJsonFormatterForChatRoom(formElem) {
     chatRoomJsonData_init(
+        formElem.querySelector("input[name='roomId']").value,
         formElem.querySelector("input[name='roomName']").value,
         formElem.querySelector("textarea[name='description']").value
     );
 
-    chatRoomJsonData.roomName = formElem.querySelector("input[name='roomName']").value;
-    chatRoomJsonData.description = formElem.querySelector("textarea[name='description']").value;
+    // chatRoomJsonData.roomId = formElem.querySelector("input[name='roomId']").value;
+    // chatRoomJsonData.roomName = formElem.querySelector("input[name='roomName']").value;
+    // chatRoomJsonData.description = formElem.querySelector("textarea[name='description']").value;
 
     if (chatRoomJsonData.roomName.length === 0) {
         alert("채팅방 이름을 입력해주세요.");
@@ -51,7 +55,7 @@ export let CRUDChatRoomModalElem = null;
 
 $(".CRUD-chatRoom-modal").on('show.bs.modal', function () {
     CRUDChatRoomModalElem = $(this);
-    checkboxMBTIElemList.forEach(input => input.checked = false);
+    // checkboxMBTIElemList.forEach(input => input.checked = false);
     enableAllPermitMBTICodeSwitch();
     enableSelectPermitMBTICode();
 });

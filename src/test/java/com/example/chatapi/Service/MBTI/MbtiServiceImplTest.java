@@ -1,4 +1,4 @@
-package com.example.chatapi.Service;
+package com.example.chatapi.Service.MBTI;
 
 import com.example.chatapi.DTO.MBTICode;
 import com.example.chatapi.DTO.MbtiDTO;
@@ -12,11 +12,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.transaction.Transactional;
 
 @Slf4j
 @SpringBootTest
+@ActiveProfiles("local")
 class MbtiServiceImplTest {
 
     @InjectMocks
@@ -63,6 +65,13 @@ class MbtiServiceImplTest {
 
     @Test
     void getInfo() {
-        log.info(String.valueOf(mbtiService.getInfo(MBTICode.ENTJ)));
+        for (String code : MBTICode.matchCode("ENTJ")) {
+            log.info(String.valueOf(mbtiService.getInfo(code)));
+        }
+    }
+
+    @Test
+    void extractMBTIInfo() {
+        mbtiService.extractMBTIInfo();
     }
 }

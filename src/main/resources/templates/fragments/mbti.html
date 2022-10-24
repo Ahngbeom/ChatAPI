@@ -12,6 +12,7 @@
             <div class="input-group w-25">
                 <label class="input-group-text" for="representMBTIUpdateSelect">대표 MBTI</label>
                 <select class="form-select" id="representMBTIUpdateSelect">
+                    <option selected value="">-----</option>
                     <th:block th:each="mbti, index : ${mbtiList}">
                         <option th:selected="${mbti.represent}" th:text="${mbti.code}" th:value="${mbti.code}"></option>
                     </th:block>

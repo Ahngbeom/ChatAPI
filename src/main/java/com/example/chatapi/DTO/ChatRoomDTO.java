@@ -1,16 +1,10 @@
 package com.example.chatapi.DTO;
 
-import com.example.chatapi.Entity.Chat.ChatLogEntity;
 import com.example.chatapi.Entity.Chat.ChatMBTIEntity;
 import com.example.chatapi.Entity.Chat.ChatRoomEntity;
 import com.example.chatapi.Entity.Chat.ChatUserEntity;
-import com.example.chatapi.Entity.MBTI.MBTIInfoEntity;
-import com.example.chatapi.Entity.User.UserEntity;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -23,7 +17,7 @@ import java.util.*;
 @NoArgsConstructor
 public class ChatRoomDTO {
 
-    private Long id;
+    private Long roomId;
 
     private String roomName;
 
@@ -48,15 +42,17 @@ public class ChatRoomDTO {
         this.permitMBTICode.addAll(permitMBTICode);
     }
 
-    public ChatRoomDTO(String roomName, String description, String founder, Set<String> permitMBTICode) {
+    public ChatRoomDTO(Long roomId, String roomName, String description, String founder, Set<String> permitMBTICode, Long concurrentUsers) {
+        this.roomId = roomId;
         this.roomName = roomName;
         this.description = description;
         this.founder = founder;
         this.permitMBTICode.addAll(permitMBTICode);
+        this.concurrentUsers = concurrentUsers;
     }
 
     public ChatRoomDTO(ChatRoomEntity entity) {
-        this.id = entity.getId();
+        this.roomId = entity.getId();
         this.roomName = entity.getRoomName();
         this.description = entity.getDescription();
         this.founder = entity.getFounder().getUsername();
@@ -65,7 +61,7 @@ public class ChatRoomDTO {
     }
 
     public ChatRoomDTO(ChatUserEntity entity) {
-        this.id = entity.getChatRoom().getId();
+        this.roomId = entity.getChatRoom().getId();
         this.roomName = entity.getChatRoom().getRoomName();
         this.description = entity.getChatRoom().getDescription();
         this.founder = entity.getChatRoom().getFounder().getUsername();
@@ -73,8 +69,8 @@ public class ChatRoomDTO {
         this.setUpdateDate(entity.getChatRoom().getUpdateDate());
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
     }
 
     public void setRoomName(String roomName) {

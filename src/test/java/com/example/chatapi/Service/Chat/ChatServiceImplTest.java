@@ -70,6 +70,7 @@ class ChatServiceImplTest {
     }
 
     @Test
+    @Transactional
     void createChatRoom() {
         try {
             ChatRoomDTO newRoom = new ChatRoomDTO("JUNIT TEST ROOM", "Junit", MBTICode.matchCode("IS.."));
