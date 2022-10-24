@@ -36,9 +36,11 @@ public class ChatAPIController {
 
     @PostMapping("/create")
     public ResponseEntity<ChatRoomDTO> createChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoom) {
+        log.info(chatRoom.toString());
         ChatRoomDTO chatRoomDTO = chatService.createChatRoom(principal.getName(), chatRoom);
-        log.info(chatRoomDTO.toString());
-        return ResponseEntity.status(chatRoomDTO != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(chatRoomDTO);
+        chatRoomDTO.setPermitMBTICode(chatService.addPermitMBTICodes(chatRoomDTO.getRoomId(), chatRoom.getPermitMBTICode()));
+        chatService.joinChatRoom(chatRoomDTO.getRoomId(), principal.getName());
+        return ResponseEntity.status(HttpStatus.OK).body(chatRoomDTO);
     }
 
     @GetMapping("/info")
@@ -55,27 +57,29 @@ public class ChatAPIController {
     }
 
     @GetMapping("/remove")
-    public ResponseEntity<Boolean> removeChatRoom(Principal principal, @RequestParam(value = "roomName") String roomName) {
-        log.info(roomName);
-        if (principal.getName().equals(chatService.getInfoChatRoom(roomName).getFounder()))
+    public ResponseEntity<Boolean> removeChatRoom(Principal principal, @RequestParam(value = "roomId") Long roomId) {
+        log.info(String.valueOf(roomId));
+        if (!principal.getName().equals(chatService.getInfoChatRoom(roomId).getFounder()))
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(false);
-        chatService.removeChatRoom(roomName);
+        chatService.removeChatRoom(roomId);
         return ResponseEntity.ok(true);
     }
 
-    @GetMapping("/join-availability/{roomName}")
-    public ResponseEntity<String> joinChatRoomAvailability(@PathVariable String roomName, Principal principal) {
-        if (!chatService.checkAlreadyJoined(roomName, principal.getName())) {
-            if (!chatService.joinChatRoomAvailability(roomName, principal.getName())) {
+    @GetMapping("/join-availability/{roomId}")
+    public ResponseEntity<String> joinChatRoomAvailability(@PathVariable Long roomId, Principal principal) {
+        if (!chatService.checkAlreadyJoined(roomId, principal.getName())) {
+            if (!chatService.joinChatRoomAvailability(roomId, principal.getName())) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Your MBTI code does not allow access to this chat room.");
             }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("You're already in a chat room.");
         }
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok("Available");
     }
 
-    @GetMapping("/leave-chatroom/{roomName}")
-    public ResponseEntity<String> leaveChatRoom(@PathVariable String roomName, Principal principal) {
-        if (chatService.leaveChatRoom(roomName, principal.getName())) {
+    @GetMapping("/leave-chatroom/{roomId}")
+    public ResponseEntity<String> leaveChatRoom(@PathVariable Long roomId, Principal principal) {
+        if (chatService.leaveChatRoom(roomId, principal.getName())) {
             return ResponseEntity.ok(null);
         }
         return ResponseEntity.unprocessableEntity().body("You need to transfer the founder privileges to other users.");

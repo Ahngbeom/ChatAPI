@@ -140,17 +140,17 @@
                 <div class="modal-body">
                     <div class="d-flex flex-column">
                         <div class="d-flex justify-content-center w-100 mx-1">
-                            <form action="/chat/create" method="post" class="form-group flex-column w-100"
-                                  id="createChatRoom">
+                            <form class="form-group flex-column w-100" id="createChatRoom">
+                                <input name="roomId" type="hidden">
                                 <div class="input-group mb-3 row">
                                     <label th:for="${type} + ChatRoomRoomName"
                                            class="input-group-text col-sm-3 col-form-label">Room Name</label>
                                     <input type="text" class="form-control" th:id="${type} + ChatRoomRoomName"
                                            name="roomName">
-                                    <button class="btn btn-secondary col-sm-2 justify-content-evenly" type="button"
-                                            th:id="${type} + ChatRoomRoomNameValidateBtn" disabled="">
-                                        <span>Validate</span>
-                                    </button>
+                                    <!--                                    <button class="btn btn-secondary col-sm-2 justify-content-evenly" type="button"-->
+                                    <!--                                            th:id="${type} + ChatRoomRoomNameValidateBtn" disabled="">-->
+                                    <!--                                        <span>Validate</span>-->
+                                    <!--                                    </button>-->
                                 </div>
                                 <div class="input-group mb-3 row">
                                     <label th:for="${type} + ChatRoomDescription"

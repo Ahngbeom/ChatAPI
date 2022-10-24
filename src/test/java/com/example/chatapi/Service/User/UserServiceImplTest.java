@@ -1,4 +1,4 @@
-package com.example.chatapi.Service;
+package com.example.chatapi.Service.User;
 
 import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;

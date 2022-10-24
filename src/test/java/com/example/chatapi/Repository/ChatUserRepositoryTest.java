@@ -1,7 +1,5 @@
 package com.example.chatapi.Repository;
 
-import com.example.chatapi.Entity.Chat.ChatRoomEntity;
-import com.example.chatapi.Entity.User.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -10,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -41,7 +37,7 @@ class ChatUserRepositoryTest {
 //        UserEntity userEntity = userRepository.findByUsername("admin").orElse(null);
 //        ChatRoomEntity chatRoomEntity = chatRoomRepository.findByRoomName("a").orElse(null);
 
-        if (chatUserRepository.existsByChatRoom_RoomNameAndUserName_Username("a", "admin"))
+        if (chatUserRepository.existsByChatRoom_IdAndUserName_Username(12L, "admin"))
             log.info("Already Joined");
         else
             log.info("Welcome");

@@ -26,4 +26,6 @@ public interface MbtiService {
 
     MbtiDTO getInfo(String code);
 
+    void extractMBTIInfo();
+
 }

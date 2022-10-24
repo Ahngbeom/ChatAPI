@@ -22,6 +22,7 @@ $(".edit-chat-room-btn").on('click', function () {
         },
         success: function (data) {
             console.log(data);
+            updateChatRoomModalElem.querySelector("input[name='roomId']").value = data.roomId;
             updateChatRoomModalElem.querySelector("input[name='roomName']").value = data.roomName;
             updateChatRoomModalElem.querySelector("textarea[name='description']").value = data.description;
             updateChatRoomModalElem.querySelector("form").setAttribute("data-room-name", data.roomName);
@@ -54,8 +55,15 @@ $(".edit-chat-room-btn").on('click', function () {
             });
             // console.log(PermitMBTI_survey);
             showModalTarget(updateChatRoomModalElem);
-            chatRoomJsonData.permitMBTICode = new Set(data.permitMBTICode);
+            // chatRoomJsonData.permitMBTICode = new Set(data.permitMBTICode);
             ReflectionPermitMbtiCode(new Set(data.permitMBTICode));
+
+            chatRoomJsonData_init(
+                updateChatRoomModalElem.querySelector("input[name='roomId']").value,
+                updateChatRoomModalElem.querySelector("input[name='roomName']").value,
+                updateChatRoomModalElem.querySelector("textarea[name='description']").value,
+                new Set(data.permitMBTICode)
+            );
         },
         error: function (xhr) {
             renewalModal({
@@ -65,17 +73,16 @@ $(".edit-chat-room-btn").on('click', function () {
             });
         }
     });
-});
 
-updateChatRoomSubmitBtn.addEventListener('click', function () {
-    if (formDataToJsonFormatterForChatRoom(updateChatRoomModalElem.querySelector("form"))) {
+    updateChatRoomSubmitBtn.addEventListener('click', function () {
+        // if (formDataToJsonFormatterForChatRoom(updateChatRoomModalElem.querySelector("form"))) {
         $.ajax({
             type: "POST",
             url: "/api/chat/update",
             contentType: "application/json; charset=utf-8",
             dataType: "JSON",
             data: JSON.stringify({
-                origRoomName: updateChatRoomModalElem.querySelector("form").getAttribute("data-room-name"),
+                roomId: chatRoomJsonData.roomId,
                 roomName: chatRoomJsonData.roomName,
                 description: chatRoomJsonData.description,
                 permitMBTICode: Array.from(chatRoomJsonData.permitMBTICode)
@@ -97,43 +104,45 @@ updateChatRoomSubmitBtn.addEventListener('click', function () {
                 console.error(xhr.responseText);
             }
         })
-    }
-});
+        // }
+    }, {once: true});
 
-removeChatRoomSubmitBtn.addEventListener('click', function () {
-    renewalModal({
-        target: confirmModalElem,
-        type: "danger",
-        title: "정말 채팅방을 삭제하시겠습니까?",
-    }, "<button type=\"button\" class=\"btn btn-danger\" id=\"confirmModalAcceptBtn\">Accept</button>");
-    showModalTarget(confirmModalElem);
+    removeChatRoomSubmitBtn.addEventListener('click', function () {
+        renewalModal({
+            target: confirmModalElem,
+            type: "danger",
+            title: "정말 채팅방을 삭제하시겠습니까?",
+        }, "<button type=\"button\" class=\"btn btn-danger\" id=\"confirmModalAcceptBtn\">Accept</button>");
+        showModalTarget(confirmModalElem);
 
-    $("#confirmModalAcceptBtn").one('click', function () {
-        console.log("Remove...");
-        $.ajax({
-            type: "GET",
-            url: "/api/chat/remove",
-            contentType: "application/json; charset=utf-8",
-            dataType: "JSON",
-            data: {
-                roomName: updateChatRoomModalElem.querySelector("form").getAttribute("data-roomName")
-            },
-            success: function (data) {
-                if (data) {
-                    renewalModal({
-                        target: confirmModalElem,
-                        type: "success",
-                        title: "채팅방이 삭제되었습니다.",
-                    }, "<button class='btn btn-primary' id='confirmModalAcceptBtn'>확인</button>");
-                    showModalTarget(confirmModalElem);
-                    $("#confirmModalAcceptBtn").one('click', function () {
-                        location.reload();
-                    });
+        $("#confirmModalAcceptBtn").one('click', function () {
+            console.log("Remove...");
+            $.ajax({
+                type: "GET",
+                url: "/api/chat/remove",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                data: {
+                    roomId: chatRoomJsonData.roomId
+                },
+                success: function (data) {
+                    if (data) {
+                        renewalModal({
+                            target: confirmModalElem,
+                            type: "success",
+                            title: "채팅방이 삭제되었습니다.",
+                        }, "<button class='btn btn-primary' id='confirmModalAcceptBtn'>확인</button>");
+                        showModalTarget(confirmModalElem);
+                        $("#confirmModalAcceptBtn").one('click', function () {
+                            location.reload();
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
                 }
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        })
-    });
+            })
+        });
+    }, {once: true});
 });
+

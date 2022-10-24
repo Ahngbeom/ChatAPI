@@ -1,16 +1,10 @@
 package com.example.chatapi.DTO;
 
-import com.example.chatapi.Entity.Chat.ChatLogEntity;
 import com.example.chatapi.Entity.Chat.ChatMBTIEntity;
 import com.example.chatapi.Entity.Chat.ChatRoomEntity;
 import com.example.chatapi.Entity.Chat.ChatUserEntity;
-import com.example.chatapi.Entity.MBTI.MBTIInfoEntity;
-import com.example.chatapi.Entity.User.UserEntity;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -19,13 +13,12 @@ import java.util.*;
 @Getter
 //@Builder
 @ToString
-//@AllArgsConstructor
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ChatRoomDTO {
 
-    @ToString.Exclude
-    private String origRoomName; // For Modify | Update
+    private Long roomId;
+
     private String roomName;
 
     private String description;
@@ -35,6 +28,7 @@ public class ChatRoomDTO {
     private long concurrentUsers;
 
     private String createDate;
+    private String updateDate;
 
     //    @ToString.Exclude
     private List<String> permitMBTICode = new ArrayList<>();
@@ -48,29 +42,35 @@ public class ChatRoomDTO {
         this.permitMBTICode.addAll(permitMBTICode);
     }
 
-    public ChatRoomDTO(String roomName, String description, String founder, Set<String> permitMBTICode) {
+    public ChatRoomDTO(Long roomId, String roomName, String description, String founder, Set<String> permitMBTICode, Long concurrentUsers) {
+        this.roomId = roomId;
         this.roomName = roomName;
         this.description = description;
         this.founder = founder;
         this.permitMBTICode.addAll(permitMBTICode);
+        this.concurrentUsers = concurrentUsers;
     }
 
     public ChatRoomDTO(ChatRoomEntity entity) {
+        this.roomId = entity.getId();
         this.roomName = entity.getRoomName();
         this.description = entity.getDescription();
         this.founder = entity.getFounder().getUsername();
         this.setCreateDate(entity.getCreateDate());
+        this.setUpdateDate(entity.getUpdateDate());
     }
 
     public ChatRoomDTO(ChatUserEntity entity) {
+        this.roomId = entity.getChatRoom().getId();
         this.roomName = entity.getChatRoom().getRoomName();
         this.description = entity.getChatRoom().getDescription();
         this.founder = entity.getChatRoom().getFounder().getUsername();
         this.setCreateDate(entity.getChatRoom().getCreateDate());
+        this.setUpdateDate(entity.getChatRoom().getUpdateDate());
     }
 
-    public void setOrigRoomName(String origRoomName) {
-        this.origRoomName = origRoomName;
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
     }
 
     public void setRoomName(String roomName) {
@@ -92,6 +92,15 @@ public class ChatRoomDTO {
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
+
+    public void setUpdateDate(LocalDateTime localDateTime) {
+        this.updateDate = localDateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG));
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
 
     public void setPermitMBTICode(List<String> permitMBTICode) {
         this.permitMBTICode = permitMBTICode;

@@ -32,19 +32,21 @@ class MbtiAPIControllerTest extends ChatApplicationIntegrationTests {
     @Test
     @WithUserDetails("admin")
     void mbtiRegister() throws Exception {
-        // Given
-        MbtiDTO mbtiDTO = mbtiService.getInfo(MBTICode.ISTJ);
+        for (String code : MBTICode.matchCode("ISTJ")) {
+            // Given
+            MbtiDTO mbtiDTO = mbtiService.getInfo(code);
 
-        // When
-        ResultActions resultActions = mvc.perform(post("/api/mbti/registration")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(mbtiDTO))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print());
+            // When
+            ResultActions resultActions = mvc.perform(post("/api/mbti/registration")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(mbtiDTO))
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andDo(print());
 
-        // Then
-        resultActions
-                .andExpect(status().isOk());
+            // Then
+            resultActions
+                    .andExpect(status().isOk());
+        }
     }
 
     @Test
@@ -78,15 +80,17 @@ class MbtiAPIControllerTest extends ChatApplicationIntegrationTests {
     @Test
     @WithUserDetails("admin")
     void assignRepresentMBTI() throws Exception {
-        // When
-        MvcResult mvcResult = mvc.perform(get("/api/mbti/assign-represent")
-                        .param("mbtiCode", MBTICode.INTP)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+        for (String code : MBTICode.matchCode("INTP")) {
+            // When
+            MvcResult mvcResult = mvc.perform(get("/api/mbti/assign-represent")
+                            .param("mbtiCode", code)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andReturn();
 
-        // Then
-        log.info(mvcResult.getResponse().getContentAsString());
+            // Then
+            log.info(mvcResult.getResponse().getContentAsString());
+        }
     }
 
     @Test

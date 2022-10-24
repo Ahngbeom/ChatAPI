@@ -10,12 +10,14 @@ import java.util.Optional;
 @Repository
 public interface ChatUserRepository extends JpaRepository<ChatUserEntity, Long> {
 
-    List<ChatUserEntity> findAllByChatRoom_RoomName(String roomName);
+    List<ChatUserEntity> findAllByChatRoom_Id(Long roomId);
 
     List<ChatUserEntity> findAllByUserName_Username(String userName);
 
     Optional<ChatUserEntity> findByChatRoom_RoomNameAndUserName_Username(String roomName, String userName);
 
-    boolean existsByChatRoom_RoomNameAndUserName_Username(String chatRoom_roomName, String userName_username);
+    Optional<ChatUserEntity> findByChatRoom_IdAndUserName_Username(Long roomId, String userName);
+
+    boolean existsByChatRoom_IdAndUserName_Username(Long roomId, String userName_username);
 
 }

@@ -21,12 +21,13 @@ public class ChattingController {
 
     private final ChatLogService chatLogService;
 
-    @MessageMapping("/mbti-chat/join-room/{roomName}")
-    @SendTo("/topic/mbti-chat/{roomName}")
-    public Message joinChatRoom(@DestinationVariable("roomName") String roomName, Principal principal) throws InterruptedException {
-        if (!chatService.checkAlreadyJoined(roomName, principal.getName())) {
-            if (chatService.joinChatRoom(roomName, principal.getName())) {
+    @MessageMapping("/mbti-chat/join-room/{roomId}")
+    @SendTo("/topic/mbti-chat/{roomId}")
+    public Message joinChatRoom(@DestinationVariable("roomName") Long roomId, Principal principal) throws InterruptedException {
+        if (!chatService.checkAlreadyJoined(roomId, principal.getName())) {
+            if (chatService.joinChatRoomAvailability(roomId, principal.getName())) {
 //                Thread.sleep(1000);
+                chatService.joinChatRoom(roomId, principal.getName());
                 return new Message(Message.COMMON, Message.SERVER, "Welcome, " + principal.getName());
             }
         }

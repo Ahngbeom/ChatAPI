@@ -1,6 +1,8 @@
 package com.example.chatapi.Service.Chat;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
+import com.example.chatapi.Entity.Chat.ChatMBTIEntity;
+import com.example.chatapi.Entity.Chat.ChatRoomEntity;
 
 import java.util.List;
 
@@ -14,17 +16,21 @@ public interface ChatService {
 
     List<ChatRoomDTO> getListOfAllChatRoomsUserBelongs(String username);
 
+    ChatRoomDTO getInfoChatRoom(Long id);
+
     ChatRoomDTO getInfoChatRoom(String roomName);
 
     ChatRoomDTO updateChatRoom(String username, ChatRoomDTO chatRoomDTO);
 
-    void removeChatRoom(String roomName);
+    void removeChatRoom(Long roomId);
 
-    boolean joinChatRoomAvailability(String roomName, String userName);
+    boolean joinChatRoomAvailability(Long roomId, String userName);
 
-    boolean joinChatRoom(String roomName, String userName) throws RuntimeException;
+    void joinChatRoom(Long roomId, String userName) throws RuntimeException;
 
-    boolean checkAlreadyJoined(String chatRoomName, String username);
+    boolean checkAlreadyJoined(Long roomId, String username);
 
-    boolean leaveChatRoom(String roomName, String userName);
+    boolean leaveChatRoom(Long roomId, String userName);
+
+    List<String> addPermitMBTICodes(Long roomId, List<String> codes);
 }
