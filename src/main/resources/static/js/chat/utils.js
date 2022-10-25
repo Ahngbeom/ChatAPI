@@ -1,8 +1,8 @@
 /************ Utilities for Chatting Room ************/
 import {
     checkboxMBTIElemList,
-    enableAllPermitMBTICodeSwitch,
-    enableSelectPermitMBTICode
+    // enableAllPermitMBTICodeSwitch,
+    // enableSelectPermitMBTICode
 } from "./checkPermitMBTI.js";
 
 /** disposable Modal Element **/
@@ -56,8 +56,8 @@ export let CRUDChatRoomModalElem = null;
 $(".CRUD-chatRoom-modal").on('show.bs.modal', function () {
     CRUDChatRoomModalElem = $(this);
     // checkboxMBTIElemList.forEach(input => input.checked = false);
-    enableAllPermitMBTICodeSwitch();
-    enableSelectPermitMBTICode();
+    // enableAllPermitMBTICodeSwitch();
+    // enableSelectPermitMBTICode();
 });
 
 $(".CRUD-chatRoom-modal").on('hidden.bs.modal', function () {
