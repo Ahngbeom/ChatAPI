@@ -1,9 +1,11 @@
 /************ Utilities for Chatting Room ************/
-import {
-    checkboxMBTIElemList,
-    // enableAllPermitMBTICodeSwitch,
-    // enableSelectPermitMBTICode
-} from "./checkPermitMBTI.js";
+
+
+export const chatModal = new bootstrap.Modal("#chatModal");
+export const chatModalElement = document.getElementById("chatModal");
+export const sendMessageInput = chatModalElement.querySelector("#input-send-message");
+export const sendMessageBtn = chatModalElement.querySelector("#chat-send-message-btn");
+export const leaveChatRoomBtn = chatModalElement.querySelector("#chat-leave-btn");
 
 /** disposable Modal Element **/
 export const disposableModalElem = document.querySelector("#disposable-modal");

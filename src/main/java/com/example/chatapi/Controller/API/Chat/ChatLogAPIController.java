@@ -22,9 +22,9 @@ public class ChatLogAPIController {
 
     private final ChatLogService chatLogService;
 
-    @GetMapping("/log/{roomName}")
-    public ResponseEntity<List<Message>> getChatRoomLog(@PathVariable String roomName) {
-        return ResponseEntity.ok(chatLogService.getChatRoomLog(roomName));
+    @GetMapping("/log/{roomId}")
+    public ResponseEntity<List<Message>> getChatRoomLog(@PathVariable Long roomId) {
+        return ResponseEntity.ok(chatLogService.getChatRoomLog(roomId));
     }
 
 }

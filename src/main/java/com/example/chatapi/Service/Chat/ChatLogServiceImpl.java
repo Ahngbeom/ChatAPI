@@ -1,6 +1,5 @@
 package com.example.chatapi.Service.Chat;
 
-import com.example.chatapi.DTO.ChatLogDTO;
 import com.example.chatapi.Entity.Chat.ChatLogEntity;
 import com.example.chatapi.Repository.ChatLogRepository;
 import com.example.chatapi.Repository.ChatRoomRepository;
@@ -21,9 +20,9 @@ public class ChatLogServiceImpl implements ChatLogService {
     private final ChatLogRepository chatLogRepository;
 
     @Override
-    public void saveMessage(String chatRoomName, Message message) {
+    public void saveMessage(Long roomId, Message message) {
         chatLogRepository.save(ChatLogEntity.builder()
-                .chatRoomId(chatRoomRepository.findByRoomName(chatRoomName).orElseThrow(RuntimeException::new))
+                .chatRoomId(chatRoomRepository.findById(roomId).orElseThrow(RuntimeException::new))
                 .message(message.getMessage())
                 .fromUsername(message.getFrom())
                 .type(message.getStatus())
@@ -31,8 +30,8 @@ public class ChatLogServiceImpl implements ChatLogService {
     }
 
     @Override
-    public List<Message> getChatRoomLog(String roomName) {
-        return chatLogRepository.findAllByChatRoomId_RoomNameOrderByRegDate(roomName).stream()
+    public List<Message> getChatRoomLog(Long roomId) {
+        return chatLogRepository.findAllByChatRoomId_IdOrderByRegDate(roomId).stream()
                 .map(chatLogEntity -> Message.builder()
                         .from(chatLogEntity.getFromUsername())
                         .message(chatLogEntity.getMessage())

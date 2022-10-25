@@ -58,7 +58,7 @@
                                         th:if="${#authentication.principal.username == chatRoom.getFounder()}">Edit
                                 </button>
                                 <button type="button" class="btn btn-warning ms-1 join-chat-room-btn"
-                                        th:data-room-name="${chatRoom.getRoomName()}">Join
+                                        th:data-room-id="${chatRoom.getRoomId()}">Join
                                 </button>
                             </div>
                         </div>
@@ -77,8 +77,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script type="module" src="/js/chat/createChatRoom.js"></script>
     <script src="/js/chat/updateChatRoom.js" type="module"></script>
-    <script type="module" src="/js/chat/connection.js"></script>
     <script type="module" src="/js/chat/utils.js"></script>
+    <script src="/js/chat/connection.js" type="module"></script>
+    <script src="/js/chat/message.js" type="module"></script>
 </th:block>
 </body>
 </html>
