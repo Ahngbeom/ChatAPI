@@ -7,7 +7,7 @@ export function setMovementForUsername() {
     signUpFormUsernameValidateBtn.addEventListener('click', function () {
         $.ajax({
             type: 'GET',
-            url: '/username-validation',
+            url: '/api/user/username-validation',
             data: {username: signUpFormUsername.value},
             beforeSend: function (xhr) {
                 if (signUpFormUsername.value === null || signUpFormUsername.value.length < 5

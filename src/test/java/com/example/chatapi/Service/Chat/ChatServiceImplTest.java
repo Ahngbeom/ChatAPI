@@ -2,8 +2,8 @@ package com.example.chatapi.Service.Chat;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
 import com.example.chatapi.DTO.MBTICode;
-import com.example.chatapi.Repository.ChatMBTIRepository;
-import com.example.chatapi.Repository.ChatRoomRepository;
+import com.example.chatapi.Repository.Chat.ChatMBTIRepository;
+import com.example.chatapi.Repository.Chat.ChatRoomRepository;
 import com.example.chatapi.Repository.MbtiRepository;
 import com.example.chatapi.Service.MBTI.MbtiServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.Collections;
 
 @Slf4j
 @SpringBootTest

@@ -3,6 +3,8 @@ package com.example.chatapi.Entity.User;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
 import com.example.chatapi.Entity.MBTI.UserMbtiJoinEntity;
+import com.example.chatapi.Entity.OAuth2Entity;
+import com.example.chatapi.Entity.OAuth2UserEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -20,7 +22,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity implements Serializable {
+public class UserEntity {
     // Serializable : 분산환경, 직렬화하여 외부 전송?
 
 //    @Id
@@ -62,6 +64,9 @@ public class UserEntity implements Serializable {
     @ToString.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserMbtiJoinEntity> mbtiList;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<OAuth2UserEntity> oAuth2Type;
 
     public static UserEntity convertToUserEntity(UserDTO dto) {
         return UserEntity.builder()

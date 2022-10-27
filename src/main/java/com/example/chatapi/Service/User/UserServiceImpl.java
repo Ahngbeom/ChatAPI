@@ -5,10 +5,10 @@ import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Entity.Authority.AuthorityEntity;
 import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
 import com.example.chatapi.Entity.User.UserEntity;
-import com.example.chatapi.Repository.AuthorityRepository;
+import com.example.chatapi.Repository.User.AuthorityRepository;
 import com.example.chatapi.Repository.MbtiRepository;
-import com.example.chatapi.Repository.UserAuthorityRepository;
-import com.example.chatapi.Repository.UserRepository;
+import com.example.chatapi.Repository.User.UserAuthorityRepository;
+import com.example.chatapi.Repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Slf4j

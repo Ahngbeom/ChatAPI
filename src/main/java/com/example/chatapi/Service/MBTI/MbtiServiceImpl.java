@@ -7,7 +7,7 @@ import com.example.chatapi.Entity.MBTI.MBTIInfoEntity;
 import com.example.chatapi.Entity.User.UserEntity;
 import com.example.chatapi.Entity.MBTI.UserMbtiJoinEntity;
 import com.example.chatapi.Repository.MbtiRepository;
-import com.example.chatapi.Repository.UserMbtiRepository;
+import com.example.chatapi.Repository.User.UserMbtiRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;

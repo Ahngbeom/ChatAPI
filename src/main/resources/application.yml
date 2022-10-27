@@ -2,7 +2,8 @@ spring:
   group:
     "local": "local"
     "deploy": "deploy"
-
+  profiles:
+    include: "oauth2"
 ---
 
 spring:

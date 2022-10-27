@@ -37,15 +37,22 @@
                         </div>
                     </div>
                     <div class="mb-3 form-check d-flex justify-content-end">
-                        <input type="checkbox" class="form-check-input me-1" id="loginFormRememberMe" name="remember-me"/>
+                        <input type="checkbox" class="form-check-input me-1" id="loginFormRememberMe"
+                               name="remember-me"/>
                         <label class="form-check-label" for="loginFormRememberMe">Remember Me</label>
                     </div>
                     <div class="d-flex justify-content-between">
                         <button type="button" class="btn btn-secondary" id="floatingSignUpBtn" value="">Sign Up</button>
-<!--                        <button type="button" class="btn btn-info" onclick="signIn()">Sign In</button>-->
+                        <!--                        <button type="button" class="btn btn-info" onclick="signIn()">Sign In</button>-->
                         <button type="submit" class="btn btn-info">Sign In</button>
                     </div>
                 </form>
+            </div>
+
+            <!--    OAuth2        -->
+            <div class="d-flex justify-content-center mx-1">
+                <a class="btn btn-outline-secondary" href="/oauth2/authorization/github">GitHub</a>
+                <a class="btn btn-outline-secondary">Google</a>
             </div>
         </div>
     </div>

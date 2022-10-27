@@ -1,5 +1,8 @@
 package com.example.chatapi.Repository;
 
+import com.example.chatapi.Repository.Chat.ChatRoomRepository;
+import com.example.chatapi.Repository.Chat.ChatUserRepository;
+import com.example.chatapi.Repository.User.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;

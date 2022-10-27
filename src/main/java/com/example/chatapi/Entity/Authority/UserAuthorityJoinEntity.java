@@ -26,4 +26,5 @@ public class UserAuthorityJoinEntity {
     @JoinColumn(name = "authority_name")
     private AuthorityEntity authority;
 
+
 }

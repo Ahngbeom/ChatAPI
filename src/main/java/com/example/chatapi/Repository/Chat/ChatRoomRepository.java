@@ -1,4 +1,4 @@
-package com.example.chatapi.Repository;
+package com.example.chatapi.Repository.Chat;
 
 import com.example.chatapi.Entity.Chat.ChatRoomEntity;
 import com.example.chatapi.Entity.User.UserEntity;

@@ -1,4 +1,4 @@
-package com.example.chatapi.Repository;
+package com.example.chatapi.Repository.User;
 
 import com.example.chatapi.Entity.User.UserEntity;
 import org.springframework.data.jpa.repository.EntityGraph;

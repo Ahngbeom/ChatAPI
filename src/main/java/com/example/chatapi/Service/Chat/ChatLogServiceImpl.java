@@ -1,8 +1,8 @@
 package com.example.chatapi.Service.Chat;
 
 import com.example.chatapi.Entity.Chat.ChatLogEntity;
-import com.example.chatapi.Repository.ChatLogRepository;
-import com.example.chatapi.Repository.ChatRoomRepository;
+import com.example.chatapi.Repository.Chat.ChatLogRepository;
+import com.example.chatapi.Repository.Chat.ChatRoomRepository;
 import com.example.chatapi.STOMP.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
