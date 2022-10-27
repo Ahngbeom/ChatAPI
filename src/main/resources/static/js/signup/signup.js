@@ -77,7 +77,7 @@ document.querySelector("#floatingSignUpBtn").addEventListener('click', function 
 
                 $.ajax({
                     type: 'POST',
-                    url: '/signup',
+                    url: '/api/user/signup',
                     dataType: 'JSON',
                     contentType: 'application/json; charset=utf-8',
                     data: JSON.stringify(signUpJson),
