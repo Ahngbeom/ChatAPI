@@ -1,6 +1,5 @@
-package com.example.chatapi.Repository;
+package com.example.chatapi.Repository.User;
 
-import com.example.chatapi.Repository.Chat.ChatLogRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -15,17 +14,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("local")
-class ChatLogRepositoryTest {
+class OAuth2UserRepositoryTest {
 
-    private static final Logger log = LoggerFactory.getLogger(UserRepositoryTest.class);
+    private static final Logger log = LoggerFactory.getLogger(OAuth2UserRepository.class);
 
     @Autowired
-    private ChatLogRepository chatLogRepository;
+    private OAuth2UserRepository oAuth2UserRepository;
 
     @Test
-    void findAllByChatRoomId() {
-
-        chatLogRepository.findAllByChatRoomId_IdOrderByRegDate(26L).forEach(chatLogEntity -> log.info(chatLogEntity.getFromUsername() + ": " + chatLogEntity.getMessage()));
-
+    void existsByUser_UsernameAndOauth2Type_Type() {
+        oAuth2UserRepository.existsByUser_UsernameAndOauth2Type_Name("Ahngbeom", "GitHub");
     }
 }

@@ -1,4 +1,4 @@
-package com.example.chatapi.Repository;
+package com.example.chatapi.Repository.Chat;
 
 import com.example.chatapi.Entity.Chat.ChatLogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ChatLogRepository extends JpaRepository<ChatLogEntity, Long> {
 
-    List<ChatLogEntity> findAllByChatRoomId_RoomNameOrderByRegDate(String roomName);
+    List<ChatLogEntity> findAllByChatRoomId_IdOrderByRegDate(Long roomId);
 }

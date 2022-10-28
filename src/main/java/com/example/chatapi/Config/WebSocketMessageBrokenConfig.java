@@ -34,7 +34,7 @@ public class WebSocketMessageBrokenConfig implements WebSocketMessageBrokerConfi
         registry
                 .addEndpoint("/ws/mbti-chat") // 클라이언트에서 WebSocket에 접속하는 EndPoint 등록
 //                .setAllowedOriginPatterns("*") // 보안 위험, 취약
-//                .setAllowedOriginPatterns("http://localhost:8080"/*, "http://*:8080", "http://*.*.*.*:8080"*/)
+                .setAllowedOriginPatterns("http://localhost:8080"/*, "http://*:8080", "http://*.*.*.*:8080"*/)
 
 //                .setHandshakeHandler(new DefaultHandshakeHandler() {
 //                    public boolean beforeHandshake(
@@ -55,9 +55,9 @@ public class WebSocketMessageBrokenConfig implements WebSocketMessageBrokerConfi
 //                })
                 .withSockJS(); // withSockJS를 통해 소켓을 등록. 만약 브라우저에서 WebSocket을 지원하지 않을 경우 FallBack 옵션 활성화.
 
-        registry.addEndpoint("/ws/mbti-chat")
-                .setHandshakeHandler(new DefaultHandshakeHandler(upgradeStrategy))
-                .setAllowedOrigins("*");
+//        registry.addEndpoint("/ws/mbti-chat")
+//                .setHandshakeHandler(new DefaultHandshakeHandler(upgradeStrategy))
+//                .setAllowedOrigins("*");
     }
 
 

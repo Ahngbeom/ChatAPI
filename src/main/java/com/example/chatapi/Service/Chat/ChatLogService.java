@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ChatLogService {
 
-    void saveMessage(String ChatRoomName, Message message);
+    void saveMessage(Long roomId, Message message);
 
-    List<Message> getChatRoomLog(String roomName);
+    List<Message> getChatRoomLog(Long roomId);
 }

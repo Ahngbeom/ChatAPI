@@ -30,6 +30,7 @@ export const signUpFormAuthorityInputList = signUpForm.querySelectorAll("input[n
 export const signUpSubmitBtn = document.querySelector("#signUpSubmitBtn");
 
 
+
 document.querySelector("#floatingSignUpBtn").addEventListener('click', function () {
 
     const signUpModalElem = document.querySelector("#signUpModal");
@@ -77,20 +78,22 @@ document.querySelector("#floatingSignUpBtn").addEventListener('click', function 
 
                 $.ajax({
                     type: 'POST',
-                    url: '/signup',
-                    dataType: 'JSON',
+                    url: '/api/user/signup',
+                    // dataType: 'JSON',
                     contentType: 'application/json; charset=utf-8',
                     data: JSON.stringify(signUpJson),
                     success: function (data) {
-                        console.log(data);
-                        window.location.href = '/login';
+                        // console.log(data);
                         disposeModalTarget(signUpModalElem);
-                        createToast({
-                            target: $("#pageToast"),
+                        renewalModal({
+                            target: confirmModalElem,
                             type: "success",
-                            header: "Alert",
-                            body: "정상적으로 회원가입되었습니다."
+                            title: "정상적으로 회원가입되었습니다."
                         });
+                        confirmModalElem.addEventListener('hidden.bs.modal', function () {
+                            window.location.href = '/login';
+                        }, {once: true});
+                        showModalTarget(confirmModalElem);
                     },
                     error: function (data) {
                         console.error(data);
@@ -102,15 +105,15 @@ document.querySelector("#floatingSignUpBtn").addEventListener('click', function 
         const userAuthorityFormatConverter = function () {
             if (signUpJson.authorities.has('ROLE_ADMIN')) {
                 signUpJson.authorities.delete('ROLE_ADMIN');
-                signUpJson.authorities.add({authorityName: 'ROLE_ADMIN'});
+                signUpJson.authorities.add('ROLE_ADMIN');
             }
             if (signUpJson.authorities.has('ROLE_MANAGER')) {
                 signUpJson.authorities.delete('ROLE_MANAGER');
-                signUpJson.authorities.add({authorityName: 'ROLE_MANAGER'});
+                signUpJson.authorities.add('ROLE_MANAGER');
             }
             if (signUpJson.authorities.has('ROLE_USER')) {
                 signUpJson.authorities.delete('ROLE_USER');
-                signUpJson.authorities.add({authorityName: 'ROLE_USER'});
+                signUpJson.authorities.add('ROLE_USER');
             }
             signUpJson.authorities = [...signUpJson.authorities];
         };

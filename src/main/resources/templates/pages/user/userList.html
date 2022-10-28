@@ -12,15 +12,16 @@
 
 <th:block layout:fragment="content">
     <div class="container-fluid" id="contentContainer">
-        <table class="table table-success table-striped text-center table-responsive">
+        <table class="table table-bordered table-success table-striped text-center table-responsive">
             <thead>
-                <tr>
-                    <td>#</td>
-                    <td>Username</td>
-                    <td>Nickname</td>
-                    <td>Authority</td>
-                    <td>MBTI-List</td>
-                </tr>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Nickname</th>
+                <th>Authority</th>
+                <th>MBTI-List</th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
             <tr th:each="user, index : ${userList}">
@@ -28,10 +29,16 @@
                 <td th:text="${user.getUsername()}"></td>
                 <td th:text="${user.getNickname()}"></td>
                 <td>
-                    <button class='btn btn-light getUserAuthoritiesBtn' th:data-username='${user.getUsername()}'>조회</button>
+                    <button class='btn btn-light getUserAuthoritiesBtn' th:data-username='${user.getUsername()}'>조회
+                    </button>
                 </td>
                 <td>
-                    <button class='btn btn-light getUserMBTIListBtn' th:data-username='${user.getUsername()}'>조회</button>
+                    <button class='btn btn-light getUserMBTIListBtn' th:data-username='${user.getUsername()}'>조회
+                    </button>
+                </td>
+                <td>
+                    <button class='btn btn-danger removeUserConfirmBtn' th:data-username='${user.getUsername()}'>삭제
+                    </button>
                 </td>
             </tr>
             </tbody>

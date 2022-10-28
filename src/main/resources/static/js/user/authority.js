@@ -1,11 +1,11 @@
 export function ajaxGetUserAuthorities(username) {
     $.ajax({
         type: 'GET',
-        url: '/api/user/authorities',
+        url: '/api/user/authorities/' + username,
         contentType: "application/json; charset=utf-8",
         dataType: 'JSON',
-        data: {username: username},
         success: function (data) {
+            console.log(data);
             const modalElem = document.querySelector("#simpleInquiryModal");
             renewalModal({
                 target: modalElem,
@@ -23,23 +23,21 @@ export function ajaxGetUserAuthorities(username) {
                     "    <input class=\"form-check-input me-1\" type=\"checkbox\" value=\"ROLE_USER\" id='thirdCheckbox' disabled>\n" +
                     "    <label class=\"form-check-label col-11\" for='thirdCheckbox'>ROLE_USER</label>\n" +
                     "  </li>" +
-                    "</ul>",
-                interactionBtnText: "권한 변경",
-                interactionBtnType: "warning",
-            });
+                    "</ul>"
+            }, "<button type='button' class='btn btn-warning' id='modifyAuthorityBtn'>권한 변경</button>");
             data.forEach(auth => {
                 document.querySelector(".modal-body .list-group .list-group-item input[value='" + auth.authorityName + "']").checked = true;
             });
-            modalElem.querySelector("#modalInteractionBtn").innerHTML = "변경";
-            modalElem.querySelector("#modalInteractionBtn").classList.replace("btn-primary", "btn-warning");
-            modalElem.querySelector("#modalInteractionBtn").addEventListener('click', function () {
+            modalElem.querySelector("#modifyAuthorityBtn").addEventListener('click', function () {
                 modalElem.querySelectorAll(".modal-body input").forEach(input => {
                     input.removeAttribute("disabled");
                 });
-                modalElem.querySelector("#modalInteractionBtn").innerHTML = "변경 사항 적용";
-                modalElem.querySelector("#modalInteractionBtn").classList.replace("btn-warning", "btn-primary");
-            });
-            modalElem.querySelector("#modalInteractionBtn").classList.remove("visually-hidden");
+                this.innerHTML = "변경 사항 적용";
+                this.classList.replace("btn-warning", "btn-primary");
+                modalElem.querySelector("#modifyAuthorityBtn").addEventListener('click', function () {
+                    console.log("??");
+                }, {once: true});
+            }, {once: true});
             showModalTarget(modalElem);
         },
         error: function (data) {

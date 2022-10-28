@@ -2,7 +2,7 @@ package com.example.chatapi.Service.User;
 
 import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
-import com.example.chatapi.Repository.UserRepository;
+import com.example.chatapi.Repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,11 +33,10 @@ public class PostConstructService {
                     .username("admin")
                     .password("admin")
                     .nickname("ADMIN")
-                    .authorities(Collections.singleton(AuthorityDTO.builder().authorityName("ROLE_ADMIN").build()))
-                    .mbtiInfoList(null)
+                    .authorities(Collections.singleton("ROLE_ADMIN"))
+                    .mbtiList(null)
                     .build();
-            log.info(String.valueOf(userService.signUp(adminDTO)));
-
+            userService.signUp(adminDTO);
         } catch (RuntimeException e) {
 //            e.printStackTrace();
             log.error(e.getMessage());
@@ -58,11 +57,10 @@ public class PostConstructService {
                     .username("manager")
                     .password("1234")
                     .nickname("MANAGER")
-                    .authorities(Collections.singleton(AuthorityDTO.builder().authorityName("ROLE_MANAGER").build()))
-                    .mbtiInfoList(null)
+                    .authorities(Collections.singleton("ROLE_MANAGER"))
+                    .mbtiList(null)
                     .build();
-            log.info(String.valueOf(userService.signUp(adminDTO)));
-
+            userService.signUp(adminDTO);
         } catch (RuntimeException e) {
 //            e.printStackTrace();
             log.error(e.getMessage());

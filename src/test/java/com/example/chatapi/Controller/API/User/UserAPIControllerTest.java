@@ -13,6 +13,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Collections;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,7 +39,7 @@ class UserAPIControllerTest extends ChatApplicationIntegrationTests {
                 .username("TESTER")
                 .password("TESTER1234")
                 .nickname("TESTER")
-                .authorities(AuthorityDTO.authoritiesToSet(AuthorityDTO.USER))
+                .authorities(Collections.singleton(AuthorityDTO.USER))
                 .build();
 
         // When

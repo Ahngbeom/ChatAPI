@@ -1,6 +1,7 @@
 package com.example.chatapi.Repository;
 
 import com.example.chatapi.Entity.MBTI.UserMbtiJoinEntity;
+import com.example.chatapi.Repository.User.UserMbtiRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;

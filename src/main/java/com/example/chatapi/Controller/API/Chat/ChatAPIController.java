@@ -1,6 +1,8 @@
 package com.example.chatapi.Controller.API.Chat;
 
 import com.example.chatapi.DTO.ChatRoomDTO;
+import com.example.chatapi.STOMP.Message;
+import com.example.chatapi.Service.Chat.ChatLogService;
 import com.example.chatapi.Service.Chat.ChatService;
 import com.example.chatapi.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ public class ChatAPIController {
     private final UserService userService;
     private final ChatService chatService;
 
+    private final ChatLogService chatLogService;
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/list/all")
     public ResponseEntity<List<ChatRoomDTO>> getListAllChatRooms() {
@@ -37,10 +41,11 @@ public class ChatAPIController {
     @PostMapping("/create")
     public ResponseEntity<ChatRoomDTO> createChatRoom(Principal principal, @RequestBody ChatRoomDTO chatRoom) {
         log.info(chatRoom.toString());
-        ChatRoomDTO chatRoomDTO = chatService.createChatRoom(principal.getName(), chatRoom);
-        chatRoomDTO.setPermitMBTICode(chatService.addPermitMBTICodes(chatRoomDTO.getRoomId(), chatRoom.getPermitMBTICode()));
-        chatService.joinChatRoom(chatRoomDTO.getRoomId(), principal.getName());
-        return ResponseEntity.status(HttpStatus.OK).body(chatRoomDTO);
+        ChatRoomDTO createdChatRoomDTO = chatService.createChatRoom(principal.getName(), chatRoom);
+        createdChatRoomDTO.setPermitMBTICode(chatService.addPermitMBTICodes(createdChatRoomDTO.getRoomId(), chatRoom.getPermitMBTICode()));
+        chatService.joinChatRoom(createdChatRoomDTO.getRoomId(), principal.getName());
+        chatLogService.saveMessage(createdChatRoomDTO.getRoomId(), new Message(Message.SERVER, Message.SERVER, "[" + principal.getName() + "] has opened a [" + createdChatRoomDTO.getRoomName() + "] chat room."));
+        return ResponseEntity.status(HttpStatus.OK).body(createdChatRoomDTO);
     }
 
     @GetMapping("/info")
@@ -72,7 +77,7 @@ public class ChatAPIController {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Your MBTI code does not allow access to this chat room.");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("You're already in a chat room.");
+            return ResponseEntity.ok("You're already in a chat room.");
         }
         return ResponseEntity.ok("Available");
     }

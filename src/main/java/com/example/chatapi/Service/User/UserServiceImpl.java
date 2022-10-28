@@ -1,14 +1,17 @@
 package com.example.chatapi.Service.User;
 
 import com.example.chatapi.DTO.AuthorityDTO;
+import com.example.chatapi.DTO.MbtiDTO;
+import com.example.chatapi.DTO.OAuth2DTO;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Entity.Authority.AuthorityEntity;
 import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
+import com.example.chatapi.Entity.OAuth2UserEntity;
 import com.example.chatapi.Entity.User.UserEntity;
-import com.example.chatapi.Repository.AuthorityRepository;
+import com.example.chatapi.Repository.User.AuthorityRepository;
 import com.example.chatapi.Repository.MbtiRepository;
-import com.example.chatapi.Repository.UserAuthorityRepository;
-import com.example.chatapi.Repository.UserRepository;
+import com.example.chatapi.Repository.User.UserAuthorityRepository;
+import com.example.chatapi.Repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,21 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDTO signUp(UserDTO userDTO) throws RuntimeException {
-//        AtomicBoolean result = new AtomicBoolean(true);
-
+    public void signUp(UserDTO userDTO) throws RuntimeException {
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
             throw new RuntimeException("Exist Username");
-
-        // Storing requested User's Authorities in HashSet and authority table
-        Set<AuthorityEntity> authorityEntityHashSet = new HashSet<>();
-        userDTO.getAuthorities().forEach(authorityDTO -> {
-            AuthorityEntity authority = AuthorityEntity.builder()
-                    .authorityName(authorityDTO.getAuthorityName())
-                    .build();
-            authorityEntityHashSet.add(authority);
-//            result.set(result.get() & authorityRepository.save(authority).getClass().equals(AuthorityEntity.class));
-        });
 
         // Storing requested User's Information in user table
         UserEntity userEntity = userRepository.save(
@@ -60,46 +50,45 @@ public class UserServiceImpl implements UserService {
                         .activate(true)
                         .build()
         );
-//        result.set(result.get() | userRepository.save(userEntity).getClass().equals(UserEntity.class));
 
-        // Storing UserEntity and AuthorityEntity object variables in user_authority table
-        authorityEntityHashSet.forEach(authorityEntity ->
-                userAuthorityRepository.save(UserAuthorityJoinEntity.builder()
-                        .user(userEntity)
-                        .authority(authorityEntity)
-                        .build()));
+        addAuthority(userEntity.getUsername(), userDTO.getAuthorities());
 
-        // Returns whether the result of the above three processes
-        userDTO = UserDTO.convertToUserDTO(userEntity);
-        assert userDTO != null;
-        userDTO.setAuthorities(userAuthorityRepository.findAllByUser_Username(userEntity.getUsername()).stream().map(userAuthorityJoinEntity ->
-                AuthorityDTO.builder().authorityName(userAuthorityJoinEntity.getAuthority().getAuthorityName()).build()).collect(Collectors.toSet())
-        );
-        return userDTO;
+//        // Returns whether the result of the above three processes
+//        userDTO = UserDTO.convertToUserDTO(userEntity);
+//        assert userDTO != null;
+//        userDTO.setAuthorities(userAuthorityRepository.findAllByUser_Username(userEntity.getUsername()).stream().map(userAuthorityJoinEntity ->
+//                AuthorityDTO.builder().authorityName(userAuthorityJoinEntity.getAuthority().getAuthorityName()).build()).collect(Collectors.toSet())
+//        );
+//        return userDTO;
     }
 
     @Override
+    public void addAuthority(String username, Collection<String> authorities) {
+
+        // Storing UserEntity and AuthorityEntity object variables in user_authority table
+        for (String auth : authorities) {
+            userAuthorityRepository.save(UserAuthorityJoinEntity.builder()
+                    .user(userRepository.findByUsername(username).orElseThrow(RuntimeException::new))
+                    .authority(authorityRepository.getReferenceById(auth))
+                    .build());
+        }
+    }
+
+    @Override
+    @Transactional
     public UserDTO getUserInfo(String username) throws UsernameNotFoundException {
-//        UserEntity entity = userRepository.findOneWithAuthoritiesByUsername(username).orElseThrow(() -> new RuntimeException("Not Found UserEntity in DataBase"));
         UserEntity entity = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not Found UserEntity in DataBase"));
 
-        List<UserAuthorityJoinEntity> userAuthorityEntity = userAuthorityRepository.findAllByUser_Username(entity.getUsername());
-//        userAuthorityEntity = userAuthorityRepository.findAll();
-        Set<AuthorityDTO> authorityDTOHashSet = new HashSet<>();
-        userAuthorityEntity.forEach(userAuthorityJoinEntity -> authorityDTOHashSet.add(AuthorityDTO.builder()
-                .authorityName(userAuthorityJoinEntity.getAuthority().getAuthorityName()).build()));
-
-//        log.info(authorityDTOHashSet.toString());
         return UserDTO.builder()
-//                .id(entity.getId())
                 .username(entity.getUsername())
                 .password(entity.getPassword())
                 .nickname(entity.getNickname())
                 .activate(entity.isActivate())
                 .regDate(entity.getRegDate())
                 .updateDate(entity.getUpdateDate())
-                .authorities(authorityDTOHashSet)
-//                    .mbtiInfoList(entity.getMbtiList())
+                .authorities(entity.getAuthorities().stream().map(userAuthorityJoinEntity -> userAuthorityJoinEntity.getAuthority().getAuthorityName()).collect(Collectors.toSet()))
+                .mbtiList(entity.getMbtiList().stream().map(userMbtiJoinEntity -> userMbtiJoinEntity.getMbti().getCode()).collect(Collectors.toSet()))
+                .oauth2List(entity.getOauth2Type().stream().map(oauth2UserEntity -> oauth2UserEntity.getOauth2Type().getName()).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -137,7 +126,7 @@ public class UserServiceImpl implements UserService {
         return userAuthorityRepository.findAllByUser_Username(username)
                 .stream()
                 .map(userAuthorityJoinEntity ->
-                        AuthorityDTO.convertToAuthorityDTO(userAuthorityJoinEntity.getAuthority()))
+                        AuthorityDTO.AuthorityEntityToAuthorityDTO(userAuthorityJoinEntity.getAuthority()))
                 .collect(Collectors.toList());
     }
 

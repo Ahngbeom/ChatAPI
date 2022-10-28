@@ -20,6 +20,7 @@ const disposeModalTarget = function (target) {
  * - [type] is set modal-header color.
  * - [title] is be inserted into .modal-title.
  * - [body] is be inserted into .modal-body.
+ *
  * @param btns [...args]
  *
  * - Be add button tag in modal-footer.
@@ -36,9 +37,9 @@ const renewalModal = function (data, ...btns) {
     data.target.querySelector(".modal-title").innerHTML = data.title;
 
     if (data.target.querySelector(".modal-body")) {
-        if (data.body != null) {
+        if (data.body !== undefined) {
             data.target.querySelector(".modal-body").classList.remove("visually-hidden");
-            data.target.querySelector(".modal-body").insertHTML = data.body;
+            data.target.querySelector(".modal-body").innerHTML = data.body;
         } else
             data.target.querySelector(".modal-body").classList.add("visually-hidden");
     }

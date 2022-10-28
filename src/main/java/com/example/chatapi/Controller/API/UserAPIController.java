@@ -48,12 +48,12 @@ public class UserAPIController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserDTO userDTO) {
-		UserEntity userEntity = null;
 		try {
 //			log.info("=== User information to be registered to register as a member ===");
 //			log.info("User: " + userDTO.toString());
 //			log.info("User's Authority: " + userDTO.getAuthorities());
-			return ResponseEntity.ok().body(userService.signUp(userDTO));
+			userService.signUp(userDTO);
+			return ResponseEntity.ok().body(null);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());

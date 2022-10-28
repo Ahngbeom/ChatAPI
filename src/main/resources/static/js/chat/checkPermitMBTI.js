@@ -19,7 +19,7 @@ export function PermitMBTI_survey_init() {
 }
 
 
-export const enableAllPermitMBTICodeSwitch = function () {
+// export const enableAllPermitMBTICodeSwitch = function () {
     $(".permitMBTICode-all-select-btn").on('change', function () {
         checkboxMBTIElemList.forEach(elem => {
             elem.checked = this.checked;
@@ -39,9 +39,9 @@ export const enableAllPermitMBTICodeSwitch = function () {
         }
         ReflectionPermitMbtiCode(chatRoomJsonData.permitMBTICode);
     });
-}
+// }
 
-export const enableSelectPermitMBTICode = function () {
+// export const enableSelectPermitMBTICode = function () {
     $("input[name='permitMBTICode']").on('change', function () {
         if (this.checked) {
             if (this.value.match(/[EI]/)) {
@@ -102,7 +102,7 @@ export const enableSelectPermitMBTICode = function () {
             permitMBTICodeSelectAllSwitchBtn.checked = false;
         ReflectionPermitMbtiCode(chatRoomJsonData.permitMBTICode);
     });
-}
+// }
 
 
 export const ReflectionPermitMbtiCode = function (permitMBTICodeSet) {

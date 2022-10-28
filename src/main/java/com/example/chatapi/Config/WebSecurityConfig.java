@@ -1,7 +1,9 @@
 package com.example.chatapi.Config;
 
+import com.example.chatapi.Security.CustomOAuth2UserService;
 import com.example.chatapi.Security.CustomUserDetailService;
 import com.example.chatapi.Security.LoginSuccessHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,13 +17,12 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // @Secured, @PreAuthorize, @PostAuthorize 활성화
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 
 	private final CustomUserDetailService customUserDetailService;
 
-	public WebSecurityConfig(CustomUserDetailService customUserDetailService) {
-		this.customUserDetailService = customUserDetailService;
-	}
+	private final CustomOAuth2UserService customOAuth2UserService;
 
 	@Bean
 	public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
@@ -67,17 +68,24 @@ public class WebSecurityConfig {
 				.key("MBTI Chatting Application Login Remember Me")
 				.rememberMeParameter("remember-me")
                 .tokenValiditySeconds(86400 * 30) // 1 Month
-                .userDetailsService(customUserDetailService)
-                .authenticationSuccessHandler(myAuthenticationSuccessHandler())
-                .and()
+				.userDetailsService(customUserDetailService)
+				.authenticationSuccessHandler(myAuthenticationSuccessHandler())
+				.and()
 
-                // Logout
+				// Logout
 				.logout()
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/login?logout")
 				// 로그아웃 시 Session 무효화, JSESSIONID 쿠키 삭제
 				.invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me")
-				.permitAll();
+				.permitAll()
+				.and()
+
+				// OAuth2
+//				.exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+				.oauth2Login()
+				.loginPage("/login")
+				.userInfoEndpoint().userService(customOAuth2UserService);
 
 		return http.build();
 	}

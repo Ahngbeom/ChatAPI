@@ -2,8 +2,7 @@ package com.example.chatapi.Service.User;
 
 import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
-import com.example.chatapi.Repository.UserRepository;
-import com.example.chatapi.Service.User.UserServiceImpl;
+import com.example.chatapi.Repository.User.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,16 +46,14 @@ class UserServiceImplTest {
     @Transactional
     void signUp() {
         try {
-            Set<AuthorityDTO> authorities = new HashSet<>();
-            authorities.add(AuthorityDTO.builder().authorityName("ROLE_ADMIN").build());
-
             UserDTO user = UserDTO.builder()
                     .username("admin")
                     .password(passwordEncoder.encode("admin"))
                     .nickname("ADMIN")
-                    .authorities(authorities)
+                    .authorities(Collections.singleton("ROLE_ADMIN"))
                     .build();
-            log.info("Created USER: " + userService.signUp(user));
+            userService.signUp(user);
+            log.info("Created USER: " + userService.getUserInfo("admin"));
             getUserInfo(user.getUsername());
 //            createdUserEntity.getAuthorities().forEach(userAuthorityJoinEntity -> log.info(userAuthorityJoinEntity.getAuthority().getAuthorityName()));
 
@@ -67,7 +65,8 @@ class UserServiceImplTest {
     @Test
     void getUserInfo(String username) {
         log.info(userService.getUserInfo(username).toString());
-        userService.getUserInfo(username).getAuthorities().forEach(authorityDTO -> log.info(authorityDTO.getAuthorityName()));
+        userService.getUserInfo(username).getAuthorities().forEach(auth ->
+                log.info(auth));
     }
 
     @Test

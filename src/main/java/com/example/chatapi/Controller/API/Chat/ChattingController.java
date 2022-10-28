@@ -23,31 +23,33 @@ public class ChattingController {
 
     @MessageMapping("/mbti-chat/join-room/{roomId}")
     @SendTo("/topic/mbti-chat/{roomId}")
-    public Message joinChatRoom(@DestinationVariable("roomName") Long roomId, Principal principal) throws InterruptedException {
+    public Message joinChatRoom(@DestinationVariable("roomId") Long roomId, Principal principal) throws InterruptedException {
         if (!chatService.checkAlreadyJoined(roomId, principal.getName())) {
             if (chatService.joinChatRoomAvailability(roomId, principal.getName())) {
 //                Thread.sleep(1000);
                 chatService.joinChatRoom(roomId, principal.getName());
-                return new Message(Message.COMMON, Message.SERVER, "Welcome, " + principal.getName());
+                Message msg = new Message(Message.SERVER, Message.SERVER, "Welcome, " + principal.getName());
+                chatLogService.saveMessage(roomId, msg);
+                return msg;
             }
         }
         return null;
     }
 
-    @MessageMapping("/mbti-chat/send-message/{roomName}")
-    @SendTo("/topic/mbti-chat/{roomName}")
-    public Message sendMessage(@DestinationVariable("roomName") String roomName, Principal principal, String message) throws InterruptedException {
+    @MessageMapping("/mbti-chat/send-message/{roomId}")
+    @SendTo("/topic/mbti-chat/{roomId}")
+    public Message sendMessage(@DestinationVariable("roomId") Long roomId, Principal principal, String message) throws InterruptedException {
 //        Thread.sleep(1000);
         Message msg = new Message(Message.COMMON, principal.getName(), message);
-        chatLogService.saveMessage(roomName, msg);
+        chatLogService.saveMessage(roomId, msg);
         return msg;
     }
 
-    @MessageMapping("/mbti-chat/leave-room/{roomName}")
-    @SendTo("/topic/mbti-chat/{roomName}")
-    public Message leaveChatRoom(@DestinationVariable("roomName") String roomName, Principal principal) throws InterruptedException {
+    @MessageMapping("/mbti-chat/leave-room/{roomId}")
+    @SendTo("/topic/mbti-chat/{roomId}")
+    public Message leaveChatRoom(@DestinationVariable("roomId") Long roomId, Principal principal) throws InterruptedException {
 //        Thread.sleep(1000);
-        return new Message(Message.COMMON, Message.SERVER, "[" + principal.getName() + "] left.");
+        return new Message(Message.SERVER, Message.SERVER, "[" + principal.getName() + "] left.");
     }
 
 }

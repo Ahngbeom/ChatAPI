@@ -51,7 +51,8 @@
 
 <th:block th:fragment="loginUser">
     <div id="loggedInUsername" class="d-flex flex-row">
-        <h3 class='m-3' sec:authentication="principal.username"></h3>
+        <!--        <h5 class='m-3' th:text="${#authentication.getPrincipal()}"></h5>-->
+        <a class='h3 m-3 link-dark' href="/user/info" th:text="${#authentication.getName()}"></a>
         <div class='m-3'>
             <button type='button' class='btn btn-warning' onclick="location.href='/logout'">Logout</button>
         </div>

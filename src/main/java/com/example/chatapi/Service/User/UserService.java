@@ -4,11 +4,14 @@ import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface UserService {
 
-    UserDTO signUp(UserDTO userDTO);
+    void signUp(UserDTO userDTO);
+
+    void addAuthority(String username, Collection<String> authorities);
 
     UserDTO getUserInfo(String username) throws UsernameNotFoundException;
 

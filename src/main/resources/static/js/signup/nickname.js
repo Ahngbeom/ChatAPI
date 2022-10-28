@@ -5,7 +5,7 @@ export const setMovementForNickname = function () {
     signUpFormNicknameValidateBtn.addEventListener('click', function () {
         $.ajax({
             type: 'GET',
-            url: '/nickname-validation',
+            url: '/api/user/nickname-validation',
             data: {nickname: signUpFormNickname.value},
             beforeSend: function (xhr) {
                 if (signUpFormNickname.value.length < 2 || koreanConsonantsAndVowels.test(signUpFormNickname.value)) {
