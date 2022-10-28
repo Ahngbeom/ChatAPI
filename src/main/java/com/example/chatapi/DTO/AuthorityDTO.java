@@ -1,6 +1,7 @@
 package com.example.chatapi.DTO;
 
 import com.example.chatapi.Entity.Authority.AuthorityEntity;
+import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
 import lombok.*;
 
 import java.util.HashSet;
@@ -21,8 +22,21 @@ public class AuthorityDTO {
 
     private String authorityName;
 
-    public static AuthorityDTO convertToAuthorityDTO(AuthorityEntity entity) {
+    public static AuthorityDTO AuthorityEntityToAuthorityDTO(AuthorityEntity entity) {
         return AuthorityDTO.builder().authorityName(entity.getAuthorityName()).build();
+    }
+
+    public static AuthorityDTO UserAuthorityEntityToAuthorityDTO(UserAuthorityJoinEntity entity) {
+        return AuthorityDTO.builder().authorityName(entity.getAuthority().getAuthorityName()).build();
+    }
+
+    public static Set<AuthorityDTO> UserAuthorityEntitiesToAuthorityDTO(Set<UserAuthorityJoinEntity> entities) {
+        Set<AuthorityDTO> authorityDTOSet = new HashSet<>();
+
+        for (UserAuthorityJoinEntity entity : entities) {
+            authorityDTOSet.add(AuthorityDTO.builder().authorityName(entity.getAuthority().getAuthorityName()).build());
+        }
+        return authorityDTOSet;
     }
 
     public static Set<AuthorityDTO> authoritiesToSet(String... auth) {

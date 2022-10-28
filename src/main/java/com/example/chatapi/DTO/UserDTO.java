@@ -1,14 +1,10 @@
 package com.example.chatapi.DTO;
 
 import com.example.chatapi.Entity.User.UserEntity;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -36,10 +32,12 @@ public class UserDTO {
     private LocalDateTime updateDate;
 
     //    @ToString.Exclude
-    private Set<AuthorityDTO> authorities;
+    private Set<String> authorities;
 
     //    @ToString.Exclude
-    private Set<MbtiDTO> mbtiInfoList;
+    private Set<String> mbtiList;
+
+    private Set<String> oauth2List;
 
     //    public static UserDTO convertToUserDTO(UserEntity userEntity, AuthorityEntity authorityEntity, MBTIInfoEntity mbtiInfoEntity) {
     public static UserDTO convertToUserDTO(UserEntity userEntity) {

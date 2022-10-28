@@ -3,21 +3,18 @@ package com.example.chatapi.Entity.User;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
 import com.example.chatapi.Entity.MBTI.UserMbtiJoinEntity;
-import com.example.chatapi.Entity.OAuth2Entity;
 import com.example.chatapi.Entity.OAuth2UserEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name = "USER")
 @Getter
-@Setter
 @ToString
 @Builder
 @AllArgsConstructor
@@ -39,7 +36,7 @@ public class UserEntity {
     @Column(length = 50, unique = true)
     private String nickname;
 
-    @Column
+    @Column(columnDefinition = "boolean default true")
     private boolean activate;
 
     @Column(name = "reg_date")
@@ -65,8 +62,46 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserMbtiJoinEntity> mbtiList;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<OAuth2UserEntity> oAuth2Type;
+    private Set<OAuth2UserEntity> oauth2Type;
+
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setActivate(boolean activate) {
+        this.activate = activate;
+    }
+
+    public void setRegDate(LocalDateTime regDate) {
+        this.regDate = regDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public void setAuthorities(Set<UserAuthorityJoinEntity> authorities) {
+        this.authorities = authorities;
+    }
+
+    public void setMbtiList(Set<UserMbtiJoinEntity> mbtiList) {
+        this.mbtiList = mbtiList;
+    }
+
+    public void setOauth2Type(Set<OAuth2UserEntity> oauth2Type) {
+        this.oauth2Type = oauth2Type;
+    }
 
     public static UserEntity convertToUserEntity(UserDTO dto) {
         return UserEntity.builder()

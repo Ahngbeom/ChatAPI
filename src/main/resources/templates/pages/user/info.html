@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/default_layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:div class="text-center" layout:fragment="banner">
+    <h2>My Page</h2>
+</th:div>
+
+
+<th:block layout:fragment="content">
+    <div class="container-fluid" id="contentContainer">
+
+        <!--        <div th:text="${userInfo}"></div>-->
+        <div class="text-success">
+            <div class="spinner-grow spinner-grow-sm" role="status">
+                <span class="visually-hidden">Activated</span>
+            </div>
+            <span>Activated</span>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <th scope="row">Username</th>
+                <td th:text="${userInfo.getUsername()}"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">Nickname</th>
+                <td th:text="${userInfo.getNickname()}"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">Authorities</th>
+                <td th:text="${userInfo.getAuthorities()}"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">My MBTI</th>
+                <td th:text="${userInfo.getMbtiList()}"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">Open Authorization</th>
+                <td th:text="${userInfo.getOauth2List()}"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">Registration date</th>
+                <td th:text="${userInfo.getRegDate()}"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th scope="row">Last Modification Date</th>
+                <td th:text="${userInfo.getUpdateDate()}"></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Larry the Bird</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <th:block th:replace="fragments/modal :: staticModal('simpleInquiryModal')"></th:block>
+
+</th:block>
+
+<th:block layout:fragment="additionalScript">
+    <script src="/js/user/user.js" type="module"></script>
+</th:block>
+</body>
+</html>

@@ -15,14 +15,14 @@ import java.util.Set;
 public class OAuth2Entity {
 
     @Id
-    @Column(name = "type", length = 20)
-    private String type;
+    @Column(name = "name", length = 20)
+    private String name;
 
-    @OneToMany(mappedBy = "oAuth2Type", fetch = FetchType.LAZY)
-    private Set<OAuth2UserEntity> oAuth2Type;
+    @OneToMany(mappedBy = "oauth2Type", fetch = FetchType.LAZY)
+    private Set<OAuth2UserEntity> oauth2Types;
 
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 }

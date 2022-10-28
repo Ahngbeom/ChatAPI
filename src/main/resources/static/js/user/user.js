@@ -3,6 +3,9 @@ import {ajaxAdminGetUserMbtiList} from "/js/mbti/getInfo.js";
 import {replaceChildNode} from "/js/utility/changeElement.js";
 
 
+const removeUserConfirmBtn = document.querySelector(".removeUserConfirmBtn");
+const simpleInquiryModal = document.querySelector("#simpleInquiryModal");
+
 export const userListContentLoad = function () {
     replaceChildNode(bannerContainer, "<div class=\"d-flex d-block flex-column\">\n" +
         "        <h1 class=\"d-flex justify-content-center\">User List</h1>\n" +
@@ -35,12 +38,12 @@ export const enableUserInfoInteractionBtn = function () {
     const getUserMBTIListBtnList = document.querySelectorAll(".getUserMBTIListBtn");
     getUserAuthoritiesBtnList.forEach(btn => {
         btn.addEventListener('click', function (e) {
-            ajaxGetUserAuthorities(e.currentTarget.dataset.username);
+            ajaxGetUserAuthorities(e.currentTarget.dataset['username']);
         });
     });
     getUserMBTIListBtnList.forEach(btn => {
         btn.addEventListener('click', function (e) {
-            ajaxAdminGetUserMbtiList(e.currentTarget.dataset.username);
+            ajaxAdminGetUserMbtiList(e.currentTarget.dataset['username']);
         });
     });
 }
@@ -71,6 +74,30 @@ export const createUsersTableElement = function (data) {
     return table;
 }
 
+$(".removeUserConfirmBtn").on('click', function (e) {
+    // renewalModal({
+    //     target: simpleInquiryModal,
+    //     type: "danger",
+    //     title: "정말 삭제하시겠습니까?",
+    //     body: "<span class='fw-bold fst-italic'>'삭제'</span> 를 입력해주세요." +
+    //         "<input type='text' class='form-control'/>"
+    // }, "<button class='btn btn-danger' disabled>삭제</button>")
+
+    console.log(e.target.dataset['username']);
+
+    renewalModal({
+        target: simpleInquiryModal,
+        type: "danger",
+        title: "' <span class='fw-bold fst-italic'>" + e.target.dataset['username'] + "</span> ' 계정을 삭제하시겠습니까?",
+    }, "<button type='button' class='btn btn-danger' id='removeUserBtn'>삭제</button>")
+
+    simpleInquiryModal.querySelector("#removeUserBtn").addEventListener('click', function () {
+        location.reload();
+    });
+
+    showModalTarget(simpleInquiryModal);
+
+});
 
 
 

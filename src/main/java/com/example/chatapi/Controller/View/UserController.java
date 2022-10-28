@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -20,6 +22,14 @@ public class UserController {
     public ModelAndView userList(ModelAndView mv) {
         mv.addObject("userList", userService.getUserList());
         mv.setViewName("pages/user/userList");
+        return mv;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/info")
+    public ModelAndView userInfo(ModelAndView mv, Principal principal) {
+        mv.addObject("userInfo", userService.getUserInfo(principal.getName()));
+        mv.setViewName("pages/user/info");
         return mv;
     }
 }
