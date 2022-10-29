@@ -1,15 +1,13 @@
-package com.example.chatapi.Controller.API;
+package com.example.chatapi.Controller.API.User;
 
-import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
-import com.example.chatapi.Entity.User.UserEntity;
-import com.example.chatapi.Service.User.UserService;
+import com.example.chatapi.Service.Account.AuthorityService;
+import com.example.chatapi.Service.Account.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +17,6 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -28,6 +25,7 @@ import java.util.stream.Collectors;
 public class UserAPIController {
 
 	private final UserService userService;
+	private final AuthorityService authorityService;
 
 	List<String> forbiddenWords = new ArrayList<>(Arrays.asList("administrator", "admin", "manager", "user", "server", "test", "tester"));
 
@@ -53,6 +51,7 @@ public class UserAPIController {
 //			log.info("User: " + userDTO.toString());
 //			log.info("User's Authority: " + userDTO.getAuthorities());
 			userService.signUp(userDTO);
+			authorityService.addAuthority(userDTO.getUsername(), userDTO.getAuthorities());
 			return ResponseEntity.ok().body(null);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
@@ -75,29 +74,16 @@ public class UserAPIController {
 		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
 	}
 
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/authorities")
-	public ResponseEntity<List<AuthorityDTO>> userAuthorities(Authentication authentication) {
-		try {
-			return ResponseEntity.ok(authentication.getAuthorities().stream()
-					.map(grantedAuthority
-							-> AuthorityDTO.builder().authorityName(grantedAuthority.getAuthority()).build())
-					.collect(Collectors.toList()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
-	}
-
 	@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-	@GetMapping("/authorities/{username}")
-	public ResponseEntity<List<AuthorityDTO>> userAuthoritiesByAdmin(@PathVariable String username) {
+	@GetMapping("/remove/{username}")
+	public ResponseEntity<String> removeUser(@PathVariable String username) {
 		try {
-			return ResponseEntity.ok(userService.getUserAuthorities(username));
+			userService.removeUser(username);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
-		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
+		return ResponseEntity.ok(null);
 	}
 
 	@GetMapping("/username-validation")

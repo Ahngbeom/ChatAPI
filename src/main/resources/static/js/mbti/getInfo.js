@@ -48,7 +48,6 @@ export const ajaxAdminGetUserMbtiList = function (username) {
             } else {
                 document.querySelector(".modal-body").innerHTML = "<h3 class='text-center text-muted'>No MBTI registered.</h3>";
             }
-            modalElem.querySelector("#modalInteractionBtn").classList.add("visually-hidden");
             showModalTarget(modalElem);
         },
         error: function (data) {

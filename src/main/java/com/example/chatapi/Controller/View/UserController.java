@@ -1,6 +1,6 @@
 package com.example.chatapi.Controller.View;
 
-import com.example.chatapi.Service.User.UserService;
+import com.example.chatapi.Service.Account.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

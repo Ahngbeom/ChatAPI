@@ -6,6 +6,7 @@ import com.example.chatapi.Entity.Chat.ChatMBTIEntity;
 import com.example.chatapi.Entity.Chat.ChatRoomEntity;
 import com.example.chatapi.Entity.Chat.ChatUserEntity;
 import com.example.chatapi.Repository.*;
+import com.example.chatapi.Repository.Chat.ChatLogRepository;
 import com.example.chatapi.Repository.Chat.ChatMBTIRepository;
 import com.example.chatapi.Repository.Chat.ChatRoomRepository;
 import com.example.chatapi.Repository.Chat.ChatUserRepository;
@@ -15,24 +16,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
-public class ChatServiceImpl implements ChatService {
+public class ChatServiceImpl extends ChatService implements ChatRoomService {
 
-    private final UserRepository userRepository;
 
-    private final MbtiRepository mbtiRepository;
-    private final ChatRoomRepository chatRoomRepository;
-    private final ChatMBTIRepository chatMBTIRepository;
-
-    private final ChatUserRepository chatUserRepository;
-
-    private final MbtiService mbtiService;
+    public ChatServiceImpl(UserRepository userRepository, MbtiRepository mbtiRepository, ChatRoomRepository chatRoomRepository, ChatUserRepository chatUserRepository, ChatMBTIRepository chatMBTIRepository, ChatLogRepository chatLogRepository, MbtiService mbtiService) {
+        super(userRepository, mbtiRepository, chatRoomRepository, chatUserRepository, chatMBTIRepository, chatLogRepository, mbtiService);
+    }
 
     @Override
     public ChatRoomDTO createChatRoom(String username, ChatRoomDTO chatRoomDTO) throws RuntimeException {
@@ -176,9 +172,11 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    @Transactional
     public void removeChatRoom(Long roomId) {
         chatUserRepository.deleteAll(chatUserRepository.findAllByChatRoom_Id(roomId));
         chatMBTIRepository.deleteAll(chatMBTIRepository.findAllByChatRoom_Id(roomId));
+        chatLogRepository.deleteAll(chatLogRepository.findAllByChatRoomId_IdOrderByRegDate(roomId));
         chatRoomRepository.delete(chatRoomRepository.findById(roomId).orElseThrow(RuntimeException::new));
     }
 

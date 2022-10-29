@@ -35,7 +35,30 @@ export function ajaxGetUserAuthorities(username) {
                 this.innerHTML = "변경 사항 적용";
                 this.classList.replace("btn-warning", "btn-primary");
                 modalElem.querySelector("#modifyAuthorityBtn").addEventListener('click', function () {
-                    console.log("??");
+                    let authorities = [];
+                    modalElem.querySelectorAll(".form-check-input").forEach(checkInput => {
+                        if (checkInput.checked === true)
+                            authorities.push(checkInput.value);
+                    });
+                    console.log(JSON.stringify(authorities));
+                    $.ajax({
+                        type: 'POST',
+                        url: "/api/user/authorities/update/" + username,
+                        data: {
+                            authorities: authorities
+                        },
+                        success: function () {
+                            renewalModal({
+                                target: modalElem,
+                                type: "success",
+                                title: "변경되었습니다."
+                            });
+                            showModalTarget(modalElem);
+                        },
+                        error: function (xhr) {
+                            console.error(xhr.responseText);
+                        }
+                    });
                 }, {once: true});
             }, {once: true});
             showModalTarget(modalElem);

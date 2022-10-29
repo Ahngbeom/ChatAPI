@@ -1,6 +1,5 @@
-package com.example.chatapi.Service.User;
+package com.example.chatapi.Service.Account;
 
-import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.example.chatapi.Controller.API.Chat;
 
 import com.example.chatapi.STOMP.Message;
 import com.example.chatapi.Service.Chat.ChatLogService;
-import com.example.chatapi.Service.Chat.ChatService;
+import com.example.chatapi.Service.Chat.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -17,17 +17,17 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class ChattingController {
 
-    private final ChatService chatService;
+    private final ChatRoomService chatRoomService;
 
     private final ChatLogService chatLogService;
 
     @MessageMapping("/mbti-chat/join-room/{roomId}")
     @SendTo("/topic/mbti-chat/{roomId}")
     public Message joinChatRoom(@DestinationVariable("roomId") Long roomId, Principal principal) throws InterruptedException {
-        if (!chatService.checkAlreadyJoined(roomId, principal.getName())) {
-            if (chatService.joinChatRoomAvailability(roomId, principal.getName())) {
+        if (!chatRoomService.checkAlreadyJoined(roomId, principal.getName())) {
+            if (chatRoomService.joinChatRoomAvailability(roomId, principal.getName())) {
 //                Thread.sleep(1000);
-                chatService.joinChatRoom(roomId, principal.getName());
+                chatRoomService.joinChatRoom(roomId, principal.getName());
                 Message msg = new Message(Message.SERVER, Message.SERVER, "Welcome, " + principal.getName());
                 chatLogService.saveMessage(roomId, msg);
                 return msg;

@@ -12,3 +12,11 @@ const confirmModalCancelBtn = confirmModalElem.querySelector("#confirmModalCance
 const confirmModalAcceptBtn = confirmModalElem.querySelector("#confirmModalAcceptBtn");
 
 toastDetector();
+
+// confirmModalElem.addEventListener('hide.bs.modal', function () {
+//    location.reload();
+// })
+
+$(".modal").on('hide.bs.modal', function () {
+   location.reload();
+});

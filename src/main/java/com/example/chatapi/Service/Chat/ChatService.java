@@ -1,36 +1,28 @@
 package com.example.chatapi.Service.Chat;
 
-import com.example.chatapi.DTO.ChatRoomDTO;
-import com.example.chatapi.Entity.Chat.ChatMBTIEntity;
-import com.example.chatapi.Entity.Chat.ChatRoomEntity;
+import com.example.chatapi.Repository.Chat.ChatLogRepository;
+import com.example.chatapi.Repository.Chat.ChatMBTIRepository;
+import com.example.chatapi.Repository.Chat.ChatRoomRepository;
+import com.example.chatapi.Repository.Chat.ChatUserRepository;
+import com.example.chatapi.Repository.MbtiRepository;
+import com.example.chatapi.Repository.User.UserRepository;
+import com.example.chatapi.Service.MBTI.MbtiService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+@Service
+@RequiredArgsConstructor
+public class ChatService {
 
-public interface ChatService {
+    protected final UserRepository userRepository;
 
-    ChatRoomDTO createChatRoom(String username, ChatRoomDTO chatRoomDTO) throws RuntimeException;
+    protected final MbtiRepository mbtiRepository;
 
-    List<ChatRoomDTO> getListOfAllChatRooms();
+    protected final ChatRoomRepository chatRoomRepository;
+    protected final ChatUserRepository chatUserRepository;
+    protected final ChatMBTIRepository chatMBTIRepository;
 
-    List<ChatRoomDTO> getListAllChatRoomsByFounder(String username) throws RuntimeException;
+    protected final ChatLogRepository chatLogRepository;
 
-    List<ChatRoomDTO> getListOfAllChatRoomsUserBelongs(String username);
-
-    ChatRoomDTO getInfoChatRoom(Long id);
-
-    ChatRoomDTO getInfoChatRoom(String roomName);
-
-    ChatRoomDTO updateChatRoom(String username, ChatRoomDTO chatRoomDTO);
-
-    void removeChatRoom(Long roomId);
-
-    boolean joinChatRoomAvailability(Long roomId, String userName);
-
-    void joinChatRoom(Long roomId, String userName) throws RuntimeException;
-
-    boolean checkAlreadyJoined(Long roomId, String username);
-
-    boolean leaveChatRoom(Long roomId, String userName);
-
-    List<String> addPermitMBTICodes(Long roomId, List<String> codes);
+    protected final MbtiService mbtiService;
 }

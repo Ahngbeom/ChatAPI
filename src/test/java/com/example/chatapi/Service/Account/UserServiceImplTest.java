@@ -1,6 +1,5 @@
-package com.example.chatapi.Service.User;
+package com.example.chatapi.Service.Account;
 
-import com.example.chatapi.DTO.AuthorityDTO;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Repository.User.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 @Slf4j
 @SpringBootTest
@@ -73,14 +70,6 @@ class UserServiceImplTest {
     void getUserList() {
         userService.getUserList().forEach(userDTO -> {
             log.info(userDTO.toString());
-            getUserAuthorities(userDTO.getUsername());
-        });
-    }
-
-    @Test
-    void getUserAuthorities(String username) {
-        userService.getUserAuthorities(username).forEach(auth -> {
-            log.info(auth.getAuthorityName());
         });
     }
 

@@ -92,7 +92,21 @@ $(".removeUserConfirmBtn").on('click', function (e) {
     }, "<button type='button' class='btn btn-danger' id='removeUserBtn'>삭제</button>")
 
     simpleInquiryModal.querySelector("#removeUserBtn").addEventListener('click', function () {
-        location.reload();
+        $.ajax({
+            type: 'GET',
+            url: "/api/user/remove/" + e.target.dataset['username'],
+            success: function () {
+                renewalModal({
+                    target: simpleInquiryModal,
+                    type: "success",
+                    title: "삭제되었습니다."
+                });
+                showModalTarget(simpleInquiryModal);
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+            }
+        });
     });
 
     showModalTarget(simpleInquiryModal);
