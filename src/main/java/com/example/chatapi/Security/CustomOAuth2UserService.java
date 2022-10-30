@@ -2,8 +2,8 @@ package com.example.chatapi.Security;
 
 import com.example.chatapi.Entity.Authority.AuthorityEntity;
 import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
-import com.example.chatapi.Entity.OAuth2Entity;
-import com.example.chatapi.Entity.OAuth2UserEntity;
+import com.example.chatapi.Entity.User.OAuth2Entity;
+import com.example.chatapi.Entity.User.OAuth2UserEntity;
 import com.example.chatapi.Entity.User.UserEntity;
 import com.example.chatapi.Repository.User.OAuth2Repository;
 import com.example.chatapi.Repository.User.OAuth2UserRepository;
@@ -26,12 +26,16 @@ import java.util.Collections;
 import java.util.Objects;
 
 
-/* Reference: https://blog.naver.com/PostView.nhn?blogId=qjawnswkd&logNo=222293370027 */
+/*
+Reference:
+    - https://blog.naver.com/PostView.nhn?blogId=qjawnswkd&logNo=222293370027
+    - https://velog.io/@shawnhansh/Spring-Security와-OAuth23-구글-로그인-연동하기
+*/
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CustomOAuth2UserService implements OAuth2UserService {
+public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
     private final UserAuthorityRepository userAuthorityRepository;
@@ -46,48 +50,70 @@ public class CustomOAuth2UserService implements OAuth2UserService {
         DefaultOAuth2UserService defaultOAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = defaultOAuth2UserService.loadUser(userRequest);
 
-        log.info(oAuth2User.getAttributes().toString());
-        log.info(saveOAuth2User(oAuth2User).toString());
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+
+        saveOrUpdate(registrationId, oAuth2User, userNameAttributeName);
 
         session.setAttribute("oAuthToken", userRequest.getAccessToken().getTokenValue());
 
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")), oAuth2User.getAttributes(), "login");
+        return new DefaultOAuth2User(
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+                oAuth2User.getAttributes(), userNameAttributeName);
     }
 
     @Transactional
-    public UserEntity saveOAuth2User(OAuth2User oAuth2User) {
+    public void saveOrUpdate(String registrationId, OAuth2User oAuth2User, String idAttributeName) {
+        log.info("Registration ID: " + registrationId);
+        log.info("Attribute Name for ID: " + idAttributeName);
+        log.info(oAuth2User.getAttributes().toString());
+        log.info("ID: " + Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString()));
+        OAuth2UserEntity oAuth2UserEntity = null;
 
-        UserEntity userEntity = null;
-
-        // GitHub
-        if (oAuth2User.getAttributes().containsKey("url") && oAuth2User.getAttributes().get("url").toString().startsWith("https://api.github.com/users/")) {
-            if (!userRepository.existsById(Objects.requireNonNull(oAuth2User.getAttribute("login"))))
-                userEntity = userRepository.save(UserEntity.builder()
-                        .username(oAuth2User.getAttribute("login"))
-                        .nickname(oAuth2User.getAttribute("name"))
-                        .build());
-            else
-                userEntity = userRepository.findByUsername(oAuth2User.getAttribute("login")).orElseThrow(RuntimeException::new);
-
-            grantAuthorityToOAuth2User(userEntity);
-
-            OAuth2Entity oAuth2Entity = oAuth2Repository.saveAndFlush(OAuth2Entity.builder().name("GitHub").build());
-            if (!oAuth2UserRepository.existsByUser_UsernameAndOauth2Type_Name(userEntity.getUsername(), oAuth2Entity.getName()))
-                oAuth2UserRepository.save(OAuth2UserEntity.builder().user(userEntity).oauth2Type(oAuth2Entity).build());
+        OAuth2Entity oAuth2Entity = oAuth2Repository.save(OAuth2Entity.builder().name(registrationId).build());
+        switch (registrationId) {
+            case "github": {
+//                if (!oAuth2UserRepository.existsById(Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString())))
+                oAuth2UserEntity = oAuth2UserRepository.save(
+                        OAuth2UserEntity.builder()
+                                .id(Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString()))
+                                .oauth2Type(oAuth2Entity)
+                                .email(oAuth2User.getAttribute("email"))
+                                .nickname(oAuth2User.getAttribute("login"))
+                                .build());
+//                else
+//                    oAuth2UserEntity = oAuth2UserRepository.getReferenceById(Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString()));
+                break;
+            }
+            case "google": {
+//                if (!oAuth2UserRepository.existsById(Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString())))
+                oAuth2UserEntity = oAuth2UserRepository.save(
+                        OAuth2UserEntity.builder()
+                                .id(Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString()))
+                                .oauth2Type(oAuth2Entity)
+                                .email(oAuth2User.getAttribute("email"))
+                                .nickname(oAuth2User.getAttribute("name"))
+                                .build());
+//                else
+//                    oAuth2UserEntity = oAuth2UserRepository.getReferenceById(Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString()));
+                break;
+            }
+            default:
+                break;
         }
-
-        return userEntity;
+        assert oAuth2UserEntity != null;
+        log.info(oAuth2UserEntity.toString());
     }
 
-    @Transactional
-    public void grantAuthorityToOAuth2User(UserEntity userEntity) {
-        if (!userAuthorityRepository.existsByUser_UsernameAndAuthority_AuthorityName(userEntity.getUsername(), "ROLE_USER"))
-            userAuthorityRepository.save(
-                    UserAuthorityJoinEntity.builder()
-                            .user(userEntity)
-                            .authority(AuthorityEntity.builder().authorityName("ROLE_USER").build())
-                            .build()
-            );
-    }
+//    @Transactional
+//    public void grantAuthorityToOAuth2User(OAuth2UserEntity oAuth2UserEntity) {
+//        if (!userAuthorityRepository.existsByUser_UsernameAndAuthority_AuthorityName(oAuth2UserEntity.getUsername(), "ROLE_USER"))
+//            userAuthorityRepository.save(
+//                    UserAuthorityJoinEntity.builder()
+//                            .user(oAuth2UserEntity)
+//                            .authority(AuthorityEntity.builder().authorityName("ROLE_USER").build())
+//                            .build()
+//            );
+//    }
 
 }

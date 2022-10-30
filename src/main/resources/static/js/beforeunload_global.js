@@ -12,6 +12,12 @@ const USER_INFO = (function () {
             console.log(data);
             userInfo = data;
         },
+        error: function (xhr, status) {
+            if (status !== "parsererror") {
+                console.error(xhr);
+                console.error(status);
+            }
+        }
     });
     return userInfo;
 })();

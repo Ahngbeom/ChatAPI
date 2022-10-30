@@ -6,3 +6,11 @@ spring:
           github:
             clientId: c4fcc1e62645c7534822
             clientSecret: 0dcfc8afdb40a6bd2e502be1f010a164ffebd433
+          google:
+            client-id: 218347835808-ebpvu4nkgmjb9o8nb80096o7tocv0cs1.apps.googleusercontent.com
+            client-secret: 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
+            #            redirect-uri: /
+            scope:
+              - profile
+              - email
+

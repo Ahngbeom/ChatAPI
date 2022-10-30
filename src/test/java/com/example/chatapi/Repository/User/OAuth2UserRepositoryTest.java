@@ -23,6 +23,6 @@ class OAuth2UserRepositoryTest {
 
     @Test
     void existsByUser_UsernameAndOauth2Type_Type() {
-        oAuth2UserRepository.existsByUser_UsernameAndOauth2Type_Name("Ahngbeom", "GitHub");
+//        oAuth2UserRepository.existsByUser_UsernameAndOauth2Type_Name("Ahngbeom", "GitHub");
     }
 }

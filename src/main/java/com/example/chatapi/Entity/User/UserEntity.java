@@ -3,7 +3,6 @@ package com.example.chatapi.Entity.User;
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
 import com.example.chatapi.Entity.MBTI.UserMbtiJoinEntity;
-import com.example.chatapi.Entity.OAuth2UserEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -62,9 +61,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserMbtiJoinEntity> mbtiList;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<OAuth2UserEntity> oauth2Type;
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+//    private Set<OAuth2UserEntity> oauth2Type;
 
 
     public void setUsername(String username) {
@@ -99,9 +98,9 @@ public class UserEntity {
         this.mbtiList = mbtiList;
     }
 
-    public void setOauth2Type(Set<OAuth2UserEntity> oauth2Type) {
-        this.oauth2Type = oauth2Type;
-    }
+//    public void setOauth2Type(Set<OAuth2UserEntity> oauth2Type) {
+//        this.oauth2Type = oauth2Type;
+//    }
 
     public static UserEntity convertToUserEntity(UserDTO dto) {
         return UserEntity.builder()

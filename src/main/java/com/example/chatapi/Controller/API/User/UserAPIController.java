@@ -2,6 +2,7 @@ package com.example.chatapi.Controller.API.User;
 
 import com.example.chatapi.DTO.UserDTO;
 import com.example.chatapi.Service.Account.AuthorityService;
+import com.example.chatapi.Service.Account.OAuth2UserService;
 import com.example.chatapi.Service.Account.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,8 @@ import java.util.List;
 public class UserAPIController {
 
 	private final UserService userService;
+
+	private final OAuth2UserService oAuth2UserService;
 	private final AuthorityService authorityService;
 
 	List<String> forbiddenWords = new ArrayList<>(Arrays.asList("administrator", "admin", "manager", "user", "server", "test", "tester"));
@@ -35,6 +38,17 @@ public class UserAPIController {
 			if (principal == null)
 				throw new AuthenticationException("Not Logged In");
 			return ResponseEntity.ok(userService.getUserInfo(principal.getName()));
+		} catch (UsernameNotFoundException notFoundException) {
+			// Finding OAuth2 User DB
+			try {
+				assert principal != null;
+				return ResponseEntity.ok(oAuth2UserService.getOAuth2UserInfo(Long.valueOf(principal.getName())));
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error(notFoundException.getMessage());
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(notFoundException.getMessage());
+			}
+
 		} catch (AuthenticationException authenticationException) {
 			log.error(authenticationException.getMessage());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authenticationException.getMessage());

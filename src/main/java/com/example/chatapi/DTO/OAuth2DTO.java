@@ -1,6 +1,6 @@
 package com.example.chatapi.DTO;
 
-import com.example.chatapi.Entity.OAuth2UserEntity;
+import com.example.chatapi.Entity.User.OAuth2UserEntity;
 import lombok.*;
 
 @Getter

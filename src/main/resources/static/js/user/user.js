@@ -2,7 +2,6 @@ import {ajaxGetUserAuthorities} from "./authority.js";
 import {ajaxAdminGetUserMbtiList} from "/js/mbti/getInfo.js";
 import {replaceChildNode} from "/js/utility/changeElement.js";
 
-
 const removeUserConfirmBtn = document.querySelector(".removeUserConfirmBtn");
 const simpleInquiryModal = document.querySelector("#simpleInquiryModal");
 

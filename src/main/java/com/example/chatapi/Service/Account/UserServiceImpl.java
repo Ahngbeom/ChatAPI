@@ -5,6 +5,7 @@ import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
 import com.example.chatapi.Entity.User.UserEntity;
 import com.example.chatapi.Repository.User.AuthorityRepository;
 import com.example.chatapi.Repository.MbtiRepository;
+import com.example.chatapi.Repository.User.OAuth2UserRepository;
 import com.example.chatapi.Repository.User.UserAuthorityRepository;
 import com.example.chatapi.Repository.User.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl extends AccountService implements UserService {
 
-    public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository, UserAuthorityRepository userAuthorityRepository, MbtiRepository mbtiRepository, PasswordEncoder passwordEncoder) {
-        super(userRepository, authorityRepository, userAuthorityRepository, mbtiRepository, passwordEncoder);
+    public UserServiceImpl(UserRepository userRepository, OAuth2UserRepository oAuth2UserRepository, AuthorityRepository authorityRepository, UserAuthorityRepository userAuthorityRepository, MbtiRepository mbtiRepository, PasswordEncoder passwordEncoder) {
+        super(userRepository, oAuth2UserRepository, authorityRepository, userAuthorityRepository, mbtiRepository, passwordEncoder);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class UserServiceImpl extends AccountService implements UserService {
                 .updateDate(entity.getUpdateDate())
                 .authorities(entity.getAuthorities().stream().map(userAuthorityJoinEntity -> userAuthorityJoinEntity.getAuthority().getAuthorityName()).collect(Collectors.toSet()))
                 .mbtiList(entity.getMbtiList().stream().map(userMbtiJoinEntity -> userMbtiJoinEntity.getMbti().getCode()).collect(Collectors.toSet()))
-                .oauth2List(entity.getOauth2Type().stream().map(oauth2UserEntity -> oauth2UserEntity.getOauth2Type().getName()).collect(Collectors.toSet()))
+//                .oauth2List(entity.getOauth2Type().stream().map(oauth2UserEntity -> oauth2UserEntity.getOauth2Type().getName()).collect(Collectors.toSet()))
                 .build();
     }
 

@@ -5,6 +5,7 @@ import com.example.chatapi.Entity.Authority.UserAuthorityJoinEntity;
 import com.example.chatapi.Entity.User.UserEntity;
 import com.example.chatapi.Repository.MbtiRepository;
 import com.example.chatapi.Repository.User.AuthorityRepository;
+import com.example.chatapi.Repository.User.OAuth2UserRepository;
 import com.example.chatapi.Repository.User.UserAuthorityRepository;
 import com.example.chatapi.Repository.User.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,8 +19,9 @@ import java.util.stream.Collectors;
 @Service
 public class AuthorityServiceImpl extends AccountService implements AuthorityService {
 
-    public AuthorityServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository, UserAuthorityRepository userAuthorityRepository, MbtiRepository mbtiRepository, PasswordEncoder passwordEncoder) {
-        super(userRepository, authorityRepository, userAuthorityRepository, mbtiRepository, passwordEncoder);
+
+    public AuthorityServiceImpl(UserRepository userRepository, OAuth2UserRepository oAuth2UserRepository, AuthorityRepository authorityRepository, UserAuthorityRepository userAuthorityRepository, MbtiRepository mbtiRepository, PasswordEncoder passwordEncoder) {
+        super(userRepository, oAuth2UserRepository, authorityRepository, userAuthorityRepository, mbtiRepository, passwordEncoder);
     }
 
     @Override
@@ -45,10 +47,22 @@ public class AuthorityServiceImpl extends AccountService implements AuthoritySer
 
     @Override
     public void updateAuthority(String username, Collection<String> authorities) {
+        List<UserAuthorityJoinEntity> beRevokeAuthorities = new ArrayList<>();
+
         for (UserAuthorityJoinEntity entity : userAuthorityRepository.findAllByUser_Username(username)) {
-            authorities.remove(entity.getAuthority().getAuthorityName());
+            if (!authorities.contains(entity.getAuthority().getAuthorityName()))
+                beRevokeAuthorities.add(entity);
+            else
+                authorities.remove(entity.getAuthority().getAuthorityName());
         }
+        log.info(beRevokeAuthorities.toString());
+        revokeAuthority(beRevokeAuthorities);
         addAuthority(username, authorities);
     }
+
+    public void revokeAuthority(Collection<UserAuthorityJoinEntity> authorities) {
+        userAuthorityRepository.deleteAll(authorities);
+    }
+
 
 }

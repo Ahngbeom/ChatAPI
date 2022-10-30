@@ -1,6 +1,5 @@
-package com.example.chatapi.Entity;
+package com.example.chatapi.Entity.User;
 
-import com.example.chatapi.Entity.User.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,26 +14,31 @@ import javax.persistence.*;
 public class OAuth2UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_name")
-    private UserEntity user;
-
-    @ManyToOne
-    @JoinColumn(name = "type")
+    @JoinColumn(name = "oauth2_type")
     private OAuth2Entity oauth2Type;
+
+    @Column
+    private String email;
+
+    @Column
+    private String nickname;
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
-
     public void setOauth2Type(OAuth2Entity oauth2Type) {
         this.oauth2Type = oauth2Type;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }
