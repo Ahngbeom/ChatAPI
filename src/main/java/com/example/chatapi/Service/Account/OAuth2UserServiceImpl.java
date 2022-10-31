@@ -19,7 +19,7 @@ public class OAuth2UserServiceImpl extends AccountService implements OAuth2UserS
     }
 
     @Override
-    public UserDTO getOAuth2UserInfo(Long id) throws UsernameNotFoundException {
+    public UserDTO getOAuth2UserInfo(String id) throws UsernameNotFoundException {
         OAuth2UserEntity oAuth2UserEntity = oAuth2UserRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Not Found OAuth2UserEntity in DataBase"));
 
         return UserDTO.builder()

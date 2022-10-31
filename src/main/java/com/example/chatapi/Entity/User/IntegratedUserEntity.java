@@ -22,8 +22,8 @@ public class IntegratedUserEntity {
     private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "type")
-    private OAuth2UserEntity oauth2Type;
+    @JoinColumn(name = "oauth2_id")
+    private OAuth2UserEntity oauth2Id;
 
     public void setId(Long id) {
         this.id = id;
@@ -33,7 +33,7 @@ public class IntegratedUserEntity {
         this.user = user;
     }
 
-    public void setOauth2Type(OAuth2UserEntity oauth2Type) {
-        this.oauth2Type = oauth2Type;
+    public void setOauth2Id(OAuth2UserEntity oauth2Id) {
+        this.oauth2Id = oauth2Id;
     }
 }

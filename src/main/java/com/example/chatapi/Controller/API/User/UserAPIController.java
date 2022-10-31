@@ -42,7 +42,7 @@ public class UserAPIController {
 			// Finding OAuth2 User DB
 			try {
 				assert principal != null;
-				return ResponseEntity.ok(oAuth2UserService.getOAuth2UserInfo(Long.valueOf(principal.getName())));
+				return ResponseEntity.ok(oAuth2UserService.getOAuth2UserInfo(principal.getName()));
 			} catch (Exception e) {
 				e.printStackTrace();
 				log.error(notFoundException.getMessage());

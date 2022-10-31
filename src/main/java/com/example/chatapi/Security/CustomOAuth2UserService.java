@@ -67,7 +67,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         log.info("Registration ID: " + registrationId);
         log.info("Attribute Name for ID: " + idAttributeName);
         log.info(oAuth2User.getAttributes().toString());
-        log.info("ID: " + Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString()));
+        log.info("ID: " + oAuth2User.getAttribute(idAttributeName) + "(" + Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).getClass().getName() + ")");
         OAuth2UserEntity oAuth2UserEntity = null;
 
         OAuth2Entity oAuth2Entity = oAuth2Repository.save(OAuth2Entity.builder().name(registrationId).build());
@@ -76,7 +76,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 //                if (!oAuth2UserRepository.existsById(Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString())))
                 oAuth2UserEntity = oAuth2UserRepository.save(
                         OAuth2UserEntity.builder()
-                                .id(Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString()))
+                                .id(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString())
                                 .oauth2Type(oAuth2Entity)
                                 .email(oAuth2User.getAttribute("email"))
                                 .nickname(oAuth2User.getAttribute("login"))
@@ -89,7 +89,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 //                if (!oAuth2UserRepository.existsById(Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString())))
                 oAuth2UserEntity = oAuth2UserRepository.save(
                         OAuth2UserEntity.builder()
-                                .id(Long.valueOf(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString()))
+                                .id(Objects.requireNonNull(oAuth2User.getAttribute(idAttributeName)).toString())
                                 .oauth2Type(oAuth2Entity)
                                 .email(oAuth2User.getAttribute("email"))
                                 .nickname(oAuth2User.getAttribute("name"))

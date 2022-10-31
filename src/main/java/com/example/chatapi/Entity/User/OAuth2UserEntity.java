@@ -1,8 +1,13 @@
 package com.example.chatapi.Entity.User;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "OAUTH2_USER")
@@ -14,9 +19,9 @@ import javax.persistence.*;
 public class OAuth2UserEntity {
 
     @Id
-    private Long id;
+    private String id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "oauth2_type")
     private OAuth2Entity oauth2Type;
 
@@ -26,7 +31,16 @@ public class OAuth2UserEntity {
     @Column
     private String nickname;
 
-    public void setId(Long id) {
+    @NotNull
+    @Builder.Default
+    @ColumnDefault("true")
+    private Boolean activate = true;
+
+    @CreationTimestamp
+    @Column(name = "reg_date")
+    private LocalDateTime regDate;
+
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -40,5 +54,13 @@ public class OAuth2UserEntity {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void setActivate(boolean activate) {
+        this.activate = activate;
+    }
+
+    public void setRegDate(LocalDateTime regDate) {
+        this.regDate = regDate;
     }
 }
