@@ -34,10 +34,10 @@ public class OAuth2UserEntity {
     @NotNull
     @Builder.Default
     @ColumnDefault("true")
-    private Boolean activate = true;
+    private boolean activate = true;
 
     @CreationTimestamp
-    @Column(name = "reg_date")
+    @Column(name = "reg_date", updatable = false)
     private LocalDateTime regDate;
 
     public void setId(String id) {

@@ -36,7 +36,7 @@ public class UserMbtiJoinEntity {
     @Column
     private boolean represent;
 
-    @Column(name = "reg_date")
+    @Column(name = "reg_date", updatable = false)
     @CreationTimestamp
     private LocalDateTime regDate;
 

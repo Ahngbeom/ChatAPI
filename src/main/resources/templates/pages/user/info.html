@@ -14,63 +14,70 @@
     <div class="container-fluid" id="contentContainer">
 
         <!--        <div th:text="${userInfo}"></div>-->
-        <div class="text-success">
-            <div class="spinner-grow spinner-grow-sm" role="status">
-                <span class="visually-hidden">Activated</span>
+
+        <div class="d-flex justify-content-between mb-1">
+            <div class="text-success">
+                <div class="spinner-grow spinner-grow-sm" role="status">
+                    <span class="visually-hidden">Activated</span>
+                </div>
+                <span>Activated</span>
             </div>
-            <span>Activated</span>
+            <div>
+                <button class="btn btn-secondary" id="changeUserPasswordBtn" type="button">비밀번호 변경</button>
+                <button class="btn btn-warning" onclick="location.href='/user/update'" type="button">회원 정보 수정</button>
+            </div>
         </div>
+
+        <p th:text="${userInfo}"></p>
         <table class="table table-bordered">
             <tbody>
             <tr>
-                <th scope="row">Username</th>
-                <td th:text="${userInfo.getUsername()}"></td>
-                <td></td>
+                <th class="col-3" scope="row">Username</th>
+                <td class="col-8" th:text="${userInfo.getUsername()}"></td>
+            </tr>
+            <tr>
+                <th scope="row">E-mail</th>
+                <td th:text="${userInfo.getEmail()}"></td>
             </tr>
             <tr>
                 <th scope="row">Nickname</th>
                 <td th:text="${userInfo.getNickname()}"></td>
-                <td></td>
             </tr>
             <tr>
                 <th scope="row">Authorities</th>
                 <td th:text="${userInfo.getAuthorities()}"></td>
-                <td></td>
             </tr>
             <tr>
                 <th scope="row">My MBTI</th>
                 <td th:text="${userInfo.getMbtiList()}"></td>
-                <td></td>
             </tr>
             <tr>
                 <th scope="row">Open Authorization</th>
-                <td th:text="${userInfo.getOauth2List()}"></td>
-                <td></td>
+                <td>
+                    <div
+                            th:insert="fragments/oauth2/oauth2 :: github-login-button(${userInfo.getOauth2List() != null && userInfo.getOauth2List().contains('github')})"></div>
+                    <div
+                            th:insert="fragments/oauth2/oauth2 :: google-login-button(${userInfo.getOauth2List() != null && userInfo.getOauth2List().contains('google')})"></div>
+                </td>
             </tr>
             <tr>
                 <th scope="row">Registration date</th>
-                <td th:text="${userInfo.getRegDate()}"></td>
-                <td></td>
+                <td th:text="${#temporals.format(userInfo.getRegDate(), 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
             <tr>
                 <th scope="row">Last Modification Date</th>
-                <td th:text="${userInfo.getUpdateDate()}"></td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
+                <td th:text="${#temporals.format(userInfo.getUpdateDate(), 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <th:block th:replace="fragments/modal :: staticModal('simpleInquiryModal')"></th:block>
+    <th:block th:replace="fragments/modal :: staticModal('changeUserPwModal')"></th:block>
 
 </th:block>
 
 <th:block layout:fragment="additionalScript">
     <script src="/js/user/user.js" type="module"></script>
+    <script src="/js/user/update/password.js"></script>
 </th:block>
 </body>
 </html>

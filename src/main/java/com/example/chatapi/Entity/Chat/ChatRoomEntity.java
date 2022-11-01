@@ -36,8 +36,8 @@ public class ChatRoomEntity {
 	@OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY)
 	private Set<ChatMBTIEntity> permitMBTICodes;
 
-	@Column(name = "create_date")
-	@CreationTimestamp
+	@Column(name = "create_date", updatable = false)
+    @CreationTimestamp
 	private LocalDateTime createDate;
 
 	@Column(name = "update_date")

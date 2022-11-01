@@ -13,7 +13,13 @@ public interface UserService {
 
     List<UserDTO> getUserList();
 
+    void updateUser(UserDTO userDTO);
+
     void removeUser(String username);
 
     Boolean nicknameValidation(String nickname);
+
+    Boolean passwordMatchChecker(String username, String password);
+
+    void changePassword(String username, String password);
 }

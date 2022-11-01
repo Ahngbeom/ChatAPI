@@ -45,12 +45,12 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-				.userDetailsService(customUserDetailService)
-				// CSRF 비활성화
-				.csrf().disable()
-				// 특정 경로 접근 권한 설정. "/signup", "/sign-up", "/webjars/**" 패턴의 요청 주소는 모두에게 접근 허용
-				.authorizeRequests()
-				.antMatchers("/webjars/**", "/js/**", "/template/**", "/test/**").permitAll()
+                .userDetailsService(customUserDetailService)
+                // CSRF 비활성화
+                .csrf().disable()
+                // 특정 경로 접근 권한 설정. "/signup", "/sign-up", "/webjars/**" 패턴의 요청 주소는 모두에게 접근 허용
+                .authorizeRequests()
+                .antMatchers("/webjars/**", "/js/**", "/templates/**", "/test/**", "/oauth2_buttons/**").permitAll()
 				.antMatchers("/api/user/signup", "/**/*-validation").permitAll()
 				.anyRequest().authenticated()
 				.and()

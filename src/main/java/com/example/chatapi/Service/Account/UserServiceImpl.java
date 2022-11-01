@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserServiceImpl extends AccountService implements UserService {
 
     public UserServiceImpl(UserRepository userRepository, OAuth2UserRepository oAuth2UserRepository, AuthorityRepository authorityRepository, UserAuthorityRepository userAuthorityRepository, MbtiRepository mbtiRepository, PasswordEncoder passwordEncoder) {
@@ -24,7 +25,6 @@ public class UserServiceImpl extends AccountService implements UserService {
     }
 
     @Override
-    @Transactional
     public void signUp(UserDTO userDTO) throws RuntimeException {
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
             throw new RuntimeException("Exist Username");
@@ -38,45 +38,37 @@ public class UserServiceImpl extends AccountService implements UserService {
                         .activate(true)
                         .build()
         );
-
-
-//        // Returns whether the result of the above three processes
-//        userDTO = UserDTO.convertToUserDTO(userEntity);
-//        assert userDTO != null;
-//        userDTO.setAuthorities(userAuthorityRepository.findAllByUser_Username(userEntity.getUsername()).stream().map(userAuthorityJoinEntity ->
-//                AuthorityDTO.builder().authorityName(userAuthorityJoinEntity.getAuthority().getAuthorityName()).build()).collect(Collectors.toSet())
-//        );
-//        return userDTO;
     }
 
     @Override
-    @Transactional
     public UserDTO getUserInfo(String username) throws UsernameNotFoundException {
         UserEntity entity = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not Found UserEntity in DataBase"));
 
-        return UserDTO.builder()
-                .username(entity.getUsername())
-                .password(entity.getPassword())
-                .nickname(entity.getNickname())
-                .activate(entity.isActivate())
-                .regDate(entity.getRegDate())
-                .updateDate(entity.getUpdateDate())
-                .authorities(entity.getAuthorities().stream().map(userAuthorityJoinEntity -> userAuthorityJoinEntity.getAuthority().getAuthorityName()).collect(Collectors.toSet()))
-                .mbtiList(entity.getMbtiList().stream().map(userMbtiJoinEntity -> userMbtiJoinEntity.getMbti().getCode()).collect(Collectors.toSet()))
-//                .oauth2List(entity.getOauth2Type().stream().map(oauth2UserEntity -> oauth2UserEntity.getOauth2Type().getName()).collect(Collectors.toSet()))
-                .build();
+        UserDTO userDTO = UserDTO.UserEntityToDTO(entity);
+        assert userDTO != null;
+        userDTO.setAuthorities(entity.getAuthorities().stream().map(userAuthorityJoinEntity -> userAuthorityJoinEntity.getAuthority().getAuthorityName()).collect(Collectors.toSet()));
+        userDTO.setMbtiList(entity.getMbtiList().stream().map(userMbtiJoinEntity -> userMbtiJoinEntity.getMbti().getCode()).collect(Collectors.toSet()));
+        return userDTO;
     }
 
     @Override
     public List<UserDTO> getUserList() {
         try {
             List<UserDTO> userDTOList = new ArrayList<>();
-            userRepository.findAll().forEach(entity -> userDTOList.add(UserDTO.convertToUserDTO(entity)));
+            userRepository.findAll().forEach(entity -> userDTOList.add(UserDTO.UserEntityToDTO(entity)));
             return userDTOList;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void updateUser(UserDTO userDTO) {
+        UserEntity updateUserEntity = userRepository.findByUsername(userDTO.getUsername()).orElseThrow(RuntimeException::new);
+        updateUserEntity.setEmail(userDTO.getEmail());
+        updateUserEntity.setNickname(userDTO.getNickname());
+        userRepository.save(updateUserEntity);
     }
 
     @Override
@@ -90,4 +82,16 @@ public class UserServiceImpl extends AccountService implements UserService {
         return !userRepository.findByNickname(nickname).isPresent();
     }
 
+    @Override
+    public Boolean passwordMatchChecker(String username, String password) {
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not Found User."));
+        return passwordEncoder.matches(password, userEntity.getPassword());
+    }
+
+    @Override
+    public void changePassword(String username, String password) {
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not Found User."));
+        userEntity.setPassword(passwordEncoder.encode(password));
+        userRepository.save(userEntity);
+    }
 }

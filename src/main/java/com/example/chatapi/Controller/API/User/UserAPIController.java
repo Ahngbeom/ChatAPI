@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -31,6 +35,21 @@ public class UserAPIController {
 	private final AuthorityService authorityService;
 
 	List<String> forbiddenWords = new ArrayList<>(Arrays.asList("administrator", "admin", "manager", "user", "server", "test", "tester"));
+
+	@PostMapping("/signup")
+	public ResponseEntity<?> signUp(@Valid @RequestBody UserDTO userDTO) {
+		try {
+//			log.info("=== User information to be registered to register as a member ===");
+//			log.info("User: " + userDTO.toString());
+//			log.info("User's Authority: " + userDTO.getAuthorities());
+			userService.signUp(userDTO);
+			authorityService.addAuthority(userDTO.getUsername(), userDTO.getAuthorities());
+			return ResponseEntity.ok().body(null);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
+		}
+	}
 
 	@GetMapping("/info")
 	public ResponseEntity<?> userInfo(Principal principal) {
@@ -58,21 +77,6 @@ public class UserAPIController {
 		}
 	}
 
-	@PostMapping("/signup")
-	public ResponseEntity<?> signUp(@Valid @RequestBody UserDTO userDTO) {
-		try {
-//			log.info("=== User information to be registered to register as a member ===");
-//			log.info("User: " + userDTO.toString());
-//			log.info("User's Authority: " + userDTO.getAuthorities());
-			userService.signUp(userDTO);
-			authorityService.addAuthority(userDTO.getUsername(), userDTO.getAuthorities());
-			return ResponseEntity.ok().body(null);
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
-		}
-	}
-
 	@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
 	@GetMapping("/list")
 	public ResponseEntity<List<UserDTO>> userList() {
@@ -86,6 +90,18 @@ public class UserAPIController {
 			e.printStackTrace();
 		}
 		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/update")
+	public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO) {
+		try {
+			userService.updateUser(userDTO);
+			authorityService.updateAuthority(userDTO.getUsername(), userDTO.getAuthorities());
+			return ResponseEntity.ok(userDTO);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+		}
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
@@ -134,5 +150,25 @@ public class UserAPIController {
 			log.info("Nickname \"" + nickname + "\" is " + e.getMessage() + " (" + e.getClass() + ")");
 		}
 		return false;
+	}
+
+	@PostMapping("/password-match")
+	public Boolean passwordMatch(Principal principal, @RequestParam String password) {
+		return userService.passwordMatchChecker(principal.getName(), password);
+	}
+
+	@PostMapping("/change-password")
+	public ResponseEntity<String> changePassword(Principal principal, @RequestParam String oldPassword, @RequestParam String newPassword) {
+		log.info(oldPassword);
+		log.info(newPassword);
+		try {
+			if (userService.passwordMatchChecker(principal.getName(), oldPassword))
+				userService.changePassword(principal.getName(), newPassword);
+			else
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("기존 비밀번호와 일치하지 않습니다.");
+			return ResponseEntity.ok("비밀번호가 변경되었습니다.");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
+		}
 	}
 }

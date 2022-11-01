@@ -17,6 +17,10 @@ toastDetector();
 //    location.reload();
 // })
 
+$("#confirmModal").on('hide.bs.modal', function () {
+   location.reload();
+});
+
 $(".modal").on('hide.bs.modal', function () {
    location.reload();
 });

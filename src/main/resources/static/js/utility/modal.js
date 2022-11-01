@@ -14,7 +14,7 @@ const disposeModalTarget = function (target) {
 }
 
 /**
- * @param data [target, title, body]
+ * @param data [target, type, title, body]
  *
  * - [target] is modal element to be renewal.
  * - [type] is set modal-header color.
@@ -27,13 +27,16 @@ const disposeModalTarget = function (target) {
  * - But, the close button is fixed.
  */
 const renewalModal = function (data, ...btns) {
-    if (data.type === "danger") {
-        data.target.querySelector(".modal-header").style.backgroundColor = "#ee7777";
-    } else if (data.type === "warning") {
-        data.target.querySelector(".modal-header").style.backgroundColor = "#d0ce63";
-    } else if (data.type === "success") {
-        data.target.querySelector(".modal-header").style.backgroundColor = "#88dc51";
-    }
+    data.target.querySelector(".modal-header").classList.add("bg-" + data.type, "bg-gradient", "bg-opacity-50");
+    // if (data.type === "danger") {
+    //     data.target.querySelector(".modal-header").style.backgroundColor = "#ee7777";
+    // } else if (data.type === "warning") {
+    //     data.target.querySelector(".modal-header").style.backgroundColor = "#d0ce63";
+    // } else if (data.type === "success") {
+    //     data.target.querySelector(".modal-header").style.backgroundColor = "#88dc51";
+    // } else {
+    //     data.target.querySelector(".modal-header").classList.add("bg-" + data.type, "bg-gradient", "bg-opacity-50");
+    // }
     data.target.querySelector(".modal-title").innerHTML = data.title;
 
     if (data.target.querySelector(".modal-body")) {

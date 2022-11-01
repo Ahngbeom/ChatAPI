@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="github-login-button(status)">
+    <button class="btn bg-dark" type="button">
+        <img src="/oauth2_buttons/github/GitHub-Mark/PNG/GitHub-Mark-Light-32px.png"/>
+        <span class="fw-bold text-white">GitHub</span>
+    </button>
+    <i class="fa-2xl fa-solid fa-check-circle text-success" th:if="${status}"></i>
+</th:block>
+
+<th:block th:fragment="google-login-button(status)">
+    <input src="/oauth2_buttons/google_signin_buttons/web/1x/btn_google_signin_dark_normal_web.png" type="image"/>
+    <i class="fa-2xl fa-solid fa-check-circle text-success" th:if="${status}"></i>
+</th:block>
+
+</html>
+

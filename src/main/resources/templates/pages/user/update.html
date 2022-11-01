@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/default_layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:div class="text-center" layout:fragment="banner">
+    <h2>My Page</h2>
+</th:div>
+
+
+<th:block layout:fragment="content">
+    <div class="container-fluid" id="contentContainer">
+
+        <!--        <div th:text="${userInfo}"></div>-->
+        <table class="table" id="userUpdateTable">
+            <tbody>
+            <tr>
+                <th class="col-3" scope="row">Username</th>
+                <td>
+                    <input class="form-control" disabled th:name="username" th:value="${userInfo.getUsername()}"
+                           type="text">
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">E-mail</th>
+                <td>
+                    <input class="form-control" th:name="email" th:value="${userInfo.getEmail()}" type="email">
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Nickname</th>
+                <td>
+                    <input class="form-control" th:name="nickname" th:value="${userInfo.getNickname()}" type="text">
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">Authorities</th>
+                <td>
+                    <div class="form-control col-sm-8 p-2 d-flex justify-content-around"
+                         id="signUpFormAuthorities">
+                        <div class="form-check">
+                            <input class="form-check-input" id="checkboxRoleAdmin" name="authorities"
+                                   th:checked="${userInfo.getAuthorities().contains('ROLE_ADMIN')}"
+                                   type="checkbox" value="ROLE_ADMIN">
+                            <label class="form-check-label" for="checkboxRoleAdmin">ADMIN</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="checkboxRoleManager" name="authorities"
+                                   th:checked="${userInfo.getAuthorities().contains('ROLE_MANAGER')}"
+                                   type="checkbox" value="ROLE_MANAGER">
+                            <label class="form-check-label" for="checkboxRoleManager">MANAGER</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="checkboxRoleUser" name="authorities"
+                                   th:checked="${userInfo.getAuthorities().contains('ROLE_USER')}"
+                                   type="checkbox" value="ROLE_USER">
+                            <label class="form-check-label" for="checkboxRoleUser">USER</label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Open Authorization</th>
+                <td>
+                    <div
+                            th:insert="fragments/oauth2/oauth2 :: github-login-button(${userInfo.getOauth2List() != null && userInfo.getOauth2List().contains('github')})"></div>
+                    <div
+                            th:insert="fragments/oauth2/oauth2 :: google-login-button(${userInfo.getOauth2List() != null && userInfo.getOauth2List().contains('google')})"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center mb-1">
+            <button class="btn btn-warning" id="userUpdateSubmitBtn" type="button">변경 사항 적용</button>
+        </div>
+    </div>
+    <th:block th:replace="fragments/modal :: staticModal('simpleInquiryModal')"></th:block>
+
+</th:block>
+
+<th:block layout:fragment="additionalScript">
+    <script src="/js/user/user.js" type="module"></script>
+    <script src="/js/user/update/update.js"></script>
+</th:block>
+</body>
+</html>

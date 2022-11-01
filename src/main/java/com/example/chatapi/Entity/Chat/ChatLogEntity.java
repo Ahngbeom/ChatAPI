@@ -34,7 +34,7 @@ public class ChatLogEntity {
     @Column(name = "type", length = 10)
     private String type;
 
-    @Column(name = "reg_date")
+    @Column(name = "reg_date", updatable = false)
     @CreationTimestamp
     private LocalDateTime regDate;
 

@@ -29,8 +29,11 @@ public class UserEntity {
     @Column(length = 50)
     private String username;
 
-    @Column(length = 100)
+    @Column
     private String password;
+
+    @Column
+    private String email;
 
     @Column(length = 50, unique = true)
     private String nickname;
@@ -38,7 +41,7 @@ public class UserEntity {
     @Column(columnDefinition = "boolean default true")
     private boolean activate;
 
-    @Column(name = "reg_date")
+    @Column(name = "reg_date", updatable = false)
     @CreationTimestamp
     private LocalDateTime regDate;
 
@@ -72,6 +75,10 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setNickname(String nickname) {
