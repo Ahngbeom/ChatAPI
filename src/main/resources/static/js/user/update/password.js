@@ -49,6 +49,10 @@ function updateNewPassword() {
 
     $("#updateNewPasswordSubmitBtn").on('click', function () {
         const inputPasswords = changeUserPwModal.querySelectorAll("input[type='password']");
+        if (inputPasswords[0].value.length < 4) {
+            inputPasswords[0].classList.add("is-invalid");
+        }
+
         if (inputPasswords[0].value === inputPasswords[1].value) {
             pwData.newPassword = changeUserPwModal.querySelectorAll("input[type='password']")[1].value
             $.ajax({

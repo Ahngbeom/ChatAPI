@@ -52,7 +52,7 @@ public class UserDTO {
             return UserDTO.builder()
 //                    .id(userEntity.getId())
                     .username(userEntity.getUsername())
-                    .password(userEntity.getPassword())
+//                    .password(userEntity.getPassword())
                     .email(userEntity.getEmail())
                     .nickname(userEntity.getNickname())
                     .activate(userEntity.isActivate())

@@ -104,9 +104,24 @@ public class UserAPIController {
 		}
 	}
 
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/remove")
+	public ResponseEntity<String> removeUser(Principal principal, @RequestParam String password) {
+		try {
+			if (userService.passwordMatchChecker(principal.getName(), password))
+				userService.removeUser(principal.getName());
+			else
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 일치하지 않습니다.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+		return ResponseEntity.ok("탈퇴되었습니다.");
+	}
+
 	@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
 	@GetMapping("/remove/{username}")
-	public ResponseEntity<String> removeUser(@PathVariable String username) {
+	public ResponseEntity<String> removeUserByAdmin(@PathVariable String username) {
 		try {
 			userService.removeUser(username);
 		} catch (Exception e) {
